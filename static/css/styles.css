@@ -8,12 +8,30 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* Footer Bar */
 footer {
-    background-color: #f8f9fa;
-    padding: 20px 0;
     position: fixed;
     bottom: 0;
     width: 100%;
+    background-color: #2d3e50; /* Colour of the bar */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+.footer-bar {
+    background-color: #2d3e50; /* Same as the top bar */
+    height: 5px; /* Height of the bar */
+    width: 100%;
+}
+
+footer p {
+    margin: 10px 0;
+}
+
+#year {
+    font-weight: bold;
 }
 
 .navbar {
