@@ -1,5 +1,5 @@
 
- /* Optional: Add custom styles for shadow and positioning */
+
 header {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: fixed;
@@ -22,7 +22,6 @@ body {
     height: 100%;
 }
 
-/* Ensure the main content takes all available space */
 main {
     flex: 1;
     margin-top: 200px;  /* Adjust this based on your navbar height */
@@ -42,6 +41,7 @@ p {
     margin-left: 20px;                     /* Move the button 20px away from the left */
 }
 
+/* Navbar style */
 .navbar {
     background: #1a237e;
     padding: 1rem 2rem;
@@ -262,7 +262,7 @@ p {
     color: #ffffff; /* White text */
     text-align: center;
     padding: 50px 20px; /* Padding for spacing */
-    margin-top: 150px;
+    margin-top: 90px;
 }
 
 .future-you h2 {
@@ -309,35 +309,38 @@ p {
 .footer {
     background-color: #1a237e; /* Blue background like the Future You section */
     color: #ffffff; /* White text */
-    padding: 50px 20px;
+    padding: 5px 20px;
     position: relative; /* Make it flow with the page */
     width: 100%;
-    margin-top: 20px; /* Adjust space above footer if needed */
+    margin-top: 30px; /* Adjust space above footer if needed */
+    
 }
 
 /* Footer Content Styling */
 .footer-content {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: wrap; /* Ensure content wraps on smaller screens */
-    gap: 20px;
+    gap: 5px;
+    padding: 10px 0;
 }
 
 /* Footer Section Heading */
 .footer-section h3 {
     color: #D81B60; /* Pink like the logo */
-    font-size: 1.4rem;
-    margin-bottom: 15px;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
 }
 
 /* Footer Links */
 .footer-section ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .footer-section ul li {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .footer-section ul li a {
@@ -353,8 +356,8 @@ p {
 /* Footer Bottom Section */
 .footer-bottom {
     text-align: center;
-    margin-top: 30px;
-    font-size: 1rem;
+    margin-top: 5px;
+    color: #D81B60;
 }
 
 /* Ensure the page takes up the full height */
@@ -365,12 +368,6 @@ body, html {
     flex-direction: column;
 }
 
-/* Make the main content fill available space */
-main {
-    flex-grow: 1;
-}
-
-/* Optional: If you want the footer to be separated from content */
-footer {
-    margin-top: auto; /* Push it to the bottom of the page */
+.footer-bottom p {
+    font-size: 14px; /* Smaller font size for the footer bottom paragraph */
 }
