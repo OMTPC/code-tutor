@@ -1,156 +1,83 @@
-<!--
 
--->
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block title %}Homepage{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeMentor - Interactive Python Tutor</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #2c3e50;">
-        <a class="navbar-brand" href="/">
-            <img src="{{ url_for('static', filename='images/CodeMentor logo.png') }}" alt="Logo" style="width: 50px; height: auto;">
-        </a>
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">CodeMentor</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#getStartedModal">Get Started</button>
-                    </li>
-                </ul>
+{% block content %}
+<section class="row hero align-items-center">
+            <!-- Column for text content -->
+            <div class="col-lg-6 col-md-12 hero-content text-start">
+                <h1>Start Your Python Journey Today</h1>
+                <p>
+                    Perfect for beginners! Learn Python step by step with interactive lessons, 
+                    real-time feedback, and see your future potential with our "Future You" section.
+                </p>
+                <button class="cta-button">Begin Your Journey</button>
             </div>
-        </div>
-    </nav>
-
-    <!-- Modal for Login -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        
+            <!-- Column for code simulation -->
+            <div class="col-lg-6 col-md-12 code-container mt-4 mt-md-0">
+                <!-- Simulate IDE with line numbers -->
+                <div class="typing">
+                    <span class="line-number">1</span>
+                    <span class="code-text">def greet_user(name):</span>
                 </div>
-                <div class="modal-body">
-                    <form id="login-form">
-                        <div class="mb-3">
-                            <label for="login-email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="login-email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="login-password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="login-password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
-                    </form>
+                <div class="typing">
+                    <span class="line-number">2</span>
+                    <span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;print(f"Hello, {name}!")</span>
+                </div>
+                <div class="line-number">3</div>
+                <div class="typing">
+                    <span class="line-number">4</span>
+                    <span class="code-text">greet_user("John")</span>
+                </div>
+                <div class="line-number">5</div>
+                <div class="line-number">6</div>
+            </div>
+        </section>
+
+        <!-- Learning Path Section -->
+        <section class="learning-path">
+            <div class="container">
+                    <h2>Your Learning Journey</h2>
+                <div class="path-grid">
+                <div class="path-card">
+                    <h3>Variables &amp; Data Types</h3>
+                    <p>Learn how to store and manipulate different types of data in Python</p>
+                </div>
+                <div class="path-card">
+                    <h3>Control Flow</h3>
+                    <p>Master if statements, loops, and decision-making in your code</p>
+                </div>
+                <div class="path-card">
+                    <h3>Functions</h3>
+                    <p>Create reusable blocks of code to organize your programs</p>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal for Register -->
-    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </section>
+        
+        <section class="future-you">
+            <h2>Future You Feature</h2>
+                <p>See your progression path and future potential as a Python developer</p>
+            <div class="timeline">
+              <div class="timeline-point">
+                <div class="point-content">
+                  <h4>Beginner</h4>
+                  <p>Basic Python Syntax</p>
                 </div>
-                <div class="modal-body">
-                    <form id="register-form">
-                        <div class="mb-3">
-                            <label for="register-email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="register-email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="register-password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="register-password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Register</button>
-                    </form>
+              </div>
+              <div class="timeline-point">
+                <div class="point-content">
+                  <h4>Intermediate</h4>
+                  <p>Building Applications</p>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal for Get Started -->
-    <div class="modal fade" id="getStartedModal" tabindex="-1" aria-labelledby="getStartedModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="getStartedModalLabel">Get Started</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="timeline-point">
+                <div class="point-content">
+                  <h4>Advanced</h4>
+                  <p>Professional Developer</p>
                 </div>
-                <div class="modal-body">
-                    <p>Welcome to the Python tutor! Start by selecting a lesson.</p>
-                    <button class="btn btn-primary" onclick="loadExercise(1)">Start Learning</button>
-                </div>
+              </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container mt-5 pt-5">
-        <div class="exercise-list">
-            <div class="exercise-card" onclick="loadExercise(1)">
-                <h3>Variables and Data Types</h3>
-                <p>Learn the basics of Python variables</p>
-            </div>
-            <div class="exercise-card" onclick="loadExercise(2)">
-                <h3>Control Flow</h3>
-                <p>Master if statements and loops</p>
-            </div>
-            <div class="exercise-card" onclick="loadExercise(3)">
-                <h3>Functions</h3>
-                <p>Understanding functions and scope</p>
-            </div>
-        </div>
-
-        <div class="code-editor">
-            <div class="editor">
-                <h2>Code Editor</h2>
-                <textarea id="code-input" placeholder="Write your Python code here..."></textarea>
-                <div class="controls">
-                    <button onclick="runCode()">Run Code</button>
-                    <button onclick="showHint()">Get Hint</button>
-                </div>
-                <div class="hint" id="hint-box"></div>
-            </div>
-            <div class="output">
-                <h2>Output</h2>
-                <div id="code-output"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    
-
-    <footer class="fixed-bottom bg-light text-center p-3">
-        <p>&copy; 2025 CodeMentor. All Rights Reserved.</p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="app.js"></script>
-</body>
-
-</html>
+        </section>
+{% endblock %}
