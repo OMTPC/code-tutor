@@ -17,7 +17,7 @@
                 <!-- Logo Section -->
                 <div class="logo-container d-flex align-items-center">
                     <svg width="20" height="20" viewBox="0 0 100 100"></svg>
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="{{ url_for('home') }}">
                         <img src="/static/images/CMLogo.png" alt="CodeMentor Logo" class="logo-image">
                     </a>
                     <span class="logo-text">CodeMentor</span>
@@ -32,10 +32,10 @@
                 <div class="collapse navbar-collapse" id="navbarContent">
                     <ul class="navbar-nav ms-auto d-flex gap-2">
                         <li class="nav-item">
-                            <a href="#login" class="btn custom-btn-primary btn-lg">Login</a>
+                            <a href="{{ url_for('login') }}" class="btn custom-btn-primary btn-lg">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#register" class="btn custom-btn-secondary btn-lg">Register</a>
+                            <a href="{{ url_for('register') }}" class="btn custom-btn-secondary btn-lg">Register</a>
                         </li>
                     </ul>
                 </div>
@@ -78,7 +78,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2024 CodeMentor. All rights reserved.</p>
+      <p>&copy; {{ year }} CodeMentor. All rights reserved.</p>
     </div>
 </footer>
 
