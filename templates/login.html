@@ -8,14 +8,14 @@
     <form method="POST" action="{{ url_for("login") }}">
         {{ form.hidden_tag() }}
         <div class="form-group">
-            <label for = "username">Username</lable>
+            <label class="align" for = "username">Username</lable>
             {{ form.username(class="form-control") }}
         </div>  
         <div class="form-group">
-            <label for = "password">Password</lable>
+            <label class="align" for = "password">Password</lable>
             {{ form.password(class="form-control") }}
         </div>
-        <button type="sumit" class="btn btn-primary">Login</button>
+        <button type="sumit" class="custom-login-button">Login</button>
         <!-- Inside the login form -->
         <div class="text-center mt-3">
             <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>

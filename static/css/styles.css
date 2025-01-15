@@ -371,3 +371,39 @@ body, html {
 .footer-bottom p {
     font-size: 14px; /* Smaller font size for the footer bottom paragraph */
 }
+
+/*login page style */
+
+.custom-login-button {
+    background-color: #D81B60 !important;  /* Match the secondary logo color */
+    color: white !important;               /* Text color white */
+    border: none !important;               /* Remove the default border */
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 18px !important;            /* Increase font size */
+    padding: 8px 79px !important;         /* Increase padding for button size */
+    height: auto !important;               /* Ensure the height adjusts to the content */
+    border-radius: 5px;                    /* Optional: Rounded corners */
+    text-align: center;                    /* Ensure text is centered */
+    display: center;                 /* Display the button inline */
+    display: block;                        /* Set display to block so it takes up full width */
+    margin: 15px auto 0;                   /* Center the button horizontally */
+    margin-top: 15px;
+}
+
+.my-4 {
+    color: #D81B60;
+    font-weight: bold;
+    text-align: center;
+}
+
+.form-group {
+    color: #D81B60;
+    margin-bottom: 20px; /* Optional: space between form elements */
+    text-align: center;
+    font-weight: bold;
+}
+
+.align {
+    text-align: left;
+}
+
