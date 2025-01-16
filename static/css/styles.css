@@ -401,9 +401,26 @@ body, html {
     margin-bottom: 20px; /* Optional: space between form elements */
     text-align: center;
     font-weight: bold;
+    
 }
 
 .align {
     text-align: left;
 }
 
+/* Register page style */
+
+.my-5 {
+    color: #D81B60;
+    font-weight: bold;
+    text-align: center;
+    margin-top: -10px !important;
+}
+
+.form-group-register {
+    width: 30%; 
+    color: #D81B60;
+    margin-bottom: 20px; /* Optional: space between form elements */
+    font-weight: bold;
+    margin: 0 auto; 
+}

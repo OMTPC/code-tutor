@@ -46,7 +46,7 @@ class User(UserMixin,db.Model):
         return str(self.userid)
 
     def __repr__(self):
-        return f"User('{self.username}'', '{self.email}'')"
+        return f"User('{self.username}', '{self.email}')"
 
 @app.route("/")
 def home():
