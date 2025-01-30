@@ -11,36 +11,54 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg">
+          <div class="container-fluid">
 
-                <!-- Logo Section -->
-                <div class="logo-container d-flex align-items-center">
-                    <svg width="20" height="20" viewBox="0 0 100 100"></svg>
-                    <a class="navbar-brand" href="{{ url_for('home') }}">
-                        <img src="/static/images/CMLogo.png" alt="CodeMentor Logo" class="logo-image">
-                    </a>
-                    <span class="logo-text">CodeMentor</span>
-                </div>
+              <!-- Logo Section -->
+              <div class="logo-container d-flex align-items-center">
+                  <svg width="20" height="20" viewBox="0 0 100 100"></svg>
+                  <a class="navbar-brand" href="{{ url_for('home') }}">
+                      <img src="/static/images/CMLogo.png" alt="CodeMentor Logo" class="logo-image">
+                  </a>
+                  <span class="logo-text">CodeMentor</span>
+              </div>
 
-                <!-- Toggler Button -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+              <!-- Toggler Button -->
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
 
-                <!-- Login/Register Section -->
-                <div class="collapse navbar-collapse" id="navbarContent">
-                    <ul class="navbar-nav ms-auto d-flex gap-2">
+              <!-- Login/Register or Logout Section -->
+              <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto d-flex gap-2">
+                    {% if current_user.is_authenticated %}
+                        {% if request.endpoint == 'exercises' %}
+                            <!-- Back Arrow Button for the Exercise Page -->
+                            <li class="nav-item">
+                              <a href="{{ url_for('dashboard') }}" class="btn btn-link back-arrow-btn">
+                                  <i class="fas fa-arrow-left"></i>
+                              </a>
+                          </li>
+                          
+                        {% else %}
+                            <!-- Logout Button for other pages -->
+                            <li class="nav-item">
+                                <a href="{{ url_for('logout') }}" class="btn custom-btn-primary btn-lg">Logout</a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <!-- Login Button for guests -->
                         <li class="nav-item">
                             <a href="{{ url_for('login') }}" class="btn custom-btn-primary btn-lg">Login</a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ url_for('register') }}" class="btn custom-btn-secondary btn-lg">Register</a>
                         </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+                    {% endif %}
+                </ul>
+              </div>
+          </div>
+      </nav>
     </header>
 
     <main class="container-fluid flex-grow-1">
@@ -53,7 +71,7 @@
     </div>
 
 <!-- Footer -->
-{% if request.endpoint not in ["login", "register", "dashboard"] %} 
+{% if request.endpoint not in ["login", "register", "dashboard", "exercises"] %} 
 <footer class="footer">
     <div class="footer-content">
       <div class="footer-section">

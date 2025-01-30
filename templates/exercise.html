@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ module.title }} Exercises{% endblock %}
+
+{% block content %}
+
+<!-- Step 1: Add CodeMirror CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<!-- Add JavaScript mode (for example) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+
+<!-- Step 2: Add Python mode and Dracula theme -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Left Column: List of Exercises -->
+        <div class="col-md-3 p-3">
+            <nav class="lesson-nav">
+                <h3>Exercises</h3>
+                <ul class="list-group">
+                    {% for exercise in exercises %}
+                    <li class="list-group-item">
+                        <a href="#" class="exercise-link" data-id="{{ exercise.exerciseid }}">{{ exercise.title }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Right Column: CodeMirror Editor and Result Box -->
+        <div class="col-md-9 p-3">
+            <nav class="lesson-nav">
+            <h1>{{ module.title }} - Select an Exercise</h1>
+            <textarea id="code"></textarea>
+
+            <!-- Run Code Button -->
+            <button id="run-code" class="btn btn-primary mt-3">Run Code</button>
+
+            <!-- Result Box -->
+            <pre id="result" class="mt-3"></pre>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- Step 4: Initialize CodeMirror -->
+<script>
+    // Initialize CodeMirror
+    var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+        lineNumbers: true, // Show line numbers
+        mode: "python",    // Set language mode to Python
+        theme: "dracula",  // Set theme to Dracula
+        indentUnit: 4      // Use 4 spaces for indentation (common in Python)
+    });
+
+
+
+
+
+// Add event listener for the "Run Code" button
+document.getElementById('run-code').addEventListener('click', function () {
+    // Get the code from the editor
+    var code = editor.getValue();
+
+    // Display the code in the result box (for demonstration)
+    document.getElementById('result').textContent = "Running code:\n" + code;
+
+    // In a real-world scenario, you would send the code to a backend or use a library like Pyodide to execute it.
+    // For now, we're just displaying the code as the result.
+});
+
+</script>
+
+{% endblock %}
