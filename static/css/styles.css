@@ -424,3 +424,195 @@ body, html {
     font-weight: bold;
     margin: 0 auto; 
 }
+
+.learning-path {
+    display: grid;
+    gap: 2rem;
+  }
+  
+  .module {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .module:hover {
+    transform: translateY(-5px);
+  }
+  
+  .progress-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .progress-bar {
+    flex-grow: 1;
+    height: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    margin-right: 1rem;
+    overflow: hidden;
+  }
+  
+  .module svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+  }
+
+  .learning-boxe {
+    background-color: #f2f2f2; /* Match your primary or secondary box colour */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a modern look */
+    padding: 20px; /* Space inside the box */
+    text-align: left; /* Centre align content */
+    max-width: 400px; /* Set a maximum width */
+    margin: 20px auto; /* Centre horizontally and add vertical spacing */
+    font-family: 'Verdana', Geneva, Tahoma, sans-serif; /* Consistent font family */
+    color: #333; /* Text colour for readability */
+    display: flex; /* Enable flexbox layout */
+    gap: 20px; /* Add space between the modules */
+    flex-wrap: wrap; /* Allow wrapping if there isn't enough space */
+}
+
+
+
+.learning-boxe .module h2 {
+    font-size: 20px; /* Font size for the title */
+    margin: 10px 0; /* Space around the title */
+    color: #D81B60; /* Match the accent colour */
+}
+
+.learning-boxe .module p {
+    font-size: 14px; /* Description text size */
+    color: #1a237e; /* Slightly lighter text colour */
+    margin: 10px 0; /* Space around the title */
+}
+
+.learning-boxe .progress-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px; /* Space above the progress bar */
+}
+
+.learning-boxe .progress-bar {
+    position: relative;
+    background-color: #e0e0e0; /* Background of progress bar */
+    border-radius: 20px;
+    overflow: hidden;
+    width: 70%; /* Set width of the bar */
+    height: 8px; /* Height of the bar */
+}
+
+.learning-boxe .progress-bar .progress {
+    background-color: #D81B60; /* Match the brand colour */
+    height: 100%; /* Fill the bar height */
+    width: 20%; /* Width dynamically based on progress */
+    transition: width 0.3s ease; /* Smooth transition */
+}
+
+.learning-boxe .progress-text {
+    font-size: 12px; /* Smaller text size */
+    color: #333; /* Match text colour */
+}
+
+.learning-boxe svg {
+    margin: 10px auto;
+    width: 40px;
+    height: 40px;
+    stroke: #D81B60; /* Match accent colour */
+    display: block; /* Centre align */
+}
+
+.icon-box {
+    background-color: #f2f2f2; /* Match the outer box colour */
+    border-radius: 10px; /* Rounded corners */
+    padding: 15px; /* Add padding around the icon */
+    display: inline-flex; /* Ensure the box sizes to fit the icon */
+    justify-content: center; /* Centre align the icon horizontally */
+    align-items: center; /* Centre align the icon vertically */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    margin: 0 auto 15px; /* Centre the icon box and add spacing below */
+    width: 60px; /* Adjust the width of the icon box */
+    height: 60px; /* Adjust the height of the icon box */
+}
+
+.icon-box svg {
+    width: 30px; /* Icon width */
+    height: 30px; /* Icon height */
+    stroke: #D81B60; /* Match the accent colour */
+}
+/* Add a shadow effect to locked modules */
+.locked-module {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Adds a soft shadow */
+    opacity: 0.6; /* Slightly transparent */
+    pointer-events: none; /* Disable any interaction with locked modules */
+    background-color: #f5f5f5; /* Light grey background to indicate locked state */
+}
+
+.locked-module .icon-box {
+    cursor: not-allowed;  /* Change cursor to not-allowed for locked icons */
+}
+/* Style for the Back Arrow Button */
+.navbar .back-arrow-btn i {
+    font-size: 4rem; /* Adjust the size of the arrow */
+    color: #D81B60;  /* Change the color to match the logo (replace #007bff with your logo's colour) */
+}
+
+.navbar .back-arrow-btn:hover i {
+    color: #D81B60;  /* Change colour on hover, you can adjust this to match the hover state of your logo */
+}
+
+/*codemirror and exercise page styling */
+.CodeMirror {
+    border: 1px solid #ddd;
+    border-radius: 0.25rem; /* Match Bootstrap's border radius */
+    background-color: #f8f9fa; /* Light background, similar to list-group */
+    height: 300px; /* Set a fixed height (adjust as needed) */
+    width: 100%;
+    overflow: auto; /* Ensure the editor scrolls when content overflows */
+    margin-bottom: 10px; /* Add some space below the editor */
+    padding: 10px; /* Add some padding inside the editor */
+}
+
+#run-code {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #44475a; /* Dracula background color */
+    color: #f8f8f2; /* Dracula foreground color */
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#run-code:hover {
+    background-color: #6272a4; /* Dracula accent color */
+}
+
+#result {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #282a36; /* Dracula background color */
+    color: #f8f8f2; /* Dracula foreground color */
+    border: 1px solid #44475a; /* Dracula border color */
+    height: 100px; /* Set a fixed height for the result box */
+    width: 100%;
+    overflow: auto; /* Add scroll if content overflows */
+    font-family: monospace; /* Use a monospace font for code-like output */
+    box-sizing: border-box; /* Include padding and border in the width */
+    border-radius: 0.25rem; /* Match Bootstrap's border radius */
+}
+
+.lesson-nav {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    height: fit-content; /* Fit the height to its content */
+    width: 100%; /* Ensure it takes the full width of its parent */
+}
+

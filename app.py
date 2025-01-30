@@ -28,12 +28,13 @@ login_manager.login_message = "Please log in to access this page."
 def load_user(userid):
     return User.query.get(int(userid))  # Retrieve the user based on their ID
 
+# --- DATABASE MODELS ---
 class User(UserMixin,db.Model):
     userid = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(250), nullable=False)  # Store hashed password
-    registered_at = db.Column(db.DateTime, default=func.now)  
+    #registered_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -47,6 +48,59 @@ class User(UserMixin,db.Model):
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
+
+
+class Module(db.Model):
+    moduleid = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), unique=True, nullable=False)
+    description = db.Column(db.String(500), nullable=True)
+    status = db.Column(db.String(50), default='locked')  # This field indicates if module is locked or available
+    progress = db.Column(db.Integer, default=0)  # If you'd rather track percentage completion
+    
+    def __repr__(self):
+        return f"Module('{self.title}', '{self.status}')"
+
+
+class Exercise(db.Model):
+    exerciseid = db.Column(db.Integer, primary_key=True)
+    moduleid = db.Column(db.Integer, db.ForeignKey('module.moduleid'), nullable=False)
+    title = db.Column(db.String(120), nullable=False)
+    description = db.Column(db.String(500), nullable=True)
+    status = db.Column(db.String(50), default='locked')  # 'locked' or 'completed'
+
+    module = db.relationship('Module', backref=db.backref('exercises', lazy=True))
+
+    def __repr__(self):
+        return f"Exercise('{self.title}', '{self.status}')"
+
+class UserModuleProgress(db.Model):
+    progressid = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.Integer, db.ForeignKey('user.userid'), nullable=False)
+    moduleid = db.Column(db.Integer, db.ForeignKey('module.moduleid'), nullable=False)
+    progress = db.Column(db.Integer, default=0)  # Progress in percentage (0-100)
+    status = db.Column(db.String(50), default='locked')  # 'locked', 'in progress', or 'completed'
+
+    user = db.relationship('User', backref=db.backref('module_progress', lazy=True))
+    module = db.relationship('Module', backref=db.backref('user_progress', lazy=True))
+
+    def __repr__(self):
+        return f"UserModuleProgress('{self.userid}', '{self.moduleid}', '{self.progress}%')"
+
+
+class UserExerciseProgress(db.Model):
+    progressid = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.Integer, db.ForeignKey('user.userid'), nullable=False)
+    exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=False)
+    status = db.Column(db.String(50), default='locked')  # 'locked' or 'completed'
+
+    user = db.relationship('User', backref=db.backref('exercise_progress', lazy=True))
+    exercise = db.relationship('Exercise', backref=db.backref('user_progress', lazy=True))
+
+    def __repr__(self):
+        return f"UserExerciseProgress('{self.userid}', '{self.exerciseid}', '{self.status}')"
+
+
+
 
 @app.route("/")
 def home():
@@ -98,6 +152,16 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user and user.check_password(form.password.data):  # Check password
             login_user(user, remember=form.remember.data)  # Log the user in
+
+            # Unlock only the first module using its moduleid (for example, moduleid=1)
+            first_module = Module.query.filter_by(moduleid=1).first()  # Assuming the first module has moduleid=1
+            user_module_progress = UserModuleProgress.query.filter_by(userid=user.userid, moduleid=first_module.moduleid).first()
+
+            if user_module_progress and user_module_progress.status == 'locked':
+                            user_module_progress.status = 'unlocked'
+                            db.session.commit()  # Commit the changes to the database
+
+
             flash(f"Welcome back, {user.username}!", "success")
             next_page = request.args.get("next")  # Redirect to the intended page
             return redirect(next_page) if next_page else redirect(url_for("dashboard"))
@@ -105,11 +169,58 @@ def login():
             flash("Invalid username or password. Please try again.", "danger")
     return render_template("login.html", form=form)
 
+
+
 @app.route("/dashboard")
 @login_required  # Ensures the user is logged in before accessing the dashboard
 def dashboard():
-    # Assuming you have a User model with a `username` attribute
-    return render_template("dashboard.html", username=current_user.username)
+    # Get the user's progress for each module
+    user_modules = []
+    modules = Module.query.all()  # Get all modules
+
+    for module in modules:
+        user_module_progress = UserModuleProgress.query.filter_by(userid=current_user.userid, moduleid=module.moduleid).first()
+        if user_module_progress:
+            user_modules.append({
+                'module': module,
+                'status': user_module_progress.status,
+                'progress': user_module_progress.progress
+            })
+        else:
+            user_modules.append({
+                'module': module,
+                'status': 'locked',
+                'progress': 0
+            })
+
+    return render_template("dashboard.html", username=current_user.username, user_modules=user_modules)
+
+
+@app.route("/module/<int:module_id>/exercises")
+@login_required
+def exercises(module_id):
+    # Fetch the module from the database
+    module = Module.query.get_or_404(module_id)
+
+    # Fetch the exercises associated with the module
+    exercises = Exercise.query.filter_by(moduleid=module_id).all()
+
+    # Get the user's progress for this module
+    user_progress = UserModuleProgress.query.filter_by(userid=current_user.userid, moduleid=module_id).first()
+
+    # If user has not started the module, set the progress to 'locked'
+    if not user_progress:
+        user_progress = UserModuleProgress(userid=current_user.userid, moduleid=module_id, status='locked', progress=0)
+        db.session.add(user_progress)
+        db.session.commit()
+
+    return render_template("exercise.html", module=module, exercises=exercises, user_progress=user_progress)
+
+
+
+
+
+
 
 
 @app.route("/logout")
