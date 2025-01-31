@@ -232,8 +232,6 @@ def exercises(module_id):
 
 
 
-
-
 @app.route("/logout")
 @login_required  # Ensure the user is logged in before logging out
 def logout():
