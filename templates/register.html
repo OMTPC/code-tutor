@@ -1,3 +1,11 @@
+<!-- 
+    Created by: Orlando Caetano
+    Date: [Insert Date]  
+    Description: Registration page template. Includes a form for user sign-up . Also provides a link to the login page for users who already have an account.
+    Resources:
+    -->
+
+
 {% extends "base.html" %}
 
 {% block title %}Register{% endblock %}
@@ -5,6 +13,8 @@
 {% block content %}
 
     <h1 class="my-5">Register</h1>
+
+    <!-- Registration Form -->
     <form method="POST" action="{{ url_for('register') }}">
         {{ form.hidden_tag() }}
         <div class="form-group-register">
@@ -23,8 +33,11 @@
             <label class="align-register" for="confirm_password">Confirm Password</label>
             {{ form.confirm_password(class="form-control") }}
         </div>
+
+        <!-- Submit Button to Submit the Registration Form -->
         <button type="submit" class="custom-login-button">Register</button>
-        <!-- Inside the register form -->
+        
+        <!-- Link to Login Page for Users with Existing Accounts -->
         <div class="text-center mt-3">
             <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
         </div>

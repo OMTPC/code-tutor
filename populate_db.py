@@ -1,6 +1,14 @@
 
+"""
+Created by: Orlando Caetano  
+Date: [Insert Date]  
+Description:  
+This script is used to populate the Code Tutor database.  
+It defines functions to add content to the database and runs them within the Flask app context.  
 
-from app import app, db, Module, Exercise
+Resources:  
+"""
+from app import app, db, Module
 
 
 # Function to add modules
@@ -15,25 +23,13 @@ def add_modules():
     db.session.commit()
     print("Modules added successfully!")
 
-"""
-def add_exercise():
-    exercise1 = Exercise(moduleid=1, title="Exercise 1: Hello, Python!", description="Write a Python script that prints Hello, Python World! to the console", status="locked")
-    exercise2 = Exercise(moduleid=1, title="Exercise 2: Introduction to Variables)", description="In this exercise, you'll learn about variables in Python. Define a variable and print it.", status="locked")
-    
-    db.session.add(exercise1)
-    db.session.add(exercise2)
-    
-    db.session.commit()
-    print("Modules added successfully!")
-"""
-
 
 # Main function to populate the database
 def populate_db():
     with app.app_context():  # Ensure Flask app context is active
        add_modules()
-        # add_exercise()
 
-# Run the script to populate the database
+
+# Run the script 
 if __name__ == "__main__":
     populate_db()

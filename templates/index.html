@@ -1,11 +1,24 @@
+<!--
+    Created by: Orlando Caetano
+    Date: [Insert Date]  
+    Description: Homepage template featuring a hero section, learning path, and a "Future You" section. 
+                 The hero section introduces the platform, followed by a simulated code display. The learning path 
+                 outlines the different stages of the Python journey, and the "Future You" section shows potential 
+                 progression as a Python developer.
+    Resources:
+    -->
+
+
 
 {% extends "base.html" %}
 
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
+
+<!-- Hero Section -->
 <section class="row hero align-items-center">
-            <!-- Column for text content -->
+            
             <div class="col-lg-6 col-md-12 hero-content text-start">
                 <h1>Start Your Python Journey Today</h1>
                 <p>
@@ -20,7 +33,7 @@
         
             <!-- Column for code simulation -->
             <div class="col-lg-6 col-md-12 code-container mt-4 mt-md-0">
-                <!-- Simulate IDE with line numbers -->
+                
                 <div class="typing">
                     <span class="line-number">1</span>
                     <span class="code-text">def greet_user(name):</span>
@@ -62,6 +75,7 @@
             </div>
         </section>
         
+        <!-- "Future You" Feature Section -->
         <section class="future-you">
             <h2>Future You Feature</h2>
                 <p>See your progression path and future potential as a Python developer</p>

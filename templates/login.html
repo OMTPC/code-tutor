@@ -1,3 +1,9 @@
+<!-- 
+    Created by: Orlando Caetano
+    Date: [Insert Date]  
+    Description: Login page template. Includes a form for user authentication with fields for username and password, as well as a link to the registration page for new users.
+    Resources:
+    -->
 
 {% extends "base.html" %}
 
@@ -5,6 +11,8 @@
 
 {% block content %}
     <h1 class="my-4">Login</h1>
+
+    <!-- Login Form -->
     <form method="POST" action="{{ url_for("login") }}">
         {{ form.hidden_tag() }}
         <div class="form-group">
@@ -15,8 +23,11 @@
             <label class="align" for = "password">Password</lable>
             {{ form.password(class="form-control") }}
         </div>
+
+         <!-- Submit Button to Submit the Login Form -->
         <button type="submit" class="custom-login-button">Login</button>
-        <!-- Inside the login form -->
+        
+        <!-- Link to Registration Page for New Users -->
         <div class="text-center mt-3">
             <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
         </div>

@@ -1,20 +1,27 @@
+<!--
+Created by: Orlando Caetano
+Date: [insert Date]
+Description: 
+This page is for displaying exercises for a specific module, integrating CodeMirror for an interactive code editor.
+The layout consists of a left column with a list of exercises and a right column with an interactive code editor, where users can run their Python code.
+Resources:
+-->
+
 {% extends 'base.html' %}
 
 {% block title %}{{ module.title }} Exercises{% endblock %}
 
 {% block content %}
 
-<!-- Step 1: Add CodeMirror CSS and JS -->
+<!--Add CodeMirror CSS and JS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
-<!-- Add JavaScript mode (for example) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
-
-<!-- Step 2: Add Python mode and Dracula theme -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
 
 
+<!-- Main container for the page -->
 <div class="container-fluid">
     <div class="row">
         <!-- Left Column: List of Exercises -->
@@ -40,44 +47,30 @@
             <!-- Run Code Button -->
             <button id="run-code" class="btn btn-primary mt-3">Run Code</button>
 
-            <!-- Result Box -->
             <pre id="result" class="mt-3"></pre>
             </nav>
         </div>
     </div>
 </div>
 
-
-
-
-
-
-
-
-<!-- Step 4: Initialize CodeMirror -->
+<!--Initialize CodeMirror -->
 <script>
     // Initialize CodeMirror
     var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
-        lineNumbers: true, // Show line numbers
-        mode: "python",    // Set language mode to Python
-        theme: "dracula",  // Set theme to Dracula
-        indentUnit: 4      // Use 4 spaces for indentation (common in Python)
+        lineNumbers: true, 
+        mode: "python",    
+        theme: "dracula",  
+        indentUnit: 4      
     });
-
-
-
-
 
 // Add event listener for the "Run Code" button
 document.getElementById('run-code').addEventListener('click', function () {
-    // Get the code from the editor
+
     var code = editor.getValue();
 
     // Display the code in the result box (for demonstration)
     document.getElementById('result').textContent = "Running code:\n" + code;
 
-    // In a real-world scenario, you would send the code to a backend or use a library like Pyodide to execute it.
-    // For now, we're just displaying the code as the result.
 });
 
 </script>

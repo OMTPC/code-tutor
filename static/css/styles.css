@@ -1,5 +1,12 @@
+/* 
+    Created by: Orlando Caetano
+    Date: [Insert Date]
+    Description: This is the CSS file for the design and accessibility of the Code Tutor app.
+    Resources:
+*/
 
 
+/* General Styles for Header */
 header {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: fixed;
@@ -8,7 +15,7 @@ header {
     z-index: 1000;
 }
 
-/* General Reset */
+/* General Reset for Body and HTML to ensure consistency across browsers */
 body, html {
     margin: 0;
     padding: 0;
@@ -22,17 +29,18 @@ body {
     height: 100%;
 }
 
+/* Main content area with space for fixed header */
 main {
     flex: 1;
-    margin-top: 200px;  /* Adjust this based on your navbar height */
+    margin-top: 200px;  
 }
 
-
+/* Heading Styles */
 h1 {
     font-weight: bold;
     font-size: 38px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    margin-left: 20px;                     /* Move the button 20px away from the left */
+    margin-left: 20px;                     
 }
 
 p {
@@ -48,115 +56,115 @@ p {
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   }
 
-  /* Resize the logo image */
+/* Logo Image */
 .logo-image {
-    width: 60px;  /* Adjust the size */
-    height: 60px; /* Keep it square or adjust as needed */
+    width: 60px;  
+    height: 60px; 
 }
 
-/* Style for the CodeMentor text */
+/* Style for the Text of the Logo */
 .logo-text {
-    font-family: Verdana, Geneva, Tahoma, sans-serif; /* Change the font to Arial (or any font you prefer) */
-    font-weight: bold;               /* Make the font bold */
-    font-size: 32px;                 /* Adjust the font size */
-    color: #D81B60;                  /* Change text color if desired */
-    margin-left: 1px;               /* Space between logo and text */
-    display: inline-block;           /* Ensure text and logo are on the same line */
+    font-family: Verdana, Geneva, Tahoma, sans-serif; 
+    font-weight: bold;               
+    font-size: 32px;                 
+    color: #D81B60;                 
+    margin-left: 1px;               
+    display: inline-block;           
 }
 
 .logo-container {
-    margin-left: -35px;        /* Adjust this value to move the logo more to the left */
+    margin-left: -35px;        
 }
 
-/* Custom styles for the toggler button */
+/* Custom Toggler Button (for mobile) */
 .navbar-toggler {
-    border: 4px solid #D81B60; /* Match the border to the logo text colour */
-    border-radius: 5px; /* Optional: smooth corners */
-    background-color: #1a237e; /* Match the logo background colour */
+    border: 4px solid #D81B60; 
+    border-radius: 5px; 
+    background-color: #1a237e; 
 }
 
 /* Custom styles for the toggler icon (the hamburger lines) */
 .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%23D81B60' stroke-width='2' stroke-linecap='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-    /* The lines inside the icon now match the border colour (#D81B60) */
 }
 
 /* Custom Button Styles */
 .custom-btn-primary {
-    background-color: #D81B60 !important;  /* Match the primary logo color */
-    color: white !important;               /* Text color white */
-    border: none !important;               /* Remove the default border */
+    background-color: #D81B60 !important;  
+    color: white !important;               
+    border: none !important;               
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .custom-btn-secondary {
-    background-color: #D81B60 !important;  /* Match the secondary logo color */
-    color: white !important;               /* Text color white */
-    border: none !important;               /* Remove the default border */
+    background-color: #D81B60 !important;  
+    color: white !important;               
+    border: none !important;               
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 /* Flexbox for Navbar */
 .navbar-nav {
     display: flex;
-    flex-direction: row;  /* Default to horizontal layout on large screens */
+    flex-direction: row;  
     gap: 15px;
     align-items: center;
-    justify-content: flex-end; /* Align the buttons to the right on large screens */
+    justify-content: flex-end; 
 }
 
 /* On smaller screens (collapsed), the buttons should stack vertically and align to the right */
 @media (max-width: 991px) {
     .navbar-nav {
-        flex-direction: column;  /* Stack vertically */
-        align-items: flex-end;  /* Align to the right */
-        gap: 10px;  /* Space between the buttons */
+        flex-direction: column;  
+        align-items: flex-end;  
+        gap: 10px;  
     }
 }
 
+
 .cta-button {
-    background-color: #D81B60 !important;  /* Match the secondary logo color */
-    color: white !important;               /* Text color white */
-    border: none !important;               /* Remove the default border */
+    background-color: #D81B60 !important;  
+    color: white !important;               
+    border: none !important;               
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 18px !important;            /* Increase font size */
-    padding: 15px 30px !important;         /* Increase padding for button size */
-    height: auto !important;               /* Ensure the height adjusts to the content */
-    border-radius: 5px;                    /* Optional: Rounded corners */
-    text-align: center;                    /* Ensure text is centered */
-    display: inline-block;                 /* Display the button inline */
-    margin-left: 20px;                     /* Move the button 20px away from the left */
+    font-size: 18px !important;            
+    padding: 15px 30px !important;         
+    height: auto !important;               
+    border-radius: 5px;                    
+    text-align: center;                   
+    display: inline-block;                 
+    margin-left: 20px;                     
 }
 
-
+/* Code simulator */
 /* Typing effect style */
 .code-container {
     background-color: #000;
     color: #D81B60;
     font-family: 'Courier New', Courier, monospace;
     padding: 20px;
-    margin-left: 40px;  /* Space between text and code simulation */
+    margin-left: 40px;  
     width: 100%;
     max-width: 450px;
     height: 200px;
     overflow: hidden;
     white-space: nowrap;
-    border-radius: 5px;/* Code container styling */
+    border-radius: 5px;
 }
 
 .line-number {
-    color: #888; /* Lighter color for line numbers */
-    padding-right: 10px; /* Space between line numbers and code */
+    color: #888; 
+    padding-right: 10px; 
 }
 
 
 /* Typing effect styling */
 .typing {
-    display: flex; /* Keep the line number and code on the same line */
+    display: flex; 
     white-space: nowrap;
     overflow: hidden;
     animation: typing 3.5s steps(30) 1s 1 normal both, blinkCaret 0.75s step-end infinite;
-    margin-bottom: 5px; /* Space between lines */
+    margin-bottom: 5px; 
 }
 
 /* Typing effect */
@@ -165,11 +173,11 @@ p {
         width: 0;
     }
     to {
-        width: 100%; /* Ensure it types out the full line */
+        width: 100%; 
     }
 }
 
-/* Cursor blink animation */
+
 @keyframes blinkCaret {
     50% {
         border-color: transparent;
@@ -178,8 +186,8 @@ p {
     
 @media (max-width: 768px) {
     .code-container {
-        text-align: left; /* Force left alignment on small screens */
-        margin-left: 0; /* Ensure no extra margin on small screens */
+        text-align: left; 
+        margin-left: 0; 
     }
 }
 
@@ -187,7 +195,7 @@ p {
 .learning-path {
     background-color: #f9f9f9;
     text-align: center;
-    margin-top: 150px; /* Adds space above the learning-path section */
+    margin-top: 150px; 
 }
   
 .learning-path h2 {
@@ -233,14 +241,14 @@ p {
 /* Style for the down arrow indicator */
 .scroll-indicator {
     position: fixed;
-    bottom: 20px; /* Distance from the bottom */
+    bottom: 20px; 
     left: 50%;
     transform: translateX(-50%);
     font-size: 2rem;
     color: #D81B60;
     cursor: pointer;
-    animation: bounce 1.5s infinite; /* Adds a gentle bounce effect */
-    display: none; /* Hidden by default */
+    animation: bounce 1.5s infinite; 
+    display: none; 
 }
 
 /* Bounce Animation */
@@ -258,10 +266,10 @@ p {
 
 /* Future You Section */
 .future-you {
-    background-color: #1a237e; /* Matches navbar's blue colour */
-    color: #ffffff; /* White text */
+    background-color: #1a237e; 
+    color: #ffffff; 
     text-align: center;
-    padding: 50px 20px; /* Padding for spacing */
+    padding: 50px 20px; 
     margin-top: 90px;
 }
 
@@ -307,32 +315,29 @@ p {
 
 /* Footer Section */
 .footer {
-    background-color: #1a237e; /* Blue background like the Future You section */
-    color: #ffffff; /* White text */
+    background-color: #1a237e; 
+    color: #ffffff; 
     padding: 5px 20px;
-    position: relative; /* Make it flow with the page */
+    position: relative; 
     width: 100%;
-    margin-top: 30px; /* Adjust space above footer if needed */
-    
+    margin-top: 30px; 
 }
 
-/* Footer Content Styling */
+
 .footer-content {
     display: flex;
     justify-content: space-around;
-    flex-wrap: wrap; /* Ensure content wraps on smaller screens */
+    flex-wrap: wrap; 
     gap: 5px;
     padding: 10px 0;
 }
 
-/* Footer Section Heading */
 .footer-section h3 {
-    color: #D81B60; /* Pink like the logo */
+    color: #D81B60; 
     font-size: 1.2rem;
     margin-bottom: 5px;
 }
 
-/* Footer Links */
 .footer-section ul {
     list-style: none;
     padding: 0;
@@ -345,15 +350,14 @@ p {
 
 .footer-section ul li a {
     text-decoration: none;
-    color: #ffffff; /* White links */
+    color: #ffffff; 
     font-size: 1rem;
 }
 
 .footer-section ul li a:hover {
-    color: #D81B60; /* Pink on hover */
+    color: #D81B60; 
 }
 
-/* Footer Bottom Section */
 .footer-bottom {
     text-align: center;
     margin-top: 5px;
@@ -369,24 +373,24 @@ body, html {
 }
 
 .footer-bottom p {
-    font-size: 14px; /* Smaller font size for the footer bottom paragraph */
+    font-size: 14px; 
 }
 
-/*login page style */
 
+/*login page style */
 .custom-login-button {
-    background-color: #D81B60 !important;  /* Match the secondary logo color */
-    color: white !important;               /* Text color white */
-    border: none !important;               /* Remove the default border */
+    background-color: #D81B60 !important;  
+    color: white !important;               
+    border: none !important;               
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 18px !important;            /* Increase font size */
-    padding: 8px 79px !important;         /* Increase padding for button size */
-    height: auto !important;               /* Ensure the height adjusts to the content */
-    border-radius: 5px;                    /* Optional: Rounded corners */
-    text-align: center;                    /* Ensure text is centered */
-    display: center;                 /* Display the button inline */
-    display: block;                        /* Set display to block so it takes up full width */
-    margin: 15px auto 0;                   /* Center the button horizontally */
+    font-size: 18px !important;            
+    padding: 8px 79px !important;         
+    height: auto !important;               
+    border-radius: 5px;                    
+    text-align: center;                    
+    display: center;                 
+    display: block;                        
+    margin: 15px auto 0;                   
     margin-top: 15px;
 }
 
@@ -398,7 +402,7 @@ body, html {
 
 .form-group {
     color: #D81B60;
-    margin-bottom: 20px; /* Optional: space between form elements */
+    margin-bottom: 20px; 
     text-align: center;
     font-weight: bold;
     
@@ -408,8 +412,8 @@ body, html {
     text-align: left;
 }
 
-/* Register page style */
 
+/* Register page style */
 .my-5 {
     color: #D81B60;
     font-weight: bold;
@@ -420,7 +424,7 @@ body, html {
 .form-group-register {
     width: 30%; 
     color: #D81B60;
-    margin-bottom: 20px; /* Optional: space between form elements */
+    margin-bottom: 20px; 
     font-weight: bold;
     margin: 0 auto; 
 }
@@ -464,147 +468,149 @@ body, html {
   }
 
   .learning-boxe {
-    background-color: #f2f2f2; /* Match your primary or secondary box colour */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a modern look */
-    padding: 20px; /* Space inside the box */
-    text-align: left; /* Centre align content */
-    max-width: 400px; /* Set a maximum width */
-    margin: 20px auto; /* Centre horizontally and add vertical spacing */
-    font-family: 'Verdana', Geneva, Tahoma, sans-serif; /* Consistent font family */
-    color: #333; /* Text colour for readability */
-    display: flex; /* Enable flexbox layout */
-    gap: 20px; /* Add space between the modules */
-    flex-wrap: wrap; /* Allow wrapping if there isn't enough space */
+    background-color: #f2f2f2; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    padding: 20px; 
+    text-align: left; 
+    max-width: 400px; 
+    margin: 20px auto; 
+    font-family: 'Verdana', Geneva, Tahoma, sans-serif; 
+    color: #333; 
+    display: flex; 
+    gap: 20px; 
+    flex-wrap: wrap; 
 }
 
-
-
 .learning-boxe .module h2 {
-    font-size: 20px; /* Font size for the title */
-    margin: 10px 0; /* Space around the title */
-    color: #D81B60; /* Match the accent colour */
+    font-size: 20px; 
+    margin: 10px 0; 
+    color: #D81B60; 
 }
 
 .learning-boxe .module p {
-    font-size: 14px; /* Description text size */
-    color: #1a237e; /* Slightly lighter text colour */
-    margin: 10px 0; /* Space around the title */
+    font-size: 14px; 
+    color: #1a237e; 
+    margin: 10px 0; 
 }
 
 .learning-boxe .progress-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 15px; /* Space above the progress bar */
+    margin-top: 15px; 
 }
 
 .learning-boxe .progress-bar {
     position: relative;
-    background-color: #e0e0e0; /* Background of progress bar */
+    background-color: #e0e0e0; 
     border-radius: 20px;
     overflow: hidden;
-    width: 70%; /* Set width of the bar */
-    height: 8px; /* Height of the bar */
+    width: 70%; 
+    height: 8px; 
 }
 
 .learning-boxe .progress-bar .progress {
-    background-color: #D81B60; /* Match the brand colour */
-    height: 100%; /* Fill the bar height */
-    width: 20%; /* Width dynamically based on progress */
-    transition: width 0.3s ease; /* Smooth transition */
+    background-color: #D81B60; 
+    height: 100%; 
+    width: 20%; 
+    transition: width 0.3s ease; 
 }
 
 .learning-boxe .progress-text {
-    font-size: 12px; /* Smaller text size */
-    color: #333; /* Match text colour */
+    font-size: 12px; 
+    color: #333; 
 }
 
 .learning-boxe svg {
     margin: 10px auto;
     width: 40px;
     height: 40px;
-    stroke: #D81B60; /* Match accent colour */
-    display: block; /* Centre align */
+    stroke: #D81B60; 
+    display: block; 
 }
 
 .icon-box {
-    background-color: #f2f2f2; /* Match the outer box colour */
-    border-radius: 10px; /* Rounded corners */
-    padding: 15px; /* Add padding around the icon */
-    display: inline-flex; /* Ensure the box sizes to fit the icon */
-    justify-content: center; /* Centre align the icon horizontally */
-    align-items: center; /* Centre align the icon vertically */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-    margin: 0 auto 15px; /* Centre the icon box and add spacing below */
-    width: 60px; /* Adjust the width of the icon box */
-    height: 60px; /* Adjust the height of the icon box */
+    background-color: #f2f2f2; 
+    border-radius: 10px; 
+    padding: 15px; 
+    display: inline-flex; 
+    justify-content: center; 
+    align-items: center; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    margin: 0 auto 15px; 
+    width: 60px; 
+    height: 60px; 
 }
 
 .icon-box svg {
-    width: 30px; /* Icon width */
-    height: 30px; /* Icon height */
-    stroke: #D81B60; /* Match the accent colour */
+    width: 30px; 
+    height: 30px; 
+    stroke: #D81B60; 
 }
 /* Add a shadow effect to locked modules */
 .locked-module {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Adds a soft shadow */
-    opacity: 0.6; /* Slightly transparent */
-    pointer-events: none; /* Disable any interaction with locked modules */
-    background-color: #f5f5f5; /* Light grey background to indicate locked state */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  
+    opacity: 0.6; 
+    pointer-events: none; 
+    background-color: #f5f5f5; 
 }
 
+/* Change cursor to not-allowed for locked icons */
 .locked-module .icon-box {
-    cursor: not-allowed;  /* Change cursor to not-allowed for locked icons */
+    cursor: not-allowed;  
 }
+
+
+/* Exercise page style */
 /* Style for the Back Arrow Button */
 .navbar .back-arrow-btn i {
-    font-size: 4rem; /* Adjust the size of the arrow */
-    color: #D81B60;  /* Change the color to match the logo (replace #007bff with your logo's colour) */
+    font-size: 4rem; 
+    color: #D81B60;  
 }
 
 .navbar .back-arrow-btn:hover i {
-    color: #D81B60;  /* Change colour on hover, you can adjust this to match the hover state of your logo */
+    color: #D81B60;  
 }
 
 /*codemirror and exercise page styling */
 .CodeMirror {
     border: 1px solid #ddd;
-    border-radius: 0.25rem; /* Match Bootstrap's border radius */
-    background-color: #f8f9fa; /* Light background, similar to list-group */
-    height: 300px; /* Set a fixed height (adjust as needed) */
+    border-radius: 0.25rem; 
+    background-color: #f8f9fa; 
+    height: 300px; 
     width: 100%;
-    overflow: auto; /* Ensure the editor scrolls when content overflows */
-    margin-bottom: 10px; /* Add some space below the editor */
-    padding: 10px; /* Add some padding inside the editor */
+    overflow: auto; 
+    margin-bottom: 10px; 
+    padding: 10px; 
 }
 
 #run-code {
     margin-top: 10px;
     padding: 10px 20px;
-    background-color: #44475a; /* Dracula background color */
-    color: #f8f8f2; /* Dracula foreground color */
+    background-color: #44475a; 
+    color: #f8f8f2; 
     border: none;
     cursor: pointer;
     font-size: 16px;
 }
 
 #run-code:hover {
-    background-color: #6272a4; /* Dracula accent color */
+    background-color: #6272a4; 
 }
 
 #result {
     margin-top: 10px;
     padding: 10px;
-    background-color: #282a36; /* Dracula background color */
-    color: #f8f8f2; /* Dracula foreground color */
-    border: 1px solid #44475a; /* Dracula border color */
-    height: 100px; /* Set a fixed height for the result box */
+    background-color: #282a36; 
+    color: #f8f8f2; 
+    border: 1px solid #44475a; 
+    height: 100px; 
     width: 100%;
-    overflow: auto; /* Add scroll if content overflows */
-    font-family: monospace; /* Use a monospace font for code-like output */
-    box-sizing: border-box; /* Include padding and border in the width */
-    border-radius: 0.25rem; /* Match Bootstrap's border radius */
+    overflow: auto;
+    font-family: monospace; 
+    box-sizing: border-box; 
+    border-radius: 0.25rem; 
 }
 
 .lesson-nav {
@@ -612,7 +618,7 @@ body, html {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    height: fit-content; /* Fit the height to its content */
-    width: 100%; /* Ensure it takes the full width of its parent */
+    height: fit-content;
+    width: 100%; 
 }
 

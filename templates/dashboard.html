@@ -1,3 +1,12 @@
+<!--
+Created by: Orlando Caetano
+Date: [Insert Date]
+Description: This page displays the user dashboard, where users can view their learning journey, progress, and access unlocked modules. 
+Each module is represented with its title, description, and progress bar, with an indication if it's locked or unlocked.
+Resources:
+-->
+
+
 {% extends 'base.html' %}
 
 {% block title %}Dashboard{% endblock %}
@@ -14,10 +23,13 @@
 
     <div class="container mt-4">
         <div class="row">
+            <!-- Loop through user modules to display each module's information -->
             {% for user_module in user_modules %}
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="learning-boxe">
                         <div class="module {% if user_module.status == 'locked' %}locked-module{% endif %}">
+
+                            <!-- Check if module is locked -->
                             {% if user_module.status == 'locked' %}
                                 <!-- Locked Module Icon -->
                                 <div class="icon-box" style="cursor: not-allowed;">
@@ -27,6 +39,8 @@
                                 </div>
                                 <h2>{{ user_module.module.title }}</h2>
                                 <p>{{ user_module.module.description }}</p>
+
+                                <!-- Progress Bar for Locked Module -->
                                 <div class="progress-wrapper">
                                     <div class="progress-bar" data-progress="{{ user_module.progress }}%">
                                         <div class="progress" style="width: {{ user_module.progress }}%;"></div>
@@ -36,6 +50,7 @@
                                 <!-- Module Locked message below the progress bar -->
                                 <p><strong>Module Locked</strong></p>
                             {% else %}
+
                                 <!-- Unlocked Module Icon -->
                                 <div class="icon-box" onclick="window.location.href='{{ url_for('exercises', module_id=user_module.module.moduleid) }}';" style="cursor: pointer;">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -44,6 +59,8 @@
                                 </div>
                                 <h2>{{ user_module.module.title }}</h2>
                                 <p>{{ user_module.module.description }}</p>
+
+                                <!-- Progress Bar for Unlocked Module -->
                                 <div class="progress-wrapper">
                                     <div class="progress-bar" data-progress="{{ user_module.progress }}%">
                                         <div class="progress" style="width: {{ user_module.progress }}%;"></div>

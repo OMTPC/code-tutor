@@ -1,3 +1,11 @@
+<!-- 
+    Created by: Orlando Caetano
+    Date: [Insert Date]  
+    Description: Main HTML layout template for CodeMentor web app. Includes navigation, dynamic content injection, footer, and external dependencies (Bootstrap, FontAwesome).
+    Resources:
+    -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +31,7 @@
                   <span class="logo-text">CodeMentor</span>
               </div>
 
-              <!-- Toggler Button -->
+              <!-- Navbar Toggler Button for Smaller Screens -->
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
               </button>
@@ -47,7 +55,7 @@
                             </li>
                         {% endif %}
                     {% else %}
-                        <!-- Login Button for guests -->
+                        <!-- Login/Register Button for Guests -->
                         <li class="nav-item">
                             <a href="{{ url_for('login') }}" class="btn custom-btn-primary btn-lg">Login</a>
                         </li>
@@ -102,7 +110,7 @@
 </footer>
 {% endif %}
 
-<!-- Bootstrap JS Bundle  -->
+<!-- Bootstrap JS Bundle and Custom JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/scripts/script.js"></script>
 </body>
