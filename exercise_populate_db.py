@@ -1,4 +1,4 @@
-from app import db, Exercise, app
+from app import db, Exercise, app, Solution
 
 
 
@@ -12,14 +12,37 @@ def add_exercise():
                    Explanation: In Python, the print() function is used 
                    to display output in the console. This is the first step to seeing how your 
                    code works in the real world.""",  # Detailed exercise description
-    solution="print('Hello World!')",  # Solution to the exercise
     status="available"  # Initial status of the exercise
     )
 
 
     db.session.add(exercise1)
     db.session.commit()
-    print("Modules added successfully!")
+    print("Exercise added successfully!")
+
+    # Add plain text solution
+    solution1 = Solution(
+        exerciseid=exercise1.exerciseid,
+        solution_text="print('Hello World!')",  # Solution as plain text
+        solution_type='text'  # Indicating that this is a text solution
+    )
+
+    db.session.add(solution1)
+   
+
+    # Add regex solution
+    solution2 = Solution(
+        exerciseid=exercise1.exerciseid,
+        solution_regex=r"print\(\s*'Hello World!'\s*\)",  # Solution as a regex pattern
+        solution_type='regex'  # Indicating that this is a regex solution
+    )
+
+    db.session.add(solution2)
+
+    db.session.commit()
+
+    print("Exercise and solutions added successfully!")
+
 
 # Main function to populate the database
 def populate_db():

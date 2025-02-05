@@ -88,7 +88,7 @@ class Exercise(db.Model):
     moduleid = db.Column(db.Integer, db.ForeignKey('module.moduleid'), nullable=False)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    solution = db.Column(db.Text, nullable=False)
+    
     status = db.Column(db.Enum('locked', 'available', 'completed', name='exercise_status'), default='locked')
     
 
@@ -97,7 +97,23 @@ class Exercise(db.Model):
 
     def __repr__(self):
         return f"Exercise('{self.title}', '{self.status}')"
-    
+
+
+# Exercise solution Table
+class Solution(db.Model):
+    solutionid = db.Column(db.Integer, primary_key=True)
+    exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=False)
+    solution_text = db.Column(db.Text, nullable=True)  # Solution as plain text
+    solution_regex = db.Column(db.Text, nullable=True)  # Solution as regex pattern
+    solution_type = db.Column(db.Enum('text', 'regex', name='solution_type'), nullable=False, default='text')  # Type of solution (text or regex)
+
+
+    # Relationship back to Exercise
+    exercise = db.relationship('Exercise', backref=db.backref('solutions', lazy=True))
+
+    def __repr__(self):
+        return f"Solution('{self.solution_text[:30]}...')"
+
 
 # User Module Progress
 class UserModuleProgress(db.Model):
