@@ -15,8 +15,22 @@ def add_exercise():
     status="available"  # Initial status of the exercise
     )
 
+    exercise2 = Exercise (moduleid = module_id,
+                          title = "Working with Variables ",
+                          description = """Concept: Now, we’ll learn how to store information in variables and work with different types of data.
+                          Explanation: Variables are like containers that hold values. These values can be numbers, text, or other types of data. 
+                          You can also perform operations with them, like printing their value or doing basic calculations.
+                          1.	Declare three variables:
+                            age: store an integer value, e.g., 25.
+                            name: store a string value, e.g., "Alice".
+                            height: store a floating-point number, e.g., 5.6.
+                          2.	Print each of these variables to the console""",
+                          status = "locked"
+                        )
+
 
     db.session.add(exercise1)
+    db.session.add(exercise2)
     db.session.commit()
     print("Exercise added successfully!")
 
@@ -46,6 +60,13 @@ def add_exercise():
 
     db.session.add(solution3)
 
+    solution4 = Solution(
+        exerciseid=exercise2.exerciseid,
+        solution_regex = r"age\s*=\s*\d+\s*name\s*=\s*['\"].*['\"]\s*height\s*=\s*\d+\.\d+\s*print\s*\(\s*age\s*\)\s*print\s*\(\s*name\s*\)\s*print\s*\(\s*height\s*\)",
+        solution_type='regex'  # A regex solution only
+    )
+
+    db.session.add(solution4)
     db.session.commit()
 
     print("Exercise and solutions added successfully!")
