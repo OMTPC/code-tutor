@@ -27,17 +27,24 @@ def add_exercise():
         solution_type='text'  # Indicating that this is a text solution
     )
 
+    solution2 = Solution(
+            exerciseid=exercise1.exerciseid,
+            solution_text='print("Hello World!")',  # Solution as plain text
+            solution_type='text'  # Indicating that this is a text solution
+        )
+
     db.session.add(solution1)
+    db.session.add(solution2)
    
 
     # Add regex solution
-    solution2 = Solution(
+    solution3 = Solution(
         exerciseid=exercise1.exerciseid,
-        solution_regex=r"print\(\s*'Hello World!'\s*\)",  # Solution as a regex pattern
+        solution_regex=r"print\s*\(\s*['\"]Hello World!['\"]\s*\)",  # Solution as a regex pattern
         solution_type='regex'  # Indicating that this is a regex solution
     )
 
-    db.session.add(solution2)
+    db.session.add(solution3)
 
     db.session.commit()
 

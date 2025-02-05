@@ -8,7 +8,7 @@ Resources: [Please refer to resources.txt]
 """
 
 
-from flask import Flask, render_template, redirect, url_for, flash, request
+from flask import Flask, render_template, redirect, url_for, flash, request, jsonify
 from forms import LoginForm, RegisterForm
 import datetime
 from flask_sqlalchemy import SQLAlchemy
@@ -16,6 +16,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import func
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_migrate import Migrate
+import re
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -137,6 +138,42 @@ class UserExerciseProgress(db.Model):
 
     def __repr__(self):
         return f"UserExerciseProgress(User ID: {self.userid}, Exercise ID: {self.exerciseid}, Status: {self.status})"
+
+
+#check user solution function
+def check_solution(user_code, exercise_id):
+    # Get the solution for the given exercise
+    solutions = Solution.query.filter_by(exerciseid=exercise_id).all()
+
+    # Check if any solution matches the user code
+    for solution in solutions:
+        if solution.solution_type == 'text' and solution.solution_text.strip() == user_code.strip():
+            return "Correct!"  # User's code matches the exact text solution
+
+        if solution.solution_type == 'regex':
+            # Check if the user's code matches the regex pattern
+            pattern = re.compile(solution.solution_regex)
+            if pattern.match(user_code.strip()):
+                return "Correct!"  # User's code matches the regex solution
+
+    return "Incorrect. Please try again."  # If no solutions match
+
+# Flask route to check the user's code (API)
+@app.route('/check_code', methods=['POST'])
+def check_code():
+    # Get the code submitted by the user from the JSON body
+    data = request.get_json()  # Since we are sending JSON, use get_json()
+    
+    user_code = data['code']  # User's code from the request
+    exercise_id = data['exercise_id']  # Exercise ID sent with the request
+
+    # Check if the user's code is correct
+    result = check_solution(user_code, exercise_id)
+
+    # Return the result as a JSON response
+    return jsonify({'result': result})
+
+
 
 
 # Homepage route
@@ -262,6 +299,11 @@ def exercises(module_id):
         db.session.commit()
 
     return render_template("exercise.html", module=module, exercises=exercises, user_progress=user_progress)
+
+
+@app.route("/future_you/")
+def future_you():
+    return render_template("future_you.html")
 
 
 
