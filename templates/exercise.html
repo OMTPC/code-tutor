@@ -4,13 +4,12 @@
 
 {% block content %}
 
-<!--Add CodeMirror CSS and JS -->
+<!-- Add CodeMirror CSS and JS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
-
 
 <!-- Main container for the page -->
 <div class="container-fluid">
@@ -20,11 +19,16 @@
             <nav class="lesson-nav">
                 <h3>Exercises</h3>
                 <ul class="list-group">
-                    {% for exercise in exercises %}
+                    <!-- Exercise 1 Button (always enabled) -->
                     <li class="list-group-item">
-                        <a href="#" class="exercise-link" data-id="{{ exercise.exerciseid }}">{{ exercise.title }}</a>
+                        <a href="#" class="exercise-link btn btn-primary" data-id="{{ exercises[0].exerciseid }}">Exercise 1</a>
                     </li>
-                    {% endfor %}
+                    
+                    <!-- Exercise 2 Button (conditionally enabled) -->
+                    <li class="list-group-item">
+                        <!-- Only enable exercise 2 if the first exercise is completed -->
+                        <a href="#" class="exercise-link btn btn-primary {% if first_exercise_completed %}enabled{% else %}disabled{% endif %}" data-id="{{ exercises[1].exerciseid }}" {% if not first_exercise_completed %}disabled{% endif %}>Exercise 2</a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -32,19 +36,18 @@
         <!-- Right Column: CodeMirror Editor and Result Box -->
         <div class="col-md-9 p-3">
             <nav class="lesson-nav">
-            <h1>{{ module.title }} - Select an Exercise</h1>
-            <textarea id="code"></textarea>
+                <h1>{{ module.title }} - Select an Exercise</h1>
+                <textarea id="code"></textarea>
 
-            <!-- Run Code Button -->
-            <button id="run-code" class="btn btn-primary mt-3">Run Code</button>
+                <!-- Run Code Button -->
+                <button id="run-code" class="btn btn-primary mt-3">Run Code</button>
 
-            <pre id="result" class="mt-3"></pre>
+                <pre id="result" class="mt-3"></pre>
 
-            <!-- Future You Button, initially hidden -->
-            <div id="future-you-container">
-                <button id="future-you-btn" class="future-you-btn disabled" disabled>Go to Future You</button>
-            </div>
-
+                <!-- Future You Button, initially hidden -->
+                <div id="future-you-container">
+                    <button id="future-you-btn" class="future-you-btn {% if first_exercise_completed %}enabled{% else %}disabled{% endif %}" {% if not first_exercise_completed %}disabled{% endif %}>Go to Future You</button>
+                </div>
             </nav>
         </div>
     </div>
@@ -52,7 +55,6 @@
 
 <!-- Initialize CodeMirror -->
 <script>
-
 window.onload = function() {
     // Initialize CodeMirror
     var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
@@ -109,7 +111,6 @@ window.onload = function() {
         window.location.href = '/future_you';  // Redirect to the Future You page
     }
 };
-
 </script>
 
 {% endblock %}

@@ -147,7 +147,7 @@ def check_solution(user_code, exercise_id):
 
     # Check if any solution matches the user code
     for solution in solutions:
-        if solution.solution_type == 'text' and solution.solution_text.strip() == user_code.strip():
+        if solution.solution_type == 'text' and solution.solution_text.strip().lower() == user_code.strip().lower():
             return "Correct!"  # User's code matches the exact text solution
 
         if solution.solution_type == 'regex':
@@ -161,28 +161,46 @@ def check_solution(user_code, exercise_id):
 # Flask route to check the user's code (API)
 @app.route('/check_code', methods=['POST'])
 def check_code():
-    # Get the code submitted by the user from the JSON body
-    data = request.get_json()  # Since we are sending JSON, use get_json()
-    
-    user_code = data.get('code')  # User's code from the request
-    exercise_id = data.get('exercise_id')  # Exercise ID sent with the request
+    data = request.get_json()
 
-    # Check if the user's code is correct
+    if not data or 'code' not in data or 'exercise_id' not in data:
+        return jsonify({'result': 'Error: Missing code or exercise ID'}), 400  # Bad Request
+
+    user_code = data['code']
+    exercise_id = data['exercise_id']
+
     result = check_solution(user_code, exercise_id)
 
     if result == "Correct!":
-        # Mark the exercise as completed for the user in the UserExerciseProgress table
+        # Update the progress for the exercise
         progress = UserExerciseProgress.query.filter_by(userid=current_user.userid, exerciseid=exercise_id).first()
         if not progress:
             progress = UserExerciseProgress(userid=current_user.userid, exerciseid=exercise_id, status='completed')
             db.session.add(progress)
         else:
             progress.status = 'completed'
-        
+
         db.session.commit()
 
-    # Return the result as a JSON response
+        # Check if the user has completed all exercises in the current module
+        module_id = Exercise.query.filter_by(exerciseid=exercise_id).first().moduleid
+        completed_exercises = UserExerciseProgress.query.filter_by(userid=current_user.userid, status='completed').join(Exercise).filter(Exercise.moduleid == module_id).count()
+
+        total_exercises = Exercise.query.filter_by(moduleid=module_id).count()
+
+        # If all exercises in the module are completed, mark the module as completed
+        if completed_exercises == total_exercises:
+            module_progress = UserModuleProgress.query.filter_by(userid=current_user.userid, moduleid=module_id).first()
+            if not module_progress:
+                module_progress = UserModuleProgress(userid=current_user.userid, moduleid=module_id, status='completed')
+                db.session.add(module_progress)
+            else:
+                module_progress.status = 'completed'
+
+            db.session.commit()
+
     return jsonify({'result': result})
+
 
 
 
@@ -266,9 +284,9 @@ def login():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    # Retrieve user's modules and calculate progress
+    # Initialize the list to store user modules and progress
     user_modules = []
-    
+
     # Get all modules the user has access to
     modules = Module.query.all()
 
@@ -289,20 +307,33 @@ def dashboard():
             # Calculate percentage progress
             progress = int((completed_exercises / len(exercises)) * 100) if exercises else 0
 
+            # Determine module status
+            if module.moduleid > 1:  # The second module and beyond
+                previous_module_progress = UserModuleProgress.query.filter_by(userid=current_user.userid, moduleid=module.moduleid - 1).first()
+                if previous_module_progress and previous_module_progress.status == 'completed':
+                    module_status = 'available'  # Next module becomes available after completing the previous one
+                else:
+                    module_status = 'locked'  # If previous module is not completed, lock the current module
+            else:
+                module_status = user_module_progress.status  # For the first module, use the user's current status
 
-            # Add module progress to the list
+            # Add module progress and status to the list
             user_modules.append({
                 'module': module,
-                'status': user_module_progress.status,
+                'status': module_status,
                 'progress': progress
+            })
+        else:
+            # If the user has no progress for this module, consider it locked
+            user_modules.append({
+                'module': module,
+                'status': 'locked',
+                'progress': 0
             })
 
     return render_template("dashboard.html", user_modules=user_modules)
 
 
-
-
-# Route: View Exercises for a Module
 @app.route("/module/<int:module_id>/exercises", methods=["GET", "POST"])
 @login_required
 def exercises(module_id):
@@ -311,7 +342,7 @@ def exercises(module_id):
 
     # Retrieve the module and its exercises
     module = Module.query.get_or_404(module_id)
-    exercises = Exercise.query.filter_by(moduleid=module_id).all()
+    exercises = Exercise.query.filter_by(moduleid=module_id).order_by(Exercise.exerciseid).all()
 
     # Get user's progress for this module
     user_progress = UserModuleProgress.query.filter_by(userid=current_user.userid, moduleid=module_id).first()
@@ -347,17 +378,34 @@ def exercises(module_id):
                 completed_exercise.status = 'completed'  # Mark as completed
                 db.session.commit()
 
+                # Find the current exercise index
+                current_exercise_index = next(i for i, exercise in enumerate(exercises) if str(exercise.exerciseid) == completed_exercise_id)
+
                 # Unlock the next exercise
-                next_exercise = Exercise.query.filter(Exercise.exerciseid > int(completed_exercise_id)).first()
+                next_exercise = exercises[current_exercise_index + 1] if current_exercise_index + 1 < len(exercises) else None
                 if next_exercise:
                     next_exercise_progress = UserExerciseProgress.query.filter_by(userid=current_user.userid, exerciseid=next_exercise.exerciseid).first()
                     if next_exercise_progress:
                         next_exercise_progress.status = 'available'
                         db.session.commit()
 
-                # Update module progress (optional, based on your logic)
+                # Update module progress
                 user_progress.progress = (user_progress.progress + 1) / len(exercises) * 100
                 db.session.commit()
+
+                # If the second exercise is completed, unlock the next module
+                if completed_exercise_id == str(exercises[-1].exerciseid):  # If it's the second exercise
+                    next_module = Module.query.filter(Module.moduleid > module_id).first()
+                    if next_module:
+                        # Unlock the second module for the user
+                        user_module_progress = UserModuleProgress.query.filter_by(userid=current_user.userid, moduleid=next_module.moduleid).first()
+                        if not user_module_progress:
+                            user_module_progress = UserModuleProgress(userid=current_user.userid, moduleid=next_module.moduleid, status='available', progress=0)
+                            db.session.add(user_module_progress)
+                            db.session.commit()
+
+                        # Update the status of the module (unlocking the next module)
+                        update_module_status(next_module.moduleid)  # Call this function to update the next module's status
 
                 # Redirect to Future You page
                 return redirect(url_for('future_you'))
@@ -365,21 +413,75 @@ def exercises(module_id):
     return render_template("exercise.html", module=module, exercises=exercises, exercise_progress=exercise_progress)
 
 
+# Add this function to check and update the module status
+def update_module_status(module_id):
+    exercises = Exercise.query.filter_by(moduleid=module_id).all()
+    completed_exercises = UserExerciseProgress.query.filter_by(userid=current_user.userid, status='completed').join(Exercise).filter(Exercise.moduleid == module_id).count()
+
+    # If all exercises are completed, update module status to 'completed'
+    if len(exercises) == completed_exercises:
+        module_progress = UserModuleProgress.query.filter_by(userid=current_user.userid, moduleid=module_id).first()
+        if module_progress:
+            # Ensure the module stays completed or available for the user
+            if module_progress.status != 'completed':
+                module_progress.status = 'completed'
+                db.session.commit()
 
 
 
-# Future You page route
+
 @app.route("/future_you", methods=["GET", "POST"])
 @login_required
 def future_you():
-    # Retrieve the module ID from session
+    # Retrieve the current module ID from the session
     module_id = session.get('current_module_id')
 
+    # Get the second exercise for the current module (explicitly)
+    second_exercise = Exercise.query.filter_by(moduleid=module_id).order_by(Exercise.exerciseid).offset(1).first()  # Get the second exercise
+    second_exercise_completed = UserExerciseProgress.query.filter_by(
+        userid=current_user.userid,
+        exerciseid=second_exercise.exerciseid,
+        status='completed'
+    ).first()
+
+    print(f"Second Exercise Completed: {second_exercise_completed is not None}")
+
     if request.method == 'POST':
-        # After completing Future You, redirect to the exercise page
-        return redirect(url_for('exercises', module_id=module_id))
-    
-    return render_template("future_you.html")
+        if second_exercise_completed:
+            # Find the next module based on the current module ID
+            next_module = Module.query.filter(Module.moduleid > module_id).order_by(Module.moduleid.asc()).first()
+
+            if next_module:
+                # Get user progress for the next module
+                user_module_progress = UserModuleProgress.query.filter_by(
+                    userid=current_user.userid, 
+                    moduleid=next_module.moduleid
+                ).first()
+
+                if user_module_progress:
+                    print(f"Unlocking next module: {next_module.title}")
+
+                    # Set the status of the next module to 'available'
+                    user_module_progress.status = 'available'
+                    user_module_progress.progress = 0  # Reset progress for the new module (optional)
+                    db.session.commit()
+
+                else:
+                    print("User progress for the next module not found.")
+
+            else:
+                print("Next module not found.")
+
+            # Redirect to the dashboard after completing the second exercise
+            return redirect(url_for('dashboard'))  # Redirect to the dashboard
+
+        else:
+            # Redirect to the exercise page after completing the first exercise (if not completed the second one yet)
+            return redirect(url_for('exercises', module_id=module_id))
+
+    return render_template("future_you.html", second_exercise_completed=second_exercise_completed)
+
+
 
 
 

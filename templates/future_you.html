@@ -15,8 +15,16 @@ Resources:
     <h1>Future You</h1>
     <p>Content to be developed later.</p>
     <!-- Future You button -->
-    <form action="{{ url_for('future_you') }}" method="POST">
-        <button type="submit" class="btn btn-primary">Go back to Exercises</button>
+    {% if second_exercise_completed %}
+    <!-- Button redirects to the Dashboard after completing the second exercise -->
+    <form method="POST">
+        <button type="submit" class="btn btn-primary">Go to Dashboard</button>
     </form>
+{% else %}
+    <!-- Button redirects to the Exercise page after completing the first exercise -->
+    <form method="POST">
+        <button type="submit" class="btn btn-primary">Go to Exercises</button>
+    </form>
+    {% endif %}
 </div>
 {% endblock %}
