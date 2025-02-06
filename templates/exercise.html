@@ -1,12 +1,3 @@
-<!--
-Created by: Orlando Caetano
-Date: [insert Date]
-Description: 
-This page is for displaying exercises for a specific module, integrating CodeMirror for an interactive code editor.
-The layout consists of a left column with a list of exercises and a right column with an interactive code editor, where users can run their Python code.
-Resources:
--->
-
 {% extends 'base.html' %}
 
 {% block title %}{{ module.title }} Exercises{% endblock %}
@@ -51,19 +42,18 @@ Resources:
 
             <!-- Future You Button, initially hidden -->
             <div id="future-you-container">
-                
-                    <button id="future-you-btn" class="future-you-btn disabled" disabled>Go to Future You</button>
+                <button id="future-you-btn" class="future-you-btn disabled" disabled>Go to Future You</button>
             </div>
 
             </nav>
-
-
         </div>
     </div>
 </div>
 
-<!--Initialize CodeMirror -->
+<!-- Initialize CodeMirror -->
 <script>
+
+window.onload = function() {
     // Initialize CodeMirror
     var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
         lineNumbers: true, 
@@ -72,43 +62,53 @@ Resources:
         indentUnit: 4      
     });
 
-// Add event listener for the "Run Code" button
-document.getElementById('run-code').addEventListener('click', function () {
-    var user_code = editor.getValue();  // Get the user's code from the editor
+    var selectedExerciseId = null;  // Store the selected exercise ID
 
-    // Get the exercise id from the page (you might need to modify this depending on how your data is structured)
-    var exercise_id = document.querySelector('.exercise-link').getAttribute('data-id');
-
-    // Send the code to the backend using fetch (AJAX request)
-    fetch('/check_code', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            code: user_code,
-            exercise_id: exercise_id
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Display the result
-        document.getElementById('result').textContent = data.result;
-
-    // Enable the button if the code is correct
-    if (data.result === "Correct!") {
-        document.getElementById('future-you-btn').classList.remove('disabled');
-        document.getElementById('future-you-btn').disabled = false;  // Make button clickable
-    } else {
-        document.getElementById('future-you-btn').classList.add('disabled');
-        document.getElementById('future-you-btn').disabled = true;  // Keep button disabled
-    }
-
-    })
-    .catch(error => {
-        console.error('Error:', error);
+    document.querySelectorAll('.exercise-link').forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            selectedExerciseId = this.getAttribute('data-id');
+            document.querySelector('.exercise-link.active')?.classList.remove('active');
+            this.classList.add('active');
+            document.getElementById('result').textContent = "";  // Clear the result when switching exercises
+            editor.setValue("");  // Clear the code editor
+        });
     });
-});
+
+    document.getElementById('run-code').addEventListener('click', function () {
+        if (!selectedExerciseId) {
+            alert("Please select an exercise first.");
+            return;
+        }
+    
+        var user_code = editor.getValue();
+    
+        fetch('/check_code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: user_code, exercise_id: selectedExerciseId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('result').textContent = data.result;
+            
+            var futureYouBtn = document.getElementById('future-you-btn');
+            futureYouBtn.classList.toggle('disabled', data.result !== "Correct!");
+            futureYouBtn.disabled = (data.result !== "Correct!");
+
+            // Ensure the "Future You" button redirection works
+            if (data.result === "Correct!") {
+                futureYouBtn.removeEventListener('click', redirectToFutureYou);  // Remove any previous listeners
+                futureYouBtn.addEventListener('click', redirectToFutureYou); // Add listener again
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    function redirectToFutureYou() {
+        window.location.href = '/future_you';  // Redirect to the Future You page
+    }
+};
 
 </script>
 
