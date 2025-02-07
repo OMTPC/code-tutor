@@ -75,6 +75,7 @@ class Module(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     status = db.Column(db.Enum('locked', 'available', 'completed', name='module_status'), default='locked')
+    intro = db.Column(db.Text, nullable=True) 
     
     # Relationships with other tables
     exercises = db.relationship('Exercise', backref='module', lazy=True)
@@ -346,6 +347,25 @@ def dashboard():
     return render_template("dashboard.html", user_modules=user_modules)
 
 
+
+@app.route('/module_intro/<int:module_id>', methods=['GET', 'POST'])
+@login_required
+def module_intro(module_id):
+    # Get the module details from the database
+    module = Module.query.get_or_404(module_id)
+    
+    # Get the user's progress in the module (to ensure they haven't already started)
+    user_progress = UserModuleProgress.query.filter_by(userid=current_user.userid, moduleid=module_id).first()
+
+    if request.method == 'POST':
+        # If the user clicks to start the first exercise, redirect to exercises page
+        return redirect(url_for('exercises', module_id=module_id))
+
+    return render_template('module_intro.html', module=module)
+
+
+
+
 @app.route("/module/<int:module_id>/exercises", methods=["GET", "POST"])
 @login_required
 def exercises(module_id):
@@ -435,13 +455,6 @@ def future_you():
             return redirect(url_for('exercises', module_id=current_module_id))
 
     return render_template('future_you.html', second_exercise_completed=second_exercise_completed)
-
-
-
-
-
-
-
 
 
 

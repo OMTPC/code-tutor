@@ -41,7 +41,7 @@
                             </div>
                             <p><strong>Module Locked</strong></p>
                         {% elif user_module.status == 'available' %}
-                            <div class="icon-box" onclick="window.location.href='{{ url_for('exercises', module_id=user_module.module.moduleid) }}';" style="cursor: pointer;">
+                            <div class="icon-box" onclick="window.location.href='{{ url_for('module_intro', module_id=user_module.module.moduleid) }}';" style="cursor: pointer;">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M13 5L7 12L13 19M7 12H21" />
                                 </svg>
@@ -71,7 +71,7 @@
                             </div>
                             <p><strong>Module in Progress</strong></p>
                         {% elif user_module.status == 'completed' %}
-                            <div class="icon-box" onclick="window.location.href='{{ url_for('exercises', module_id=user_module.module.moduleid) }}';" style="cursor: pointer;">
+                            <div class="icon-box" onclick="window.location.href='{{ url_for('module_intro', module_id=user_module.module.moduleid) }}';" style="cursor: pointer;">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M13 5L7 12L13 19M7 12H21" />
                                 </svg>
