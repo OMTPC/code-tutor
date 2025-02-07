@@ -386,12 +386,13 @@ def exercises(module_id):
     for i, exercise in enumerate(exercises):
         user_exercise_progress = UserExerciseProgress.query.filter_by(userid=current_user.userid, exerciseid=exercise.exerciseid).first()
         if not user_exercise_progress:
+            # Mark the first exercise as available, others as locked
             status = 'available' if i == 0 else 'locked'
             user_exercise_progress = UserExerciseProgress(userid=current_user.userid, exerciseid=exercise.exerciseid, status=status)
             db.session.add(user_exercise_progress)
             db.session.commit()
 
-    # Fetch exercise progress
+    # Fetch exercise progress for each exercise
     exercise_progress = [
         UserExerciseProgress.query.filter_by(userid=current_user.userid, exerciseid=exercise.exerciseid).first()
         for exercise in exercises
@@ -423,11 +424,14 @@ def exercises(module_id):
 
 # Your other imports and code here...
 
-def check_if_second_exercise_completed(userid):
-    # Logic to check if the second exercise has been completed by the user
-    # Return True if the second exercise is completed, otherwise False
-    user_progress = UserExerciseProgress.query.filter_by(userid=userid, exerciseid=2).first()
-    return user_progress is not None and user_progress.status == 'completed'
+def check_if_second_exercise_completed(userid, module_id):
+    # Fetch the second exercise dynamically from the module
+    second_exercise = Exercise.query.filter_by(moduleid=module_id).order_by(Exercise.exerciseid).offset(1).first()  # This grabs the second exercise based on the module
+    if second_exercise:
+        user_progress = UserExerciseProgress.query.filter_by(userid=userid, exerciseid=second_exercise.exerciseid).first()
+        return user_progress is not None and user_progress.status == 'completed'
+    return False
+
 
 
 @app.route('/future_you', methods=['GET', 'POST'])
@@ -436,15 +440,15 @@ def future_you():
     # Get the current user
     userid = current_user.userid  # Assuming `userid` is the primary key for the User model
 
-    # Check if the second exercise is completed
-    second_exercise_completed = check_if_second_exercise_completed(userid)
-
     # Fetch the current module for the user (from UserModuleProgress)
     user_module_progress = UserModuleProgress.query.filter_by(userid=userid).first()
     if user_module_progress:
         current_module_id = user_module_progress.moduleid
     else:
         current_module_id = None  # Or handle if the user has no progress
+
+    # Check if the second exercise is completed dynamically
+    second_exercise_completed = check_if_second_exercise_completed(userid, current_module_id)
 
     if request.method == 'POST':
         if second_exercise_completed:
@@ -455,6 +459,7 @@ def future_you():
             return redirect(url_for('exercises', module_id=current_module_id))
 
     return render_template('future_you.html', second_exercise_completed=second_exercise_completed)
+
 
 
 
