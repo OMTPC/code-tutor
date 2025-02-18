@@ -99,17 +99,7 @@ class Exercise(db.Model):
         return f"Exercise('{self.title}', '{self.status}')"
  
    
-# API Route to fetch an exercise
-@app.route('/api/exercise/<int:exerciseid>', methods=['GET'])
-def get_exercise(exerciseid):
-    exercise = Exercise.query.get(exerciseid)
-    if exercise:
-        return jsonify({
-            "exerciseid": exercise.exerciseid,
-            "title": exercise.title,
-            "description": exercise.description
-        })
-    return jsonify({"error": "Exercise not found"}), 404
+
 
 
 
@@ -151,6 +141,47 @@ class UserExerciseProgress(db.Model):
 
     def __repr__(self):
         return f"UserExerciseProgress(User ID: {self.userid}, Exercise ID: {self.exerciseid}, Status: {self.status})"
+
+class CareerSuggestions(db.Model):
+    CSid = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=True)  # Link to Exercise table
+
+    exercise = db.relationship('Exercise', backref='career_suggestions', lazy=True)  # Access career suggestions from exercise
+
+    def __repr__(self):
+        return f"<CareerSuggestion {self.title}>"
+
+@app.route('/api/career_suggestions/<int:exerciseid>', methods=['GET'])
+def get_career_suggestions(exerciseid):
+    # Query career suggestions based on exerciseid
+    career_suggestions = CareerSuggestions.query.filter_by(exerciseid=exerciseid).all()
+    
+    if career_suggestions:
+        # Return the career suggestions in JSON format
+        return jsonify([{
+            "CSid": suggestion.id,
+            "title": suggestion.title,
+            "description": suggestion.description,
+            
+        } for suggestion in career_suggestions])
+    else:
+        return jsonify({"error": "No career suggestions found for this exercise"}), 404
+
+
+# API Route to fetch an exercise
+@app.route('/api/exercise/<int:exerciseid>', methods=['GET'])
+def get_exercise(exerciseid):
+    exercise = Exercise.query.get(exerciseid)
+    if exercise:
+        return jsonify({
+            "exerciseid": exercise.exerciseid,
+            "title": exercise.title,
+            "description": exercise.description
+        })
+    return jsonify({"error": "Exercise not found"}), 404
+
 
 
 #check user solution function
