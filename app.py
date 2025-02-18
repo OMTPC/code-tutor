@@ -97,6 +97,20 @@ class Exercise(db.Model):
 
     def __repr__(self):
         return f"Exercise('{self.title}', '{self.status}')"
+ 
+   
+# API Route to fetch an exercise
+@app.route('/api/exercise/<int:exerciseid>', methods=['GET'])
+def get_exercise(exerciseid):
+    exercise = Exercise.query.get(exerciseid)
+    if exercise:
+        return jsonify({
+            "exerciseid": exercise.exerciseid,
+            "title": exercise.title,
+            "description": exercise.description
+        })
+    return jsonify({"error": "Exercise not found"}), 404
+
 
 
 # Exercise solution Table
@@ -106,7 +120,7 @@ class Solution(db.Model):
     solution_text = db.Column(db.Text, nullable=True)  # Solution as plain text
     solution_regex = db.Column(db.Text, nullable=True)  # Solution as regex pattern
     solution_type = db.Column(db.Enum('text', 'regex', name='solution_type'), nullable=False, default='text')  # Type of solution (text or regex)
-
+    expected_output = db.Column(db.Text, nullable=True)  # Expected output for the solution
 
     # Relationship back to Exercise
     exercise = db.relationship('Exercise', backref=db.backref('solutions', lazy=True))

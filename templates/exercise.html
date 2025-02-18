@@ -36,7 +36,11 @@
         <!-- Right Column: CodeMirror Editor and Result Box -->
         <div class="col-md-9 p-3">
             <nav class="lesson-nav">
-                <h2>{{ module.title }} - Select an Exercise</h2>
+                <h2 id="exercise-title">{{ module.title }} - Select an Exercise</h2>
+
+                <!-- Exercise description (this will be dynamically updated) -->
+                <p id="exercise-description"></p>
+
                 <textarea id="code"></textarea>
 
                 <!-- Run Code Button -->
@@ -74,6 +78,19 @@ window.onload = function() {
             this.classList.add('active');
             document.getElementById('result').textContent = "";  // Clear the result when switching exercises
             editor.setValue("");  // Clear the code editor
+
+            // Fetch exercise details from the API
+            fetch(`/api/exercise/${selectedExerciseId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById("exercise-description").innerHTML = `<p>${data.error}</p>`;
+                    } else {
+                        document.getElementById("exercise-title").innerText = data.title;
+                        document.getElementById("exercise-description").innerText = data.description;
+                    }
+                })
+                .catch(error => console.error("Error fetching exercise:", error));
         });
     });
 
