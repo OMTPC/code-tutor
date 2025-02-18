@@ -495,6 +495,12 @@ def future_you():
     # Check if the second exercise is completed dynamically
     second_exercise_completed = check_if_second_exercise_completed(userid, current_module_id)
 
+    # Fetch career suggestions for the current module or exercise
+    if current_module_id:
+        career_suggestions = CareerSuggestions.query.filter_by(exerciseid=current_module_id).all()
+    else:
+        career_suggestions = []  # If no module is found, return an empty list
+
     if request.method == 'POST':
         if second_exercise_completed:
             # Redirect to the Dashboard if the second exercise is completed
@@ -503,9 +509,9 @@ def future_you():
             # Redirect to the exercises page with the current module id
             return redirect(url_for('exercises', module_id=current_module_id))
 
-    return render_template('future_you.html', second_exercise_completed=second_exercise_completed)
-
-
+    return render_template('future_you.html', 
+                           second_exercise_completed=second_exercise_completed,
+                           career_suggestions=career_suggestions)
 
 
 # Logout route
