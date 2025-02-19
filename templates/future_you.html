@@ -4,48 +4,52 @@
 
 {% block content %}
 
-<h2>Welcome, {{ current_user.username }} </h2>
-<p>Here you can view your progress and explore career paths based on your learning journey!</p>
+
 
 <section class="future-you-section">
     <div class="intro">
-        <h1>Future You: Building Your Career</h1>
+        <h1>Future You: Where These Skills Can Take You</h1>
         <p>Connect your learning journey to real-world career opportunities and projects.</p>
     </div>
 
     <div class="container mt-4">
         <div class="row">
 
+        <h2>Your Career Path</h2>
+        <p>Based on your progress, here are some career opportunities you can explore:</p>
+
             
             <!-- Career Path Box -->
             <div class="col-md-12 mb-4">
-                <div class="learning-boxe">
-                    <div class="career-path-box">
-                        <h2>Your Career Path</h2>
-                        <p>Based on your progress, here are some career opportunities you can explore:</p>
-                        <ul class="career-path-list" id="career-suggestions-list">
-                            {% if career_suggestions %}
+                <div class="learning-box">
+                    <div class="career-path-boxes-container">
+                        <!-- Loop through career suggestions -->
+                        {% if career_suggestions %}
+                            <div class="career-paths-container">
                                 {% for career in career_suggestions %}
-                                    <li>
-                                        <a href="{{ career.link }}" target="_blank">{{ career.title }}</a>
-                                        <p>{{ career.description }}</p>
-                                    </li>
+                                    <div class="career-path-box">
+                                        <a href="{{ career.link }}" target="_blank" class="career-title">{{ career.title }}</a>
+                                        <p class="career-description">{{ career.description }}</p>
+                                    </div>
                                 {% endfor %}
-                            {% else %}
-                                <li>No career suggestions available for this module yet.</li>
-                            {% endif %}
-                        </ul>
+                            </div>
+                        {% else %}
+                            <p>No career suggestions available for this module yet.</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
 
-
+            <h2>Step-by-Step Coding Project: Master Your Skills</h2>
+            <p>Complete the following coding project as you progress through the modules:</p>
             <!-- Step-by-Step Project Box -->
             <div class="col-md-12 mb-4">
                 <div class="learning-boxe">
+                    
+
                     <div class="coding-project-box">
-                        <h2>Step-by-Step Coding Project: Master Your Skills</h2>
-                        <p>Complete the following coding project as you progress through the modules:</p>
+                        
+                        
 
                         <div class="coding-project-steps">
                             <!-- Loop through steps in project (based on user progress) -->
