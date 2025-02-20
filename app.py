@@ -42,7 +42,9 @@ login_manager.login_message = "Please log in to access this page."
 def load_user(userid):
     return User.query.get(int(userid))  
 
-# database models
+# -------------------------------------------database models-------------------------------------------------#
+
+# user table
 class User(UserMixin,db.Model):
     userid = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True, nullable=False)
@@ -97,11 +99,6 @@ class Exercise(db.Model):
 
     def __repr__(self):
         return f"Exercise('{self.title}', '{self.status}')"
- 
-   
-
-
-
 
 # Exercise solution Table
 class Solution(db.Model):
@@ -142,6 +139,7 @@ class UserExerciseProgress(db.Model):
     def __repr__(self):
         return f"UserExerciseProgress(User ID: {self.userid}, Exercise ID: {self.exerciseid}, Status: {self.status})"
 
+#Career suggestions table
 class CareerSuggestions(db.Model):
     CSid = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -152,6 +150,57 @@ class CareerSuggestions(db.Model):
 
     def __repr__(self):
         return f"<CareerSuggestion {self.title}>"
+
+
+# Career Path table for future_you.py logic
+class CareerPath (db.Model):
+    CPid = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=True)
+
+    exercise = db.relationship('Exercise', backref='career_path', lazy=True)    
+    questions = db.relationship('CareerQuestion', backref='career_path', lazy=True)
+    stories = db.relationship('CareerStory', backref='career_path', lazy=True)
+    challenges = db.relationship('IndustryChallenge', backref='career_path', lazy=True)
+
+    def __repr__(self):
+        return f"<CareerPath {self.title}>"
+    
+# Career Question table for future_you.py logic
+class CareerQuestion(db.Model):
+    CQid = db.Column(db.Integer, primary_key=True)
+    question = db.Column(db.Text, nullable=False)
+    yes_answer = db.Column(db.String(255), nullable=False)
+    no_answer = db.Column(db.String(255), nullable=False)
+    careerpathid = db.Column(db.Integer, db.ForeignKey('career_path.CPid'), nullable=False)
+
+    def __repr__(self):
+        return f"<CareerQuestion {self.question[:50]}...>"
+    
+
+# Career Story table for future_you.py logic
+class CareerStory(db.Model):
+    CSid = db.Column(db.Integer, primary_key=True)
+    story = db.Column(db.Text, nullable=False)
+    careerpathid = db.Column(db.Integer, db.ForeignKey('career_path.CPid'), nullable=False)
+
+    def __repr__(self):
+        return f"<CareerStory {self.title}>"
+    
+# Industry Challenge table for future_you.py logic
+class IndustryChallenge(db.Model):
+    ICid = db.Column(db.Integer, primary_key=True)
+    challenge_text = db.Column(db.Text, nullable=False)
+    careerpathid = db.Column(db.Integer, db.ForeignKey('career_path.CPid'), nullable=False)
+    example_solution = db.Column(db.Text, nullable=True)
+
+    def __repr__(self):
+        return f"<IndustryChallenge {self.title}>"
+
+
+
+#----------------------------------------------------------API Routes-------------------------------------------------#
 
 @app.route('/api/career_suggestions/<int:exerciseid>', methods=['GET'])
 def get_career_suggestions(exerciseid):
