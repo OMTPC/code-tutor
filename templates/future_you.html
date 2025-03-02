@@ -4,8 +4,6 @@
 
 {% block content %}
 
-
-
 <section class="future-you-section">
     <div class="intro">
         <h1>Future You: Where These Skills Can Take You</h1>
@@ -18,103 +16,118 @@
         <h2>Your Career Path</h2>
         <p>Based on your progress, here are some career opportunities you can explore:</p>
 
-            
-            <!-- Career Path Box -->
-            <div class="col-md-12 mb-4">
-                <div class="learning-box">
-                    <div class="career-path-boxes-container">
-                        <!-- Loop through career suggestions -->
-                        {% if career_suggestions %}
-                            <div class="career-paths-container">
-                                {% for career in career_suggestions %}
-                                    <div class="career-path-box">
-                                        <a href="{{ career.link }}" target="_blank" class="career-title">{{ career.title }}</a>
-                                        <p class="career-description">{{ career.description }}</p>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            <p>No career suggestions available for this module yet.</p>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-
-            <h2>Step-by-Step Coding Project: Master Your Skills</h2>
-            <p>Complete the following coding project as you progress through the modules:</p>
-            <!-- Step-by-Step Project Box -->
-            <div class="col-md-12 mb-4">
-                <div class="learning-boxe">
-                    
-
-                    <div class="coding-project-box">
-                        
-                        
-
-                        <div class="coding-project-steps">
-                            <!-- Loop through steps in project (based on user progress) -->
-                            {% for step in coding_project_steps %}
-                                <div class="project-step {% if step.status == 'completed' %}completed{% elif step.status == 'in-progress' %}in-progress{% else %}locked{% endif %}">
-                                    <h3>Step {{ step.step_number }}: {{ step.title }}</h3>
-                                    <p>{{ step.description }}</p>
-                                    {% if step.status == 'locked' %}
-                                        <p><strong>Locked</strong></p>
-                                    {% elif step.status == 'in-progress' %}
-                                        <p><strong>In Progress</strong></p>
-                                    {% else %}
-                                        <p><strong>Completed</strong></p>
-                                    {% endif %}
-                                    <!-- Button or link for user to complete step -->
-                                    {% if step.status == 'in-progress' %}
-                                        <a href="{{ url_for('project_step', step_id=step.id) }}" class="btn btn-primary">Continue</a>
-                                    {% elif step.status == 'locked' %}
-                                        <button class="btn btn-secondary" disabled>Locked</button>
-                                    {% endif %}
+        <!-- Career Path Box -->
+        <div class="col-md-12 mb-4">
+            <div class="learning-box">
+                <div class="career-path-boxes-container">
+                    <!-- Career Suggestions will be inserted dynamically here -->
+                    {% if career_suggestions %}
+                    <div class="career-paths-container">
+                        {% for career in career_suggestions %}
+                            <div class="career-path-box">
+                                <h3 class="career-title">{{ career.title }}</h3>
+                                <p class="career-description">{{ career.description }}</p>
+                                
+                                <!-- Learn More Button -->
+                                <button class="btn btn-info learn-more-btn" data-csid="{{ career.CSid }}">Learn More</button>
+                                
+                                <!-- Key Responsibilities Section (hidden initially) -->
+                                <div id="key-responsibilities-container-{{ career.CSid }}" class="key-responsibilities-container" style="text-align:left; color: #666">
+                                    <p><span id="key-responsibilities-text-{{ career.CSid }}"></span></p>
                                 </div>
-                            {% endfor %}
-                        </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                        <p>No career suggestions available for this module yet.</p> 
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <h2>Step-by-Step Coding Project: Master Your Skills</h2>
+        <p>Complete the following coding project as you progress through the modules:</p>
+        <!-- Step-by-Step Project Box -->
+        <div class="col-md-12 mb-4">
+            <div class="learning-box">
+                <div class="coding-project-box">
+                    <div class="coding-project-steps">
+                        {% for step in coding_project_steps %}
+                            <div class="project-step {% if step.status == 'completed' %}completed{% elif step.status == 'in-progress' %}in-progress{% else %}locked{% endif %}">
+                                <h3>Step {{ step.step_number }}: {{ step.title }}</h3>
+                                <p>{{ step.description }}</p>
+                                {% if step.status == 'locked' %}
+                                    <p><strong>Locked</strong></p>
+                                {% elif step.status == 'in-progress' %}
+                                    <p><strong>In Progress</strong></p>
+                                {% else %}
+                                    <p><strong>Completed</strong></p>
+                                {% endif %}
+                                {% if step.status == 'in-progress' %}
+                                    <a href="{{ url_for('project_step', step_id=step.id) }}" class="btn btn-primary">Continue</a>
+                                {% elif step.status == 'locked' %}
+                                    <button class="btn btn-secondary" disabled>Locked</button>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-
         </div>
-        <!-- Future You button -->
+
+    </div>
+
+    <!-- Future You button -->
     {% if second_exercise_completed %}
-    <!-- Button redirects to the Dashboard after completing the second exercise -->
-    <form method="POST">
-        <button type="submit" class="btn btn-primary">Go to Dashboard</button>
-    </form>
+        <!-- Button redirects to the Dashboard after completing the second exercise -->
+        <form method="POST">
+            <button type="submit" class="btn btn-primary">Go to Dashboard</button>
+        </form>
     {% else %}
-    <!-- Button redirects to the Exercise page after completing the first exercise -->
-    <form method="POST">
-        <button type="submit" class="btn btn-primary">Go to Exercises</button>
-    </form>
+        <!-- Button redirects to the Exercise page after completing the first exercise -->
+        <form method="POST">
+            <button type="submit" class="btn btn-primary">Go to Exercises</button>
+        </form>
     {% endif %}
     </div>
 </section>
 
 <script>
-    // Fetch career suggestions dynamically using the exercise ID
-    const exerciseId = {{ current_exercise_id }};  // Make sure you pass the exercise ID to the template
-    fetch(`/api/career_suggestions/${exerciseId}`)
-        .then(response => response.json())
-        .then(data => {
-            const careerList = document.getElementById('career-suggestions-list');
-            if (data.error) {
-                careerList.innerHTML = `<li>${data.error}</li>`;
-            } else {
-                data.forEach(career => {
-                    const listItem = document.createElement('li');
-                    listItem.innerHTML = `
-                        <a href="${career.link}" target="_blank">${career.title}</a>
-                        <p>${career.description}</p>
-                    `;
-                    careerList.appendChild(listItem);
+    // Event listener to handle the "Learn More" button click
+document.addEventListener('click', function(event) {
+    if (event.target && event.target.classList.contains('learn-more-btn')) {
+        const CSid = event.target.getAttribute('data-csid');  // Get the CSid from the button's data attribute
+        const keyResponsibilitiesContainer = document.getElementById(`key-responsibilities-container-${CSid}`);
+        const keyResponsibilitiesText = document.getElementById(`key-responsibilities-text-${CSid}`);
+
+        // Check if the container is already visible
+        if (keyResponsibilitiesContainer.style.display === 'block') {
+            // If visible, hide it
+            keyResponsibilitiesContainer.style.display = 'none';
+        } else {
+            // Fetch the key responsibilities dynamically using the CSid
+            fetch(`/api/career_suggestions/responsibilities/${CSid}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        keyResponsibilitiesText.innerHTML = `<span class="text-danger">${data.error}</span>`;
+                    } else {
+                        // Replace line breaks (\n) with <br> to preserve the formatting
+                        const responsibilitiesText = data.keyresponsibilities.replace(/\n/g, '<br>');
+                        keyResponsibilitiesText.innerHTML = responsibilitiesText;  // Display the responsibilities
+                        keyResponsibilitiesText.style.fontSize = '1rem';  // Apply font size
+                        keyResponsibilitiesContainer.style.display = 'block';  // Show the responsibilities
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching key responsibilities:', error);
                 });
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching career suggestions:', error);
-        });
+        }
+    }
+});
+
+
+    
 </script>
+
 {% endblock %}

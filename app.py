@@ -199,13 +199,27 @@ def get_career_suggestions(exerciseid):
     if career_suggestions:
         # Return the career suggestions in JSON format
         return jsonify([{
-            "CSid": suggestion.id,
+            "CSid": suggestion.CSid,
             "title": suggestion.title,
             "description": suggestion.description,
-            
+            "key_responsibilities": suggestion.keyresponsibilities if hasattr(suggestion, 'keyresponsibilities') else "Not available"
         } for suggestion in career_suggestions])
     else:
         return jsonify({"error": "No career suggestions found for this exercise"}), 404
+
+
+@app.route('/api/career_suggestions/responsibilities/<int:CSid>', methods=['GET'])
+def get_key_responsibilities(CSid):
+    career = CareerSuggestions.query.get(CSid)
+    if career:
+        # Return the keyresponsibilities directly without splitting
+        return jsonify({"keyresponsibilities": career.keyresponsibilities})
+    else:
+        return jsonify({"error": "Career suggestion not found"}), 404
+
+
+
+
 
 
 # API Route to fetch an exercise
