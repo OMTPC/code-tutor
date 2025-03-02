@@ -622,6 +622,20 @@ body, html {
     width: 100%; 
 }
 
+.btn-exercise {
+    background-color: #D81B60 !important;
+    color: white !important;
+    border: none !important;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 18px !important;
+    padding: 8px 79px !important;
+    height: auto !important;
+    border-radius: 5px;
+}
+
+
+
+
 /* -------------------------------future you section career path styles----------------------------------------------- */
 .career-paths-container {
     display: flex;
@@ -647,13 +661,37 @@ body, html {
 .career-title {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #333;
+    color: #D81B60;
     text-decoration: none;
 }
 
 .career-description {
     font-size: 1rem;
-    color: #666;
+    color: #1a237e;
     margin-top: 10px;
 }
 
+.btn-custom {
+    background-color: #D81B60 !important;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+
+/* Customize Learn More Button */
+.learn-more-btn {
+    background-color: #D81B60;  /* Custom background */
+    color: white;  /* Text color */
+    padding: 12px 20px;  /* Padding to make it larger */
+    font-size: 1rem;  /* Font size */
+    border-radius: 8px;  /* Rounded corners */
+    
+}
+
+.learn-more-btn:hover {
+    background-color: #D81B60;  /* Darker color on hover */
+    cursor: pointer;  /* Pointer cursor */
+}

@@ -12,10 +12,9 @@
 
     <div class="container mt-4">
         <div class="row">
-
-        <h2>Your Career Path</h2>
-        <p>Based on your progress, here are some career opportunities you can explore:</p>
-
+            <h2 class="text-left">Your Career Path</h2>
+            <p class="text-left">Based on your progress, here are some career opportunities you can explore:</p>
+        </div>
         <!-- Career Path Box -->
         <div class="col-md-12 mb-4">
             <div class="learning-box">
@@ -29,7 +28,7 @@
                                 <p class="career-description">{{ career.description }}</p>
                                 
                                 <!-- Learn More Button -->
-                                <button class="btn btn-info learn-more-btn" data-csid="{{ career.CSid }}">Learn More</button>
+                                <button class="btn btn-info learn-more-btn" data-csid="{{ career.CSid }}">Key Responsibilities</button>
                                 
                                 <!-- Key Responsibilities Section (hidden initially) -->
                                 <div id="key-responsibilities-container-{{ career.CSid }}" class="key-responsibilities-container" style="text-align:left; color: #666">
@@ -81,12 +80,12 @@
     {% if second_exercise_completed %}
         <!-- Button redirects to the Dashboard after completing the second exercise -->
         <form method="POST">
-            <button type="submit" class="btn btn-primary">Go to Dashboard</button>
+            <button type="submit" class="btn btn-custom">Go to Dashboard</button>
         </form>
     {% else %}
         <!-- Button redirects to the Exercise page after completing the first exercise -->
         <form method="POST">
-            <button type="submit" class="btn btn-primary">Go to Exercises</button>
+            <button type="submit" class="btn btn-custom">Go to Exercises</button>
         </form>
     {% endif %}
     </div>
@@ -116,6 +115,8 @@ document.addEventListener('click', function(event) {
                         const responsibilitiesText = data.keyresponsibilities.replace(/\n/g, '<br>');
                         keyResponsibilitiesText.innerHTML = responsibilitiesText;  // Display the responsibilities
                         keyResponsibilitiesText.style.fontSize = '1rem';  // Apply font size
+                        keyResponsibilitiesContainer.style.padding = '10px 0'; 
+                        keyResponsibilitiesContainer.style.color = '#1a237e';  // Apply text color
                         keyResponsibilitiesContainer.style.display = 'block';  // Show the responsibilities
                     }
                 })

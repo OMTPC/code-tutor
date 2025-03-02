@@ -21,13 +21,13 @@
                 <ul class="list-group">
                     <!-- Exercise 1 Button (always enabled) -->
                     <li class="list-group-item">
-                        <a href="#" class="exercise-link btn btn-primary" data-id="{{ exercises[0].exerciseid }}">Exercise 1</a>
+                        <a href="#" class="exercise-link btn btn-exercise" data-id="{{ exercises[0].exerciseid }}">Exercise 1</a>
                     </li>
                     
                     <!-- Exercise 2 Button (conditionally enabled) -->
                     <li class="list-group-item">
                         <!-- Only enable exercise 2 if the first exercise is completed -->
-                        <a href="#" class="exercise-link btn btn-primary {% if exercise_progress[1].status == 'available' %}enabled{% else %}disabled{% endif %}" data-id="{{ exercises[1].exerciseid }}">Exercise 2</a>
+                        <a href="#" class="exercise-link btn btn-exercise {% if exercise_progress[1].status == 'available' %}enabled{% else %}disabled{% endif %}" data-id="{{ exercises[1].exerciseid }}">Exercise 2</a>
                     </li>
                 </ul>
             </nav>
