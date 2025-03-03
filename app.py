@@ -547,11 +547,24 @@ def future_you():
     # Check if the second exercise is completed dynamically
     second_exercise_completed = check_if_second_exercise_completed(userid, current_module_id)
 
-    # Fetch career suggestions for the current module or exercise
-    if current_module_id:
-        career_suggestions = CareerSuggestions.query.filter_by(exerciseid=current_module_id).all()
-    else:
-        career_suggestions = []  # If no module is found, return an empty list
+    # Fetch the exercises for the current module
+    exercises = Exercise.query.filter_by(moduleid=current_module_id).all()
+
+    # Fetch completed exercises for the current module (from UserExerciseProgress)
+    completed_exercises = UserExerciseProgress.query.filter_by(userid=userid).all()
+
+    # Collect career suggestions linked to completed exercises
+    career_suggestions = []
+    seen_exercise_ids = set()  # To avoid duplicate suggestions
+
+    for completed_exercise in completed_exercises:
+        # Ensure that the exercise is in the current module and is completed
+        exercise = Exercise.query.get(completed_exercise.exerciseid)
+        if exercise and exercise.moduleid == current_module_id and completed_exercise.status == 'completed' and completed_exercise.exerciseid not in seen_exercise_ids:
+            # Fetch career suggestions for this completed exercise
+            suggestions = CareerSuggestions.query.filter_by(exerciseid=exercise.exerciseid).all()
+            career_suggestions.extend(suggestions)  # Add the career suggestions for this exercise
+            seen_exercise_ids.add(completed_exercise.exerciseid)  # Track this exercise as processed
 
     if request.method == 'POST':
         if second_exercise_completed:
