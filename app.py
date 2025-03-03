@@ -579,6 +579,17 @@ def future_you():
                            career_suggestions=career_suggestions)
 
 
+
+@app.route('/industry_challenges')
+@login_required
+def industry_challenges():
+    # Fetch the industry challenges from the database
+    industry_challenges = IndustryChallenge.query.all()
+
+    return render_template('industry_challenges.html', industry_challenges=industry_challenges)
+
+
+
 # Logout route
 @app.route("/logout")
 @login_required  # Ensure the user is logged in before logging out

@@ -41,6 +41,13 @@
                         <p>No career suggestions available for this module yet.</p> 
                     {% endif %}
                 </div>
+
+                <button id="toggle-challenges-btn">Show Industry Challenges</button>
+
+                <!-- Iframe for Industry Challenges, initially hidden -->
+                <div id="industry-challenges-container" style="display: none;">
+                    <iframe src="{{ url_for('industry_challenges') }}" width="100%" height="500px" frameborder="0"></iframe>
+                </div>
             </div>
         </div>
 
@@ -127,7 +134,19 @@ document.addEventListener('click', function(event) {
     }
 });
 
+document.getElementById('toggle-challenges-btn').addEventListener('click', function() {
+    var iframeContainer = document.getElementById('industry-challenges-container');
+    var button = document.getElementById('toggle-challenges-btn');
 
+    // Check if the iframe is currently visible
+    if (iframeContainer.style.display === 'none') {
+        iframeContainer.style.display = 'block';
+        button.textContent = 'Hide Industry Challenges'; // Change the button text
+    } else {
+        iframeContainer.style.display = 'none';
+        button.textContent = 'Show Industry Challenges'; // Reset the button text
+    }
+});
     
 </script>
 

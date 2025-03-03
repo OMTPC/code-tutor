@@ -1,0 +1,22 @@
+<!-- industry_challenges.html -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industry Challenges</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Industry Challenges</h1>
+    <div id="challenges">
+        {% for challenge in industry_challenges %}
+            <div class="challenge">
+                <h3>💡 Challenge: {{ challenge.challenge_text }}</h3>
+                <p><strong>Career Suggestion:</strong> {{ challenge.career_suggestion }}</p>
+                <pre><code>{{ challenge.example_solution }}</code></pre>
+                <p>📝 Try modifying the code to complete the task!</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
