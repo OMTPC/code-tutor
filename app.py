@@ -148,45 +148,24 @@ class CareerSuggestions(db.Model):
     keyresponsibilities = db.Column(db.Text, nullable=True)
 
     exercise = db.relationship('Exercise', backref='career_suggestions', lazy=True)  # Access career suggestions from exercise
-    questions = db.relationship('CareerQuestion', backref='career_suggestions', lazy=True)
-    stories = db.relationship('CareerStory', backref='career_suggestions', lazy=True)
-    challenges = db.relationship('IndustryChallenge', backref='career_suggestions', lazy=True)
+    
 
     def __repr__(self):
         return f"<CareerSuggestion {self.title}>"
 
 
-# Career Question table for future_you.py logic
-class CareerQuestion(db.Model):
-    CQid = db.Column(db.Integer, primary_key=True)
-    question = db.Column(db.Text, nullable=False)
-    yes_answer = db.Column(db.String(255), nullable=False)
-    no_answer = db.Column(db.String(255), nullable=False)
-    careersuggid = db.Column(db.Integer, db.ForeignKey('career_suggestions.CSid'), nullable=False)
-
-    def __repr__(self):
-        return f"<CareerQuestion {self.question[:50]}...>"
-    
-
-# Career Story table for future_you.py logic
-class CareerStory(db.Model):
-    CSid = db.Column(db.Integer, primary_key=True)
-    story = db.Column(db.Text, nullable=False)
-    careersuggid = db.Column(db.Integer, db.ForeignKey('career_suggestions.CSid'), nullable=False)
-
-    def __repr__(self):
-        return f"<CareerStory {self.title}>"
-    
-# Industry Challenge table for future_you.py logic
+# Industry Challenge Table
 class IndustryChallenge(db.Model):
     ICid = db.Column(db.Integer, primary_key=True)
     challenge_text = db.Column(db.Text, nullable=False)
-    careersuggid = db.Column(db.Integer, db.ForeignKey('career_suggestions.CSid'), nullable=False)
+    exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=False)  # Link to Exercise table
     example_solution = db.Column(db.Text, nullable=True)
 
-    def __repr__(self):
-        return f"<IndustryChallenge {self.title}>"
+    # Define the relationship to Exercise (no longer CareerSuggestions)
+    exercise = db.relationship('Exercise', backref='industry_challenges', lazy=True)
 
+    def __repr__(self):
+        return f"<IndustryChallenge {self.challenge_text[:50]}>"
 
 
 #----------------------------------------------------------API Routes-------------------------------------------------#
