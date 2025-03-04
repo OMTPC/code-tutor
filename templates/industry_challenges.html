@@ -34,9 +34,8 @@
     <button id="run-code" class="btn btn-primary mt-3">Run Code</button>
 
     <!-- Solution Box (To Show the Result) -->
-    <div id="solution-box" style="display:none; border: 1px solid #ccc; padding: 10px; margin-top: 10px; background:rgb(15, 103, 190);">
-        <h3>💡 Execution Result:</h3>
-        <pre id="solution-output"></pre>
+    <div id="solution-box" style="border: 1px solid #ccc; padding: 10px; margin-top: 10px; background: #282a36;color: #f8f8f2;">
+        <pre id="solution-output">Your code output will appear here.</pre>
     </div>
 
 
@@ -54,7 +53,7 @@
             });
 
             // Set editor height
-            editor.setSize("50%", "200px"); // Adjust width and height
+            editor.setSize("100%", "200px"); // Adjust width and height
 
             /// Pass the default code from Flask
             var defaultCode = "{{ industry_challenges[0].default_code | safe }}";  // Get it from Flask
@@ -68,7 +67,10 @@
         });
 
         
-
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("solution-box").style.display = "block"; // Force visibility
+        });
+        
 
       </script>
 </body>

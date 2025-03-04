@@ -637,6 +637,22 @@ body, html {
 
 
 /* -------------------------------future you section career path styles----------------------------------------------- */
+
+.intro {
+    margin-top: -50px; /* Remove any top margin */
+    padding-top: 0; /* Remove any top padding */
+    margin-bottom: 20px; /* Optional, to provide a little space below */
+}
+
+.col-md-8 {
+    margin-left: -80px;  /* Move the content 20px to the left */
+    padding-left: 20px;   /* Add some padding if needed */
+}
+
+.industry-challenges {
+    width: 120%; /* Ensures it takes full width of its column */
+    max-width: 500px; /* Adjust based on your needs */
+}
 .career-paths-container {
     display: flex;
     flex-wrap: wrap; /* This will allow items to wrap to the next line if the container is not wide enough */
@@ -654,9 +670,7 @@ body, html {
     text-align: center;
 }
 
-.career-path-box:hover {
-    transform: scale(1.05);
-}
+
 
 .career-title {
     font-size: 1.5rem;
@@ -685,7 +699,7 @@ body, html {
 .learn-more-btn {
     background-color: #D81B60;  /* Custom background */
     color: white;  /* Text color */
-    padding: 12px 20px;  /* Padding to make it larger */
+    padding: 10px 08px;  /* Padding to make it larger */
     font-size: 1rem;  /* Font size */
     border-radius: 8px;  /* Rounded corners */
     
