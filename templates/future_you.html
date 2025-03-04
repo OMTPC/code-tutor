@@ -5,21 +5,14 @@
 {% block content %}
 
 <section class="future-you-section">
-    <div class="intro">
-        <h1>Future You: Where These Skills Can Take You</h1>
-        <p>Connect your learning journey to real-world career opportunities and projects.</p>
-    </div>
-
     <div class="container mt-4">
         <div class="row">
-            <h2 class="text-left">Your Career Path</h2>
-            <p class="text-left">Based on your progress, here are some career opportunities you can explore:</p>
-        </div>
-        <!-- Career Path Box -->
-        <div class="col-md-12 mb-4">
-            <div class="learning-box">
+            <div class="col-md-8">
+                <h2 class="text-left">Your Career Path</h2>
+                <p class="text-left">Based on your progress, here are some career opportunities you can explore:</p>
+
+                <!-- Career Path Box -->
                 <div class="career-path-boxes-container">
-                    <!-- Career Suggestions will be inserted dynamically here -->
                     {% if career_suggestions %}
                     <div class="career-paths-container">
                         {% for career in career_suggestions %}
@@ -41,14 +34,31 @@
                         <p>No career suggestions available for this module yet.</p> 
                     {% endif %}
                 </div>
+            </div>
 
-                <button id="toggle-challenges-btn">Show Industry Challenges</button>
-
-                <!-- Iframe for Industry Challenges, initially hidden -->
-                <div id="industry-challenges-container" style="display: none;">
-                    <iframe src="{{ url_for('industry_challenges') }}" width="100%" height="500px" frameborder="0"></iframe>
+            <!-- Industry Section - Right side -->
+            <div class="col-md-4">
+                <div class="industry-challenges">
+                    <h3>Industry Challenges</h3>
+                    <p>Explore real-world industry challenges related to the concepts you've learned.</p>
+                    
+                    <div class="d-grid gap-2">  <!-- Bootstrap utility for stacking buttons -->
+                        {% for exercise in exercises_with_status %}
+                            <button class="btn btn-primary" 
+                                    {% if not exercise.is_completed %}disabled{% endif %}>
+                                {{ exercise.title }}
+                            </button>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
+        </div>
+        <!-- Button for Industry Challenges -->
+        <button id="toggle-challenges-btn" class="btn btn-secondary mb-4 w-100">Show Industry Challenges</button>
+
+        <!-- Iframe for Industry Challenges, initially hidden -->
+        <div id="industry-challenges-container" style="display: none;">
+            <iframe src="{{ url_for('industry_challenges') }}" width="100%" height="500px" frameborder="0"></iframe>
         </div>
 
         <h2>Step-by-Step Coding Project: Master Your Skills</h2>

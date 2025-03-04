@@ -526,8 +526,8 @@ def future_you():
     # Check if the second exercise is completed dynamically
     second_exercise_completed = check_if_second_exercise_completed(userid, current_module_id)
 
-    # Fetch the exercises for the current module
-    exercises = Exercise.query.filter_by(moduleid=current_module_id).all()
+    # Fetch **all exercises from all modules** instead of just the current module
+    exercises = Exercise.query.all()
 
     # Fetch completed exercises for the current module (from UserExerciseProgress)
     completed_exercises = UserExerciseProgress.query.filter_by(userid=userid).all()
@@ -545,6 +545,21 @@ def future_you():
             career_suggestions.extend(suggestions)  # Add the career suggestions for this exercise
             seen_exercise_ids.add(completed_exercise.exerciseid)  # Track this exercise as processed
 
+
+# Fetch completed exercises for the current module
+    completed_exercises = UserExerciseProgress.query.filter_by(userid=userid, status='completed').all()
+    completed_exercise_ids = {ex.exerciseid for ex in completed_exercises}
+
+    # Add **all exercises** to be displayed, with status for enabling/disabling buttons
+    exercises_with_status = []
+    for exercise in exercises:
+        exercises_with_status.append({
+            'exerciseid': exercise.exerciseid,
+            'title': exercise.title,
+            'is_completed': exercise.exerciseid in completed_exercise_ids  # Enable if completed
+        })
+
+        
     if request.method == 'POST':
         if second_exercise_completed:
             # Redirect to the Dashboard if the second exercise is completed
@@ -555,7 +570,8 @@ def future_you():
 
     return render_template('future_you.html', 
                            second_exercise_completed=second_exercise_completed,
-                           career_suggestions=career_suggestions)
+                           career_suggestions=career_suggestions,
+                           exercises_with_status=exercises_with_status)
 
 
 
