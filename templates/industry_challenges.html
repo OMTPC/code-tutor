@@ -40,7 +40,7 @@
     </div>
 
 
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
 
@@ -56,8 +56,12 @@
             // Set editor height
             editor.setSize("50%", "200px"); // Adjust width and height
 
-            // Set default text after initialization
-            editor.setValue("# Write your solution here\nprint('Hello, World!')");
+            /// Pass the default code from Flask
+            var defaultCode = "{{ industry_challenges[0].default_code | safe }}";  // Get it from Flask
+
+            // Set default code into CodeMirror editor
+            editor.setValue(`# Write your solution here\n${defaultCode}`);
+
 
             // Delay refresh slightly to allow proper rendering
             setTimeout(() => editor.refresh(), 100);

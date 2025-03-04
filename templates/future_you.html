@@ -45,6 +45,7 @@
                     <div class="d-grid gap-2">  <!-- Bootstrap utility for stacking buttons -->
                         {% for exercise in exercises_with_status %}
                             <button class="btn btn-primary" 
+                            
                                 {% if not exercise.is_completed %} disabled {% endif %}
                                     data-url="{{ url_for('industry_challenges', exercise_id=exercise.exerciseid) }}">
                                 {{ exercise.title }}

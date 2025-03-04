@@ -160,6 +160,7 @@ class IndustryChallenge(db.Model):
     challenge_text = db.Column(db.Text, nullable=False)
     exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=False)  # Link to Exercise table
     example_solution = db.Column(db.Text, nullable=True)
+    default_code = db.Column(db.Text, nullable=True)
 
     # Define the relationship to Exercise (no longer CareerSuggestions)
     exercise = db.relationship('Exercise', backref='industry_challenges', lazy=True)
@@ -586,7 +587,6 @@ def industry_challenges(exercise_id):
     else:
         # If no challenge is available for that exercise, you can render a blank page or a message
         return render_template('industry_challenges.html', industry_challenges=[])
-
 
 
 
