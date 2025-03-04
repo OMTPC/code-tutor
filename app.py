@@ -17,6 +17,8 @@ from sqlalchemy import func
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_migrate import Migrate
 import re
+import sys
+import io
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -380,6 +382,12 @@ def dashboard():
     # Get all modules the user has access to
     modules = Module.query.all()
 
+    # Check if the user has completed the first exercise (exercise_id = 1)
+    first_exercise_completed = False
+    first_exercise_progress = UserExerciseProgress.query.filter_by(userid=current_user.userid, exerciseid=1).first()
+    if first_exercise_progress and first_exercise_progress.status == 'completed':
+        first_exercise_completed = True
+
     for module in modules:
         user_module_progress = UserModuleProgress.query.filter_by(userid=current_user.userid, moduleid=module.moduleid).first()
         
@@ -421,7 +429,7 @@ def dashboard():
                 'progress': 0
             })
 
-    return render_template("dashboard.html", user_modules=user_modules)
+    return render_template("dashboard.html", user_modules=user_modules, first_exercise_completed=first_exercise_completed)
 
 
 

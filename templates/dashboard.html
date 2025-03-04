@@ -4,11 +4,11 @@
 
 {% block content %}
 
-<h2>Welcome, {{ current_user.username }} </h2>
-<p>Here you can view and edit your profile information.</p>
+<h1>Welcome, <span style="color: #D81B60;">{{ current_user.username }}</span></h1>
+
 
 <section class="learning-choice">
-    <div class="intro">
+    <div class="intro-dash">
         <h1>My Learning Journey</h1>
     </div>
 
@@ -58,7 +58,7 @@
                         {% elif user_module.status == 'in progress' %}
                             <div class="icon-box" style="cursor: not-allowed;">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M13 5L7 12L13 19M7 12H21" />
+                                    <path d="M6 9L12 15L18 9" />
                                 </svg>
                             </div>
                             <h2>{{ user_module.module.title }}</h2>
@@ -73,7 +73,7 @@
                         {% elif user_module.status == 'completed' %}
                             <div class="icon-box" onclick="window.location.href='{{ url_for('module_intro', module_id=user_module.module.moduleid) }}';" style="cursor: pointer;">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M13 5L7 12L13 19M7 12H21" />
+                                    <path d="M17 2L21 6L17 10M3 11V9C3 7.89543 3.89543 7 5 7H21M7 22L3 18L7 14M21 13V15C21 16.1046 20.1046 17 19 17H3" />
                                 </svg>
                             </div>
                             <h2>{{ user_module.module.title }}</h2>
@@ -90,6 +90,15 @@
                 </div>
             </div>
             {% endfor %}
+        </div>
+        <div>
+            <a href="{{ url_for('future_you') }}">
+            <button 
+                id="future-you-dash-btn" 
+                class="dash btn-primary {% if not first_exercise_completed %}disabled{% endif %}" 
+                {% if not first_exercise_completed %}disabled{% endif %}>
+                Go to Future You
+            </button>
         </div>
     </div>
 </section>

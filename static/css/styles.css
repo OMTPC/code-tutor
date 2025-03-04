@@ -429,6 +429,9 @@ body, html {
     margin: 0 auto; 
 }
 
+
+/*---------------------------------dashboard styles---------------------------------*/
+
 .learning-path {
     display: grid;
     gap: 2rem;
@@ -481,6 +484,8 @@ body, html {
     gap: 20px; 
     flex-wrap: wrap; 
 }
+
+
 
 .learning-boxe .module h2 {
     font-size: 20px; 
@@ -562,7 +567,43 @@ body, html {
 }
 
 
-/* Exercise page style */
+#future-you-dash-btn {
+    background-color: #D81B60; 
+    color: white;               /* White text */
+    padding: 10px 20px;         /* Padding around text */
+    font-size: 18px;            /* Font size */
+    border-radius: 5px;        /* Rounded corners */
+    border: none;              /* Remove default border */
+    cursor: pointer;           /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+
+
+/* Disabled state styling */
+#future-you-dash-btn:disabled {
+    background-color: #b0b0b0; /* Gray background when disabled */
+    cursor: not-allowed;       /* Change cursor when disabled */
+}
+
+
+
+/* Custom style for the Start button */
+.start.btn-primary {
+    background-color: #D81B60; /* Blue background */
+    color: white; /* White text */
+    padding: 10px 30px; /* Padding for top, bottom, left, and right */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline from the link */
+    display: inline-block; /* Display as inline-block to allow padding */
+    margin-left: 20px; /* Move the button a little more to the right */
+}
+
+/* -------------------------------Exercise page style -----------------------------------*/
 /* Style for the Back Arrow Button */
 .navbar .back-arrow-btn i {
     font-size: 4rem; 
@@ -633,6 +674,29 @@ body, html {
     border-radius: 5px;
 }
 
+/* General style for the Go to Future You button */
+.future-you-btn {
+    background-color: #D81B60; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding for top, bottom, left, and right */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline from the link */
+    cursor: pointer; /* Change cursor to pointer when hovered */
+    display: inline-block; /* Allow padding and margin to be applied */
+    
+}
+
+/* Style when the button is disabled */
+.future-you-btn.disabled {
+    background-color: #ccc; /* Light grey background for disabled state */
+    color: #666; /* Lighter text */
+    cursor: not-allowed; /* Disable cursor */
+    opacity: 0.7; /* Slightly transparent */
+}
 
 
 
@@ -683,6 +747,7 @@ body, html {
     font-size: 1rem;
     color: #1a237e;
     margin-top: 10px;
+    text-align: left; 
 }
 
 .btn-custom {
