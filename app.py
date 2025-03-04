@@ -575,13 +575,18 @@ def future_you():
 
 
 
-@app.route('/industry_challenges')
+@app.route('/industry_challenges/<int:exercise_id>', methods=['GET'])
 @login_required
-def industry_challenges():
-    # Fetch the industry challenges from the database
-    industry_challenges = IndustryChallenge.query.all()
+def industry_challenges(exercise_id):
+    # Fetch the challenge related to the exercise
+    challenge = IndustryChallenge.query.filter_by(exerciseid=exercise_id).first()
 
-    return render_template('industry_challenges.html', industry_challenges=industry_challenges)
+    if challenge:
+        return render_template('industry_challenges.html', industry_challenges=[challenge])
+    else:
+        # If no challenge is available for that exercise, you can render a blank page or a message
+        return render_template('industry_challenges.html', industry_challenges=[])
+
 
 
 
