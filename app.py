@@ -232,7 +232,7 @@ def check_solution(user_code, exercise_id):
         if solution.solution_type == 'regex':
             # Check if the user's code matches the regex pattern
             pattern = re.compile(solution.solution_regex)
-            if pattern.match(user_code.strip()):
+            if pattern.fullmatch(user_code.strip()):
                 return "Correct!"# User's code matches the regex solution
 
     return "Incorrect. Please try again."  # If no solutions match
@@ -516,6 +516,7 @@ def check_if_second_exercise_completed(userid, module_id):
         user_progress = UserExerciseProgress.query.filter_by(userid=userid, exerciseid=second_exercise.exerciseid).first()
         return user_progress is not None and user_progress.status == 'completed'
     return False
+
 
 
 
