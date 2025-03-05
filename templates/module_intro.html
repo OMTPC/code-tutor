@@ -5,11 +5,12 @@
 {% block content %}
 <h1>Welcome to Introduction to {{ module.title }}!</h1>
 
+<div class="intro-box">
     <p>{{ module.intro | safe }}</p>
+</div>
 
-
-    <p>Are you ready to get started?</p>
-    <p>Click below to begin your first exercise:</p>
-        <a href="{{ url_for('exercises', module_id=module.moduleid) }}" class="start btn-primary">Start</a>
+<p>Are you ready to get started?</p>
+<p>Click below to begin your first exercise:</p>
+    <a href="{{ url_for('exercises', module_id=module.moduleid) }}" class="start btn-primary">Start</a>
 
 {% endblock %}

@@ -587,6 +587,21 @@ body, html {
 }
 
 
+/*-----------------------------------------------------------Module intro page styles---------------------------------------------------*/
+
+.intro-box {
+    background-color: #ffffff; /* White background color for the content */
+    padding: 20px;             /* Add padding inside the box */
+    border-radius: 8px;        /* Rounded corners */
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.1); /* Shadow around the entire box */
+    margin-bottom: 20px;       /* Space below the box */
+    width: 1200px;
+    color: #1a237e;
+}
+
+
+
+
 
 /* Custom style for the Start button */
 .start.btn-primary {
@@ -775,3 +790,26 @@ body, html {
     cursor: pointer;  /* Pointer cursor */
 }
 
+.industry {
+    background-color: #D81B60; /* Primary blue */
+    color: white; /* White text */
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    text-align: center;
+}
+
+/* Disabled button style */
+.industry:disabled {
+    background-color: #ccc; /* Greyed out */
+    color: #666; /* Dimmed text */
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 0.6;
+}

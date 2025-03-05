@@ -50,7 +50,7 @@
                     
                     <div class="d-grid gap-2">  <!-- Bootstrap utility for stacking buttons -->
                         {% for exercise in exercises_with_status %}
-                            <button class="btn btn-primary" 
+                            <button class="industry btn-primary" 
                             
                                 {% if not exercise.is_completed %} disabled {% endif %}
                                     data-url="{{ url_for('industry_challenges', exercise_id=exercise.exerciseid) }}">
@@ -153,7 +153,7 @@ document.addEventListener('click', function(event) {
     }
 });
 
-document.querySelectorAll(".btn.btn-primary").forEach(button => {
+document.querySelectorAll(".industry.btn-primary").forEach(button => {
     button.addEventListener("click", function() {
         let iframe = document.getElementById("challengeFrame");
         let container = document.getElementById("industry-challenges-container");

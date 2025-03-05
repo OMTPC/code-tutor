@@ -227,13 +227,13 @@ def check_solution(user_code, exercise_id):
     # Check if any solution matches the user code
     for solution in solutions:
         if solution.solution_type == 'text' and solution.solution_text.strip().lower() == user_code.strip().lower():
-            return "Correct!"  # User's code matches the exact text solution
+            return "Correct!"# User's code matches the exact text solution
 
         if solution.solution_type == 'regex':
             # Check if the user's code matches the regex pattern
             pattern = re.compile(solution.solution_regex)
             if pattern.match(user_code.strip()):
-                return "Correct!"  # User's code matches the regex solution
+                return "Correct!"# User's code matches the regex solution
 
     return "Incorrect. Please try again."  # If no solutions match
 

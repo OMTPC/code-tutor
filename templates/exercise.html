@@ -17,7 +17,7 @@
         <!-- Left Column: List of Exercises -->
         <div class="col-md-3 p-3">
             <nav class="lesson-nav">
-                <h3>Exercises</h3>
+                <h3>Module {{ module.moduleid }} - Exercises</h3>
                 <ul class="list-group">
                     <!-- Exercise 1 Button (always enabled) -->
                     <li class="list-group-item">
@@ -87,7 +87,7 @@ window.onload = function() {
                         document.getElementById("exercise-description").innerHTML = `<p>${data.error}</p>`;
                     } else {
                         document.getElementById("exercise-title").innerText = data.title;
-                        document.getElementById("exercise-description").innerText = data.description;
+                        document.getElementById("exercise-description").innerHTML = data.description;
                     }
                 })
                 .catch(error => console.error("Error fetching exercise:", error));
