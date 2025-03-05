@@ -376,61 +376,60 @@ def login():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    # Initialize the list to store user modules and progress
     user_modules = []
-
-    # Get all modules the user has access to
     modules = Module.query.all()
 
-    # Check if the user has completed the first exercise (exercise_id = 1)
-    first_exercise_completed = False
-    first_exercise_progress = UserExerciseProgress.query.filter_by(userid=current_user.userid, exerciseid=1).first()
-    if first_exercise_progress and first_exercise_progress.status == 'completed':
-        first_exercise_completed = True
+    first_exercise_completed = UserExerciseProgress.query.filter_by(
+        userid=current_user.userid, exerciseid=1, status='completed'
+    ).first() is not None
 
     for module in modules:
-        user_module_progress = UserModuleProgress.query.filter_by(userid=current_user.userid, moduleid=module.moduleid).first()
-        
-        if user_module_progress:
-            # Get all exercises for the module
-            exercises = Exercise.query.filter_by(moduleid=module.moduleid).all()
+        user_module_progress = UserModuleProgress.query.filter_by(
+            userid=current_user.userid, moduleid=module.moduleid
+        ).first()
 
-            # Calculate progress (number of completed exercises / total exercises)
-            completed_exercises = 0
-            for exercise in exercises:
-                user_exercise_progress = UserExerciseProgress.query.filter_by(userid=current_user.userid, exerciseid=exercise.exerciseid).first()
-                if user_exercise_progress and user_exercise_progress.status == 'completed':
-                    completed_exercises += 1
+        exercises = Exercise.query.filter_by(moduleid=module.moduleid).all()
+        completed_exercises = sum(
+            1 for exercise in exercises if UserExerciseProgress.query.filter_by(
+                userid=current_user.userid, exerciseid=exercise.exerciseid, status='completed'
+            ).first()
+        )
 
-            # Calculate percentage progress
-            progress = int((completed_exercises / len(exercises)) * 100) if exercises else 0
+        progress = int((completed_exercises / len(exercises)) * 100) if exercises else 0
 
-            # Determine module status
-            if module.moduleid > 1:  # The second module and beyond
-                previous_module_progress = UserModuleProgress.query.filter_by(userid=current_user.userid, moduleid=module.moduleid - 1).first()
-                if previous_module_progress and previous_module_progress.status == 'completed':
-                    module_status = 'available'  # Next module becomes available after completing the previous one
-                else:
-                    module_status = 'locked'  # If previous module is not completed, lock the current module
-            else:
-                module_status = user_module_progress.status  # For the first module, use the user's current status
-
-            # Add module progress and status to the list
-            user_modules.append({
-                'module': module,
-                'status': module_status,
-                'progress': progress
-            })
+        # Determine module status
+        if module.moduleid == 1:
+            module_status = 'available'  # The first module is always available
         else:
-            # If the user has no progress for this module, consider it locked
-            user_modules.append({
-                'module': module,
-                'status': 'locked',
-                'progress': 0
-            })
+            previous_module_progress = UserModuleProgress.query.filter_by(
+                userid=current_user.userid, moduleid=module.moduleid - 1, status='completed'
+            ).first()
+
+            if previous_module_progress:
+                module_status = 'available'
+            else:
+                module_status = 'locked'
+
+        # Ensure module status updates correctly
+        if completed_exercises == len(exercises):
+            module_status = 'completed'
+
+        # Update module progress in the database if needed
+        if user_module_progress:
+            user_module_progress.status = module_status
+        else:
+            user_module_progress = UserModuleProgress(userid=current_user.userid, moduleid=module.moduleid, status=module_status)
+            db.session.add(user_module_progress)
+
+        db.session.commit()
+
+        user_modules.append({
+            'module': module,
+            'status': module_status,
+            'progress': progress
+        })
 
     return render_template("dashboard.html", user_modules=user_modules, first_exercise_completed=first_exercise_completed)
-
 
 
 @app.route('/module_intro/<int:module_id>', methods=['GET', 'POST'])
