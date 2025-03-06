@@ -290,7 +290,15 @@ def check_code():
 
             db.session.commit()
 
-    return jsonify({'result': result})
+        # Get the expected outcome from the database (first available solution for the exercise)
+    solution_entry = Solution.query.filter_by(exerciseid=exercise_id).first()
+
+    # Ensure an expected output exists, otherwise return a default message
+    expected_output_text = solution_entry.expected_output if solution_entry and solution_entry.expected_output else "No expected output available."
+    
+
+
+    return jsonify({'result': result, 'expected_output': expected_output_text})
 
 
 

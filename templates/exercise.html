@@ -47,7 +47,8 @@
                 <button id="run-code" class="btn btn-primary mt-3">Run Code</button>
 
                 <pre id="result" class="mt-3"></pre>
-
+                <pre id="expected-output" class="mt-2 text-muted"></pre>
+                
                 <!-- Future You Button, initially hidden -->
                 <div id="future-you-container">
                     <button id="future-you-btn" class="future-you-btn {% if first_exercise_completed %}enabled{% else %}disabled{% endif %}" {% if not first_exercise_completed %}disabled{% endif %}>Go to Future You</button>
@@ -109,20 +110,32 @@ window.onload = function() {
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById('result').textContent = data.result;
-            
+            let resultBox = document.getElementById('result');
+    
+            if (data.result === "Correct!") {
+                // Show correctness message and expected output
+                resultBox.textContent = `${data.result}\n\nExpected Output:\n${data.expected_output || "No expected output available."}`;
+            } else {
+                // Show only correctness message
+                resultBox.textContent = data.result;
+            }
+    
+            // Handle enabling/disabling the "Future You" button
             var futureYouBtn = document.getElementById('future-you-btn');
             futureYouBtn.classList.toggle('disabled', data.result !== "Correct!");
             futureYouBtn.disabled = (data.result !== "Correct!");
-
+    
             // Ensure the "Future You" button redirection works
             if (data.result === "Correct!") {
-                futureYouBtn.removeEventListener('click', redirectToFutureYou);  // Remove any previous listeners
-                futureYouBtn.addEventListener('click', redirectToFutureYou); // Add listener again
+                futureYouBtn.removeEventListener('click', redirectToFutureYou);
+                futureYouBtn.addEventListener('click', redirectToFutureYou);
             }
         })
         .catch(error => console.error('Error:', error));
     });
+    
+    
+    
 
     function redirectToFutureYou() {
         // Mark the next exercise as available in the database
