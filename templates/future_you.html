@@ -13,9 +13,10 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-8">
+                <div style="max-width: 80%;">
                 <h1 class="text-left">Your Career Path</h1>
-                <p class="text-left">Based on your progress, here are some career opportunities you can explore in the future:</p>
-
+                <p class="text-left" >Based on your progress, here are some career opportunities you can explore in the future:</p>
+                </div>
                 <!-- Career Path Box -->
                 <div class="career-path-boxes-container">
                     {% if career_suggestions %}
@@ -23,7 +24,7 @@
                         {% for career in career_suggestions %}
                             <div class="career-path-box">
                                 <h3 class="career-title">{{ career.title }}</h3>
-                                <p class="career-description">{{ career.description }}</p>
+                                <p class="career-description" >{{ career.description | safe }}</p>
                                 
                                 <!-- Learn More Button -->
                                 <button class="btn btn-info learn-more-btn" data-csid="{{ career.CSid }}">Key Responsibilities</button>

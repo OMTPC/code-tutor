@@ -217,6 +217,24 @@ def get_exercise(exerciseid):
     return jsonify({"error": "Exercise not found"}), 404
 
 
+@app.route('/api/get_exercises', methods=['GET'])
+def get_exercises():
+    # Fetch exercises from the database
+    exercises = Exercise.query.all()
+    
+    exercises_list = []
+    for exercise in exercises:
+        exercise_data = {
+            'exerciseid': exercise.exerciseid,
+            'moduleid': exercise.moduleid,
+            'title': exercise.title,
+            'exercise_number': exercise.exerciseid  # Using exerciseid for odd/even logic
+        }
+        exercises_list.append(exercise_data)
+    
+    return jsonify(exercises_list)
+
+
 
 #check user solution function
 # Updated check_solution function to also make the next exercise available
