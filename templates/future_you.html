@@ -26,19 +26,36 @@
                                 <h3 class="career-title">{{ career.title }}</h3>
                                 <p class="career-description" >{{ career.description | safe }}</p>
                                 
-                                <!-- Learn More Button -->
-                                <button class="btn btn-info learn-more-btn" data-csid="{{ career.CSid }}">Key Responsibilities</button>
                                 
+                                <!-- Button Container (Flexbox to keep buttons aligned) -->
+                                <div class="d-flex gap-2">
+                                    <!-- Learn More Button -->
+                                    <button class="btn btn-info learn-more-btn" data-csid="{{ career.CSid }}">Key Responsibilities</button>
+
+                                    <!-- Career Stories Button -->
+                                    <button class="btn btn-success career-stories-btn" data-csid="{{ career.CSid }}">Career Stories</button>
+                                </div>
+
                                 <!-- Key Responsibilities Section (hidden initially) -->
-                                <div id="key-responsibilities-container-{{ career.CSid }}" class="key-responsibilities-container" style="text-align:left; color: #666">
+                                <div id="key-responsibilities-container-{{ career.CSid }}" class="key-responsibilities-container" style="text-align:left">
                                     <p><span id="key-responsibilities-text-{{ career.CSid }}"></span></p>
                                 </div>
+
+                                <!-- Career Stories Section (Hidden Initially) -->
+                                <div id="career-stories-container-{{ career.CSid }}" class="career-stories-container" style="display:none; text-align:left; padding: 10px;">
+                                    <ul id="career-stories-list-{{ career.CSid }}"></ul>
+                                </div>
+
+
                             </div>
                         {% endfor %}
                     </div>
                     {% else %}
                         <p>No career suggestions available for this module yet.</p> 
                     {% endif %}
+
+                    
+
                 </div>
             </div>
 
@@ -178,6 +195,35 @@ document.querySelectorAll(".industry.btn-primary").forEach(button => {
     });
 });
 
+document.addEventListener('click', function(event) {
+    if (event.target && event.target.classList.contains('career-stories-btn')) {
+        const CSid = event.target.getAttribute('data-csid');  
+        const careerStoriesContainer = document.getElementById(`career-stories-container-${CSid}`);
+        const careerStoriesList = document.getElementById(`career-stories-list-${CSid}`);
+
+        if (careerStoriesContainer.style.display === 'block') {
+            careerStoriesContainer.style.display = 'none'; // Hide if already visible
+        } else {
+            // Fetch the career stories using CSid
+            fetch(`/api/career_suggestions/stories/${CSid}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        careerStoriesList.innerHTML = `<li class="text-danger">${data.error}</li>`;
+                    } else {
+                        // Populate the list
+                        careerStoriesList.innerHTML = data.career_stories.map(story =>
+                            `<li><strong>${story.title}</strong>: ${story.description}</li>`
+                        ).join('');
+                        careerStoriesContainer.style.display = 'block';  // Show the container
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching career stories:', error);
+                });
+        }
+    }
+});
 
 
     

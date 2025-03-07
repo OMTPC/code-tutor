@@ -374,7 +374,34 @@ def check_code():
 
 
 
+@app.route('/api/career_suggestions/stories/<int:CSid>', methods=['GET'])
+@login_required
+def get_career_stories(CSid):
+    # Fetch career stories related to the given career suggestion (CSid)
+    career_stories = CareerStory.query.filter_by(CSid=CSid).all()
 
+    if not career_stories:
+        return jsonify({"error": "No career stories found for this suggestion."})
+
+    # Convert stories to JSON format
+    stories_data = [
+        {
+            "CStoryid": story.CStoryid,  # Primary Key
+            "title": story.title,
+            "description": story.description
+        } 
+        for story in career_stories
+    ]
+
+    return jsonify({"career_stories": stories_data})
+
+
+
+
+
+
+
+#----------------------------------------------------------Routes-------------------------------------------------#
 
 # Homepage route
 @app.route("/")
