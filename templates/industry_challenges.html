@@ -20,7 +20,7 @@
     <div id="challenges">
         {% for challenge in industry_challenges %}
             <div class="challenge">
-                <h3>💡 Challenge: {{ challenge.challenge_text }}</h3>
+                <h3>{{ challenge.challenge_text }}</h3>
                 <p><strong>Career Suggestion:</strong> {{ challenge.career_suggestion }}</p>
                 <pre><code>{{ challenge.example_solution }}</code></pre>
                 
@@ -56,21 +56,28 @@
             editor.setSize("100%", "200px"); // Adjust width and height
 
             /// Pass the default code from Flask
-            var defaultCode = "{{ industry_challenges[0].default_code | safe }}";  // Get it from Flask
+            var defaultCode = {{ industry_challenges[0].default_code | tojson }};
+        editor.setValue(`# Write your solution here\n${defaultCode}`);
 
-            // Set default code into CodeMirror editor
-            editor.setValue(`# Write your solution here\n${defaultCode}`);
+        document.getElementById("run-code").addEventListener("click", function() {
+            var userCode = editor.getValue(); // Get the code from CodeMirror
 
-
-            // Delay refresh slightly to allow proper rendering
-            setTimeout(() => editor.refresh(), 100);
+            fetch('/run_code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ code: userCode })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("solution-output").textContent = data.output;
+            })
+            .catch(error => {
+                document.getElementById("solution-output").textContent = "Error: " + error.message;
+            });
         });
-
-        
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("solution-box").style.display = "block"; // Force visibility
-        });
-        
+    });
 
       </script>
 </body>

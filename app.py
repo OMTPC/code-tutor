@@ -171,6 +171,21 @@ class IndustryChallenge(db.Model):
         return f"<IndustryChallenge {self.challenge_text[:50]}>"
 
 
+class CareerStory(db.Model):
+    CStoryid = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=True)  # Link to Exercise table
+    CSid = db.Column(db.Integer, db.ForeignKey('career_suggestions.CSid'), nullable=True)  # Link to CareerSuggestions table
+
+    exercise = db.relationship('Exercise', backref='career_story', lazy=True)  # Access career suggestions from exercise
+    career_suggestion = db.relationship('CareerSuggestions', backref='career_story', lazy=True)
+    
+
+    def __repr__(self):
+        return f"<CareerStory {self.title}>"
+
+
 #----------------------------------------------------------API Routes-------------------------------------------------#
 
 @app.route('/api/career_suggestions/<int:exerciseid>', methods=['GET'])
@@ -233,6 +248,45 @@ def get_exercises():
         exercises_list.append(exercise_data)
     
     return jsonify(exercises_list)
+
+
+# API Route to execute user code for indutry challenges
+@app.route('/run_code', methods=['POST'])
+def run_code():
+    data = request.json
+    user_code = data.get("code", "")
+
+    # Check if the user is trying to use a while loop
+    if "while" in user_code:
+        return jsonify({"output": "Error: while loops are not allowed!"})
+    
+    # Restricted execution environment
+    allowed_builtins = {"print": print, "range": range, "len": len, "input": lambda prompt="": input_values.pop(0) if input_values else ""}
+    
+    # Extract input values from user request
+    input_values = data.get("inputs", [])
+
+
+    # Redirect stdout to capture print() output
+    output_capture = io.StringIO()
+    sys.stdout = output_capture
+
+    try:
+        exec(user_code, {"__builtins__": allowed_builtins}, {})  # Safe exec()
+        output = output_capture.getvalue()
+    except Exception as e:
+        output = f"Error: {str(e)}"
+    
+    # Restore stdout
+    sys.stdout = sys.__stdout__
+
+    return jsonify({"output": output})
+
+
+
+
+
+
 
 
 
