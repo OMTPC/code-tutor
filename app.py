@@ -561,28 +561,27 @@ def future_you():
     # Check if the second exercise is completed dynamically
     second_exercise_completed = check_if_second_exercise_completed(userid, current_module_id)
 
-    # Fetch **all exercises from all modules** instead of just the current module
+    # Fetch **all exercises from all modules**
     exercises = Exercise.query.all()
 
-    # Fetch completed exercises for the current module (from UserExerciseProgress)
-    completed_exercises = UserExerciseProgress.query.filter_by(userid=userid).all()
+    # Fetch completed exercises for the current user (from UserExerciseProgress)
+    completed_exercises = UserExerciseProgress.query.filter_by(userid=userid, status='completed').all()
 
     # Collect career suggestions linked to completed exercises
     career_suggestions = []
     seen_exercise_ids = set()  # To avoid duplicate suggestions
 
+    # Loop through the completed exercises
     for completed_exercise in completed_exercises:
-        # Ensure that the exercise is in the current module and is completed
+        # Get the specific exercise
         exercise = Exercise.query.get(completed_exercise.exerciseid)
-        if exercise and exercise.moduleid == current_module_id and completed_exercise.status == 'completed' and completed_exercise.exerciseid not in seen_exercise_ids:
-            # Fetch career suggestions for this completed exercise
+        if exercise and completed_exercise.status == 'completed' and completed_exercise.exerciseid not in seen_exercise_ids:
+            # Fetch career suggestions for this specific exercise
             suggestions = CareerSuggestions.query.filter_by(exerciseid=exercise.exerciseid).all()
             career_suggestions.extend(suggestions)  # Add the career suggestions for this exercise
             seen_exercise_ids.add(completed_exercise.exerciseid)  # Track this exercise as processed
 
-
-# Fetch completed exercises for the current module
-    completed_exercises = UserExerciseProgress.query.filter_by(userid=userid, status='completed').all()
+    # Fetch completed exercises for the current module
     completed_exercise_ids = {ex.exerciseid for ex in completed_exercises}
 
     # Add **all exercises** to be displayed, with status for enabling/disabling buttons
@@ -594,7 +593,6 @@ def future_you():
             'is_completed': exercise.exerciseid in completed_exercise_ids  # Enable if completed
         })
 
-        
     if request.method == 'POST':
         if second_exercise_completed:
             # Redirect to the Dashboard if the second exercise is completed
@@ -607,6 +605,7 @@ def future_you():
                            second_exercise_completed=second_exercise_completed,
                            career_suggestions=career_suggestions,
                            exercises_with_status=exercises_with_status)
+
 
 
 
