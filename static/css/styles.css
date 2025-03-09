@@ -795,6 +795,11 @@ body, html {
     cursor: pointer;  /* Pointer cursor */
 }
 
+/* Prevent colour change on hover for the success button */
+.btn-success:hover {
+    background-color: #D81B60 !important;  /* Original Bootstrap success colour */
+    border-color: #D81B60 !important;
+}
 
 .industry {
     background-color: #D81B60; /* Primary blue */
