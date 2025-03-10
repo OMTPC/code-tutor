@@ -20,9 +20,9 @@
     <div id="challenges">
         {% for challenge in industry_challenges %}
             <div class="challenge">
-                <h3>{{ challenge.challenge_text }}</h3>
-                <p><strong>Career Suggestion:</strong> {{ challenge.career_suggestion }}</p>
-                <pre><code>{{ challenge.example_solution }}</code></pre>
+                <h3 style="color: #1a237e">{{ challenge.challenge_text }}</h3>
+                <p> {{ challenge.career_suggestion }}</p>
+                
                 
             </div>
         {% endfor %}
