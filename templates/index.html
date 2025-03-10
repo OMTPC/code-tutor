@@ -1,14 +1,12 @@
 <!--
     Created by: Orlando Caetano
-    Date: [Insert Date]  
+    Last Updated: 26/02/2025
     Description: Homepage template featuring a hero section, learning path, and a "Future You" section. 
                  The hero section introduces the platform, followed by a simulated code display. The learning path 
                  outlines the different stages of the Python journey, and the "Future You" section shows potential 
                  progression as a Python developer.
-    Resources:
-    -->
-
-
+    Resources: Please refer to References.txt for the resources used to build this application.
+-->
 
 {% extends "base.html" %}
 
@@ -19,85 +17,85 @@
 <!-- Hero Section -->
 <section class="row hero align-items-center">
             
-            <div class="col-lg-6 col-md-12 hero-content text-start">
-                <h1>Start Your Python Journey Today</h1>
-                <p>
-                    Perfect for beginners! Learn Python step by step with interactive lessons, 
-                    real-time feedback, and see your future potential with our "Future You" section.
-                </p>
-                <p>
-                  <a href="{{ url_for("register") }}" class="cta-button">Begin Your Journey</a>
-                </p>
-              
-            </div>
-        
-            <!-- Column for code simulation -->
-            <div class="col-lg-6 col-md-12 code-container mt-4 mt-md-0">
-                
-                <div class="typing">
-                    <span class="line-number">1</span>
-                    <span class="code-text">def greet_user(name):</span>
-                </div>
-                <div class="typing">
-                    <span class="line-number">2</span>
-                    <span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;print(f"Hello, {name}!")</span>
-                </div>
-                <div class="line-number">3</div>
-                <div class="typing">
-                    <span class="line-number">4</span>
-                    <span class="code-text">greet_user("John")</span>
-                </div>
-                <div class="line-number">5</div>
-                <div class="typing">
-                  <span class="line-number">6</span>
-                  <span class="code-text">Hello, John</span>
-              </div>
-            </div>
-        </section>
+      <div class="col-lg-6 col-md-12 hero-content text-start">
+          <h1>Start Your Python Journey Today</h1>
+          <p>
+              Perfect for beginners! Learn Python step by step with interactive lessons, 
+              real-time feedback, and see your future potential with our "Future You" section.
+          </p>
+          <p>
+            <a href="{{ url_for("register") }}" class="cta-button">Begin Your Journey</a>
+          </p>
+      </div>
 
-        <!-- Learning Path Section -->
-        <section class="learning-path">
-            <div class="container">
-                    <h2>Your Learning Journey</h2>
-                <div class="path-grid">
-                <div class="path-card">
-                    <h3>Variables &amp; Data Types</h3>
-                    <p>Learn how to store and manipulate different types of data in Python</p>
-                </div>
-                <div class="path-card">
-                    <h3>Control Flow</h3>
-                    <p>Master if statements, loops, and decision-making in your code</p>
-                </div>
-                <div class="path-card">
-                    <h3>Functions</h3>
-                    <p>Create reusable blocks of code to organize your programs</p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- "Future You" Feature Section -->
-        <section class="future-you">
-            <h2>Future You </h2>
-                <p>Where These Skills Can Take You</p>
-            <div class="timeline">
-              <div class="timeline-point">
-                <div class="point-content">
-                  <h4>Career Path</h4>
-                  <p>Career Opportunities You Can Explore</p>
-                </div>
-              </div>
-              <div class="timeline-point">
-                <div class="point-content">
-                  <h4>Industry Challenges</h4>
-                  <p>Industry Challenges Related To The Concepts You've Learned</p>
-                </div>
-              </div>
-              <div class="timeline-point">
-                <div class="point-content">
-                  <h4>Real World Projects</h4>
-                  <p>Building Applications</p>
-                </div>
-              </div>
-            </div>
-        </section>
+      <!-- Column for code simulation -->
+      <div class="col-lg-6 col-md-12 code-container mt-4 mt-md-0">
+          
+          <div class="typing">
+              <span class="line-number">1</span>
+              <span class="code-text">def greet_user(name):</span>
+          </div>
+          <div class="typing">
+              <span class="line-number">2</span>
+              <span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;print(f"Hello, {name}!")</span>
+          </div>
+          <div class="line-number">3</div>
+          <div class="typing">
+              <span class="line-number">4</span>
+              <span class="code-text">greet_user("John")</span>
+          </div>
+          <div class="line-number">5</div>
+          <div class="typing">
+            <span class="line-number">6</span>
+            <span class="code-text">Hello, John</span>
+          </div>
+      </div>
+  </section>
+
+  <!-- Learning Path Section -->
+  <section class="learning-path">
+      <div class="container">
+              <h2>Your Learning Journey</h2>
+          <div class="path-grid">
+          <div class="path-card">
+              <h3>Variables &amp; Data Types</h3>
+              <p>Learn how to store and manipulate different types of data in Python</p>
+          </div>
+          <div class="path-card">
+              <h3>Control Flow</h3>
+              <p>Master if statements, loops, and decision-making in your code</p>
+          </div>
+          <div class="path-card">
+              <h3>Functions</h3>
+              <p>Create reusable blocks of code to organize your programs</p>
+          </div>
+      </div>
+  </section>
+
+  <!-- "Future You" Feature Section -->
+  <section class="future-you">
+      <h2>Future You </h2>
+          <p>Where These Skills Can Take You</p>
+      <div class="timeline">
+        <div class="timeline-point">
+          <div class="point-content">
+            <h4>Career Path</h4>
+            <p>Career Opportunities You Can Explore</p>
+          </div>
+        </div>
+        <div class="timeline-point">
+          <div class="point-content">
+            <h4>Industry Challenges</h4>
+            <p>Industry Challenges Related To The Concepts You've Learned</p>
+          </div>
+        </div>
+        <div class="timeline-point">
+          <div class="point-content">
+            <h4>Real World Projects</h4>
+            <p>Building Applications</p>
+          </div>
+        </div>
+      </div>
+</section>
+
 {% endblock %}

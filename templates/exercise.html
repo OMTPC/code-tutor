@@ -1,3 +1,19 @@
+<!--
+    Created by: Orlando Caetano
+    Last upodated: 28/02/2025
+    Description: This page is designed for interactive programming exercises. It dynamically displays the exercises for a given module, 
+                 with the ability to switch between exercises. The exercises are presented with a CodeMirror editor for users to write 
+                 and test their Python code. Each exercise is associated with a button that becomes available based on the completion of 
+                 previous exercises. The page also includes a "Run Code" button to check the solution and displays the result, along with 
+                 an option to proceed to the "Future You" page once the exercise is completed correctly.
+                 The page uses the CodeMirror library for code editing, with support for syntax highlighting in Python. 
+                 Additionally, the module’s exercises are displayed in a list, with each exercise linked to a specific task. The "Future You" 
+                 button becomes enabled when the exercise is completed successfully, allowing users to proceed to the next stage in their 
+                 learning journey.
+    
+    Resources: Please refer to References.txt for the resources used to build this application.
+-->
+
 {% extends 'base.html' %}
 
 {% block title %}{{ module.title }} Exercises{% endblock %}
@@ -19,7 +35,6 @@
             <nav class="lesson-nav">
                 <h3>Module {{ module.moduleid }} - Exercises</h3>
                 <ul class="list-group">
-                    <!-- Exercise 1 Button (always enabled) -->
                     <li class="list-group-item">
                         <a href="#" class="exercise-link btn btn-exercise" data-id="{{ exercises[0].exerciseid }}">Exercise 1</a>
                     </li>
@@ -38,7 +53,6 @@
             <nav class="lesson-nav">
                 <h2 id="exercise-title">{{ module.title }}</h2>
 
-                <!-- Exercise description (this will be dynamically updated) -->
                 <p id="exercise-description"></p>
 
                 <textarea id="code"></textarea>
@@ -58,10 +72,12 @@
     </div>
 </div>
 
-<!-- Initialize CodeMirror -->
+
 <script>
+
+//I nitialize CodeMirror
 window.onload = function() {
-    // Initialize CodeMirror
+    
     var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
         lineNumbers: true, 
         mode: "python",    
@@ -69,7 +85,7 @@ window.onload = function() {
         indentUnit: 4      
     });
 
-    var selectedExerciseId = null;  // Store the selected exercise ID
+    var selectedExerciseId = null;  
 
     document.querySelectorAll('.exercise-link').forEach(link => {
         link.addEventListener('click', function (event) {
@@ -77,8 +93,9 @@ window.onload = function() {
             selectedExerciseId = this.getAttribute('data-id');
             document.querySelector('.exercise-link.active')?.classList.remove('active');
             this.classList.add('active');
-            document.getElementById('result').textContent = "";  // Clear the result when switching exercises
-            editor.setValue("");  // Clear the code editor
+            document.getElementById('result').textContent = ""; 
+            // Clear the code editor
+            editor.setValue("");  
 
             // Fetch exercise details from the API
             fetch(`/api/exercise/${selectedExerciseId}`)
@@ -95,6 +112,7 @@ window.onload = function() {
         });
     });
 
+    // Run Code Button
     document.getElementById('run-code').addEventListener('click', function () {
         if (!selectedExerciseId) {
             alert("Please select an exercise first.");
@@ -113,10 +131,8 @@ window.onload = function() {
             let resultBox = document.getElementById('result');
     
             if (data.result === "Correct!") {
-                // Show correctness message and expected output
                 resultBox.textContent = `${data.result}\n\nExpected Output:\n${data.expected_output || "No expected output available."}`;
             } else {
-                // Show only correctness message
                 resultBox.textContent = data.result;
             }
     
@@ -134,33 +150,32 @@ window.onload = function() {
         .catch(error => console.error('Error:', error));
     });
     
-    
-    
-
+    // Future You Button
     function redirectToFutureYou() {
-        // Mark the next exercise as available in the database
+        
         fetch('/mark_next_exercise', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ current_exercise_id: selectedExerciseId })
         })
+        // Enable Exercise 2 button after Future You is pressed
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Enable Exercise 2 button after Future You is pressed
                 var exercise2Btn = document.querySelector('[data-id="{{ exercises[1].exerciseid }}"]');
                 if (exercise2Btn) {
-                    exercise2Btn.disabled = false;  // Enable the button
-                    exercise2Btn.classList.remove('disabled');  // Remove the disabled class
+                    exercise2Btn.disabled = false;  
+                    exercise2Btn.classList.remove('disabled');  
                 }
             }
         })
         .catch(error => console.error('Error:', error));
 
         // Redirect to the Future You page
-        window.location.href = '/future_you';  // Redirect to the Future You page
+        window.location.href = '/future_you';  
     }
 };
+
 </script>
 
 {% endblock %}

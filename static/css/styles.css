@@ -1,12 +1,12 @@
 /* 
     Created by: Orlando Caetano
-    Date: [Insert Date]
-    Description: This is the CSS file for the design and accessibility of the Code Tutor app.
-    Resources:
+    Last Updated: 10/03/2025
+    Description: This is the CSS file for the design and accessibility of the Code Mentor app.
+    Resources: Please refer to References.txt for the resources used to build this application.
 */
 
 
-/* General Styles for Header */
+/* --------------------------------------------------- General Styles for Header----------------------------------------------------- */
 header {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: fixed;
@@ -46,7 +46,7 @@ h1 {
 p {
     font-size: 18px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    margin-left: 20px;                     /* Move the button 20px away from the left */
+    margin-left: 20px;                     
 }
 
 /* Navbar style */
@@ -136,6 +136,8 @@ p {
     margin-left: 20px;                     
 }
 
+/* ---------------------------------------- Index page style ------------------------------------- */
+
 /* Code simulator */
 /* Typing effect style */
 .code-container {
@@ -176,7 +178,6 @@ p {
         width: 100%; 
     }
 }
-
 
 @keyframes blinkCaret {
     50% {
@@ -286,18 +287,18 @@ p {
 
 .timeline {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
-    gap: 20px; /* Space between the boxes */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 20px; 
     padding: 0 20px;
 }
 
 .timeline-point {
-    background: #D81B60; /* Logo colour for boxes */
+    background: #D81B60; 
     border-radius: 8px;
     padding: 20px;
-    color: #ffffff; /* Ensure text inside is white */
+    color: #ffffff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease; /* Animation on hover */
+    transition: transform 0.2s ease; 
 }
 
 .timeline-point:hover {
@@ -322,7 +323,6 @@ p {
     width: 100%;
     margin-top: 30px; 
 }
-
 
 .footer-content {
     display: flex;
@@ -377,7 +377,7 @@ body, html {
 }
 
 
-/*login page style */
+/* ------------------------------ login page style -------------------------------------- */
 .custom-login-button {
     background-color: #D81B60 !important;  
     color: white !important;               
@@ -413,7 +413,7 @@ body, html {
 }
 
 
-/* Register page style */
+/* ----------------------------------- Register page style -------------------------------------- */
 .my-5 {
     color: #D81B60;
     font-weight: bold;
@@ -430,7 +430,7 @@ body, html {
 }
 
 
-/*---------------------------------dashboard styles---------------------------------*/
+/*--------------------------------- dashboard page styles ------------------------------------------*/
 
 .learning-path {
     display: grid;
@@ -484,8 +484,6 @@ body, html {
     gap: 20px; 
     flex-wrap: wrap; 
 }
-
-
 
 .learning-boxe .module h2 {
     font-size: 20px; 
@@ -553,7 +551,7 @@ body, html {
     height: 30px; 
     stroke: #D81B60; 
 }
-/* Add a shadow effect to locked modules */
+
 .locked-module {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  
     opacity: 0.6; 
@@ -561,66 +559,59 @@ body, html {
     background-color: #f5f5f5; 
 }
 
-/* Change cursor to not-allowed for locked icons */
 .locked-module .icon-box {
     cursor: not-allowed;  
 }
 
-
 #future-you-dash-btn {
     background-color: #D81B60; 
-    color: white;               /* White text */
-    padding: 10px 20px;         /* Padding around text */
-    font-size: 18px;            /* Font size */
-    border-radius: 5px;        /* Rounded corners */
-    border: none;              /* Remove default border */
-    cursor: pointer;           /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth transition for background color */
-    margin-bottom: 20px;        /* Add space below the button */
-    width: 100%;                /* Full width */
+    color: white;               
+    padding: 10px 20px;        
+    font-size: 18px;          
+    border-radius: 5px;       
+    border: none;             
+    cursor: pointer;           
+    transition: background-color 0.3s ease; 
+    margin-bottom: 20px;        
+    width: 100%;               
 }
-
-
 
 /* Disabled state styling */
 #future-you-dash-btn:disabled {
-    background-color: #b0b0b0; /* Gray background when disabled */
-    cursor: not-allowed;       /* Change cursor when disabled */
+    background-color: #b0b0b0; 
+    cursor: not-allowed;       
 }
 
 
-/*-----------------------------------------------------------Module intro page styles---------------------------------------------------*/
+/*----------------------------------------------------------- Module intro page styles---------------------------------------------------*/
 
 .intro-box {
-    background-color: #ffffff; /* White background color for the content */
-    padding: 20px;             /* Add padding inside the box */
-    border-radius: 8px;        /* Rounded corners */
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.1); /* Shadow around the entire box */
-    margin-bottom: 20px;       /* Space below the box */
+    background-color: #ffffff; 
+    padding: 20px;             
+    border-radius: 8px;        
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 20px;       
     width: 1200px;
     color: #1a237e;
 }
 
-
-
-
-
 /* Custom style for the Start button */
 .start.btn-primary {
-    background-color: #D81B60; /* Blue background */
-    color: white; /* White text */
-    padding: 10px 30px; /* Padding for top, bottom, left, and right */
-    font-size: 16px; /* Font size */
-    font-weight: bold; /* Bold text */
-    border: none; /* Remove default border */
-    border-radius: 5px; /* Rounded corners */
-    text-align: center; /* Center the text */
-    text-decoration: none; /* Remove underline from the link */
-    display: inline-block; /* Display as inline-block to allow padding */
-    margin-left: 20px; /* Move the button a little more to the right */
+    background-color: #D81B60; 
+    color: white;
+    padding: 10px 30px; 
+    font-size: 16px; 
+    font-weight: bold; 
+    border: none; 
+    border-radius: 5px; 
+    text-align: center; 
+    text-decoration: none; 
+    display: inline-block; 
+    margin-left: 20px; 
 }
 
-/* -------------------------------Exercise page style -----------------------------------*/
+/* ----------------------------------- Exercise page style -----------------------------------*/
+
 /* Style for the Back Arrow Button */
 .navbar .back-arrow-btn i {
     font-size: 4rem; 
@@ -631,7 +622,7 @@ body, html {
     color: #D81B60;  
 }
 
-/*codemirror and exercise page styling */
+/*codemirror styling */
 .CodeMirror {
     border: 1px solid #ddd;
     border-radius: 0.25rem; 
@@ -693,62 +684,58 @@ body, html {
 
 /* General style for the Go to Future You button */
 .future-you-btn {
-    background-color: #D81B60; /* Green background */
-    color: white; /* White text */
-    padding: 10px 20px; /* Padding for top, bottom, left, and right */
-    font-size: 16px; /* Font size */
-    font-weight: bold; /* Bold text */
-    border: none; /* Remove default border */
-    border-radius: 5px; /* Rounded corners */
-    text-align: center; /* Center the text */
-    text-decoration: none; /* Remove underline from the link */
-    cursor: pointer; /* Change cursor to pointer when hovered */
-    display: inline-block; /* Allow padding and margin to be applied */
-    
+    background-color: #D81B60; 
+    color: white; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    font-weight: bold; 
+    border: none; 
+    border-radius: 5px; 
+    text-align: center; 
+    text-decoration: none; 
+    cursor: pointer; 
+    display: inline-block;    
 }
 
 /* Style when the button is disabled */
 .future-you-btn.disabled {
-    background-color: #ccc; /* Light grey background for disabled state */
-    color: #666; /* Lighter text */
-    cursor: not-allowed; /* Disable cursor */
-    opacity: 0.7; /* Slightly transparent */
+    background-color: #ccc; 
+    color: #666; 
+    cursor: not-allowed; 
+    opacity: 0.7; 
 }
 
-
-
-/* -------------------------------future you section career path styles----------------------------------------------- */
+/* -------------------------------future you page styles----------------------------------------------- */
 
 .intro {
-    margin-top: -50px; /* Remove any top margin */
-    padding-top: 0; /* Remove any top padding */
-    margin-bottom: 20px; /* Optional, to provide a little space below */
+    margin-top: -50px; 
+    padding-top: 0; 
+    margin-bottom: 20px; 
 }
 
 .col-md-8 {
-    margin-left: -80px;  /* Move the content 20px to the left */
-    padding-left: 20px;   /* Add some padding if needed */
+    margin-left: -80px;  
+    padding-left: 20px;   
 }
 
 .industry-challenges {
-    width: 120%; /* Ensures it takes full width of its column */
-    max-width: 500px; /* Adjust based on your needs */
+    width: 120%; 
+    max-width: 500px; 
 }
 .career-paths-container {
     display: flex;
-    flex-wrap: wrap; /* This will allow items to wrap to the next line if the container is not wide enough */
-    gap: 20px; /* Add space between the boxes */
-    justify-content: space-between; /* Distribute space evenly between the boxes */
+    flex-wrap: wrap; 
+    gap: 20px; 
+    justify-content: space-between; 
 }
 
 .career-path-box {
     background-color: #f4f4f4;
     padding: 20px;
-    width: 80%; /* Adjust the width of the boxes */
+    width: 80%; 
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
-    
 }
 
 .career-title {
@@ -765,7 +752,6 @@ body, html {
     text-align: left; 
 }
 
-
 .btn-custom {
     background-color: #D81B60 !important;
     color: white;
@@ -776,42 +762,40 @@ body, html {
     width: 1470px;
 }
 
-
 /* Customize Learn More Button */
 .learn-more-btn {
-    background-color: #D81B60;  /* Custom background */
-    color: white;  /* Text color */
-    padding: 10px 08px;  /* Padding to make it larger */
-    font-size: 1rem;  /* Font size */
-    border-radius: 8px;  /* Rounded corners */
-    
+    background-color: #D81B60;  
+    color: white;  
+    padding: 10px 08px;  
+    font-size: 1rem;  
+    border-radius: 8px;   
 }
 
 .learn-more-btn:hover {
-    background-color: #D81B60;  /* Darker color on hover */
-    cursor: pointer;  /* Pointer cursor */
+    background-color: #D81B60;  
+    cursor: pointer; 
 }
 
 .career-stories-btn {
-    background-color: #D81B60;  /* Darker color on hover */
-    cursor: pointer;  /* Pointer cursor */
+    background-color: #D81B60;  
+    cursor: pointer;  
 }
 
 /* Prevent colour change on hover for the success button */
 .btn-success:hover {
-    background-color: #D81B60 !important;  /* Original Bootstrap success colour */
+    background-color: #D81B60 !important;  
     border-color: #D81B60 !important;
 }
 
 .industry {
-    background-color: #D81B60; /* Primary blue */
-    color: white; /* White text */
+    background-color: #D81B60; 
+    color: white; 
     border: none;
     padding: 12px 24px;
     font-size: 16px;
     font-weight: bold;
     text-transform: uppercase;
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 8px; 
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     display: inline-block;
@@ -820,8 +804,8 @@ body, html {
 
 /* Disabled button style */
 .industry:disabled {
-    background-color: #ccc; /* Greyed out */
-    color: #666; /* Dimmed text */
+    background-color: #ccc; 
+    color: #666; 
     cursor: not-allowed;
     box-shadow: none;
     opacity: 0.6;
@@ -830,7 +814,7 @@ body, html {
 .card-body {
     background-color: #f4f4f4;
     padding: 20px;
-    width: 80%; /* Adjust the width of the boxes */
+    width: 80%; 
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
@@ -839,35 +823,31 @@ body, html {
 
 /* Remove the border from the card */
 .card {
-    border: none !important; /* Remove border */
+    border: none !important; 
 }
 
-/* Optionally, remove any border from the card body as well */
 .card-body {
-    border: none !important; /* Remove border */
+    border: none !important; 
 }
 
-/* Change the text color for the card title */
 .card-title {
-    color: #1a237e; /* Change to your preferred color */
+    color: #1a237e; 
 }
 
-/* Change the text color for the card text (description) */
 .card-text {
-    color: #1a237e; /* Change to your preferred color */
+    color: #1a237e; 
 }
 
-/* Change the text color for the concepts */
 .card-body ul li {
-    color: #1a237e; /* Change to your preferred color */
+    color: #1a237e; 
 }
 
 /* Style the View Code button */
 .btn.vcode.toggle-code-btn {
-    background-color: #D81B60; /* Change background color */
-    color: white; /* Change text color */
-    border: 2px solid #D81B60; /* Add a border with the same color as the background */
-    border-radius: 5px; /* Rounded corners */
-    padding: 10px 20px; /* Padding inside the button */
-    font-size: 16px; /* Font size */
+    background-color: #D81B60; 
+    color: white; 
+    border: 2px solid #D81B60; 
+    border-radius: 5px; 
+    padding: 10px 20px; 
+    font-size: 16px; 
 }

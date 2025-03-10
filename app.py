@@ -1,13 +1,15 @@
 """
 Created by: Orlando Caetano
-Date: [Insert Date]
+last update: 10/03/2025
 Description: 
-    This is a Flask-based web application for Code Tutor, designed to help novice programmers 
-    learn Python through structured exercises and modules. [more to come]
-Resources: [Please refer to resources.txt]
+    This is a Flask-based web application for Code Mentor, designed to help novice programmers 
+    learn Python through structured exercises and modules. with a future you page that displays
+    career suggestions and coding projects based on the user's progress. The application also
+    includes an API to check user code for industry challenges and career suggestions.
+Resources: Please refer to References.txt for the resources used to build this application.
 """
 
-
+#-------------------------------------------Imports-------------------------------------------------#
 from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, session
 from forms import LoginForm, RegisterForm
 import datetime
@@ -24,7 +26,7 @@ import io
 app = Flask(__name__)
 
 # Secret key for security
-app.config["SECRET_KEY"] = "Catianair25"
+app.config["SECRET_KEY"] = "MasterKey"
 
 # Database configuration (SQLite)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///codetutorDB.db"  
@@ -34,9 +36,9 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-
+# Initialize Flask-Login
 login_manager = LoginManager(app)
-login_manager.login_view = "login"  # Redirect unauthorized users to the login page
+login_manager.login_view = "login"  
 login_manager.login_message = "Please log in to access this page."
 
 # Load user session from database
@@ -44,17 +46,17 @@ login_manager.login_message = "Please log in to access this page."
 def load_user(userid):
     return User.query.get(int(userid))  
 
+
 # -------------------------------------------database models-------------------------------------------------#
 
-# user table
+# User table
 class User(UserMixin,db.Model):
     userid = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(250), nullable=False)  # Store hashed password
+    password_hash = db.Column(db.String(250), nullable=False)  
     registered_at = db.Column(db.DateTime, default=func.now)  
 
-    # Relationships with other tables
     module_progress = db.relationship('UserModuleProgress', backref='user', lazy=True)
     exercise_progress = db.relationship('UserExerciseProgress', backref='user', lazy=True)
 
@@ -81,13 +83,13 @@ class Module(db.Model):
     status = db.Column(db.Enum('locked', 'available', 'completed', name='module_status'), default='locked')
     intro = db.Column(db.Text, nullable=True) 
     
-    # Relationships with other tables
     exercises = db.relationship('Exercise', backref='module', lazy=True)
     user_progress = db.relationship('UserModuleProgress', backref='module', lazy=True)
 
     def __repr__(self):
         return f"Module('{self.title}', '{self.status}')"
     
+
 # Exercise Table
 class Exercise(db.Model):
     exerciseid = db.Column(db.Integer, primary_key=True)
@@ -95,23 +97,21 @@ class Exercise(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     
-
-    # Relationships with other tables
     user_progress = db.relationship('UserExerciseProgress', backref='exercise', lazy=True)
 
     def __repr__(self):
         return f"Exercise('{self.title}', '{self.status}')"
 
-# Exercise solution Table
+
+# Exercises solution Table
 class Solution(db.Model):
     solutionid = db.Column(db.Integer, primary_key=True)
     exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=False)
-    solution_text = db.Column(db.Text, nullable=True)  # Solution as plain text
-    solution_regex = db.Column(db.Text, nullable=True)  # Solution as regex pattern
-    solution_type = db.Column(db.Enum('text', 'regex', name='solution_type'), nullable=False, default='text')  # Type of solution (text or regex)
-    expected_output = db.Column(db.Text, nullable=True)  # Expected output for the solution
+    solution_text = db.Column(db.Text, nullable=True)  
+    solution_regex = db.Column(db.Text, nullable=True)  
+    solution_type = db.Column(db.Enum('text', 'regex', name='solution_type'), nullable=False, default='text') 
+    expected_output = db.Column(db.Text, nullable=True)  
 
-    # Relationship back to Exercise
     exercise = db.relationship('Exercise', backref=db.backref('solutions', lazy=True))
 
     def __repr__(self):
@@ -126,9 +126,9 @@ class UserModuleProgress(db.Model):
     status = db.Column(db.Enum('locked', 'available', 'completed', name='progress_status'), default='locked')
     progress = db.Column(db.Integer, default=0)  # Progress in percentage (0-100)
     
-    
     def __repr__(self):
         return f"UserModuleProgress(User ID: {self.userid}, Module ID: {self.moduleid}, Status: {self.status})"
+
 
 # User Exercise Progress
 class UserExerciseProgress(db.Model):
@@ -136,22 +136,21 @@ class UserExerciseProgress(db.Model):
     userid = db.Column(db.Integer, db.ForeignKey('user.userid'), nullable=False)
     exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=False)
     status = db.Column(db.Enum('locked', 'available', 'completed', name='exercise_progress_status'), default='locked')
-    
 
     def __repr__(self):
         return f"UserExerciseProgress(User ID: {self.userid}, Exercise ID: {self.exerciseid}, Status: {self.status})"
+
 
 #Career suggestions table
 class CareerSuggestions(db.Model):
     CSid = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=True)  # Link to Exercise table
+    exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=True)  
     keyresponsibilities = db.Column(db.Text, nullable=True)
 
-    exercise = db.relationship('Exercise', backref='career_suggestions', lazy=True)  # Access career suggestions from exercise
+    exercise = db.relationship('Exercise', backref='career_suggestions', lazy=True)  
     
-
     def __repr__(self):
         return f"<CareerSuggestion {self.title}>"
 
@@ -160,25 +159,25 @@ class CareerSuggestions(db.Model):
 class IndustryChallenge(db.Model):
     ICid = db.Column(db.Integer, primary_key=True)
     challenge_text = db.Column(db.Text, nullable=False)
-    exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=False)  # Link to Exercise table
+    exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=False)  
     example_solution = db.Column(db.Text, nullable=True)
     default_code = db.Column(db.Text, nullable=True)
 
-    # Define the relationship to Exercise (no longer CareerSuggestions)
     exercise = db.relationship('Exercise', backref='industry_challenges', lazy=True)
 
     def __repr__(self):
         return f"<IndustryChallenge {self.challenge_text[:50]}>"
 
 
+# Career Story Table
 class CareerStory(db.Model):
     CStoryid = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=True)  # Link to Exercise table
-    CSid = db.Column(db.Integer, db.ForeignKey('career_suggestions.CSid'), nullable=True)  # Link to CareerSuggestions table
+    exerciseid = db.Column(db.Integer, db.ForeignKey('exercise.exerciseid'), nullable=True)  
+    CSid = db.Column(db.Integer, db.ForeignKey('career_suggestions.CSid'), nullable=True)  
 
-    exercise = db.relationship('Exercise', backref='career_story', lazy=True)  # Access career suggestions from exercise
+    exercise = db.relationship('Exercise', backref='career_story', lazy=True)  
     career_suggestion = db.relationship('CareerSuggestions', backref='career_story', lazy=True)
     
 
@@ -186,15 +185,16 @@ class CareerStory(db.Model):
         return f"<CareerStory {self.title}>"
 
 
+
 #----------------------------------------------------------API Routes-------------------------------------------------#
 
+# API Route to fetch career suggestions
 @app.route('/api/career_suggestions/<int:exerciseid>', methods=['GET'])
 def get_career_suggestions(exerciseid):
-    # Query career suggestions based on exerciseid
+    
     career_suggestions = CareerSuggestions.query.filter_by(exerciseid=exerciseid).all()
     
     if career_suggestions:
-        # Return the career suggestions in JSON format
         return jsonify([{
             "CSid": suggestion.CSid,
             "title": suggestion.title,
@@ -205,18 +205,14 @@ def get_career_suggestions(exerciseid):
         return jsonify({"error": "No career suggestions found for this exercise"}), 404
 
 
+# API Route to fetch key responsibilities for a career suggestion
 @app.route('/api/career_suggestions/responsibilities/<int:CSid>', methods=['GET'])
 def get_key_responsibilities(CSid):
     career = CareerSuggestions.query.get(CSid)
     if career:
-        # Return the keyresponsibilities directly without splitting
         return jsonify({"keyresponsibilities": career.keyresponsibilities})
     else:
         return jsonify({"error": "Career suggestion not found"}), 404
-
-
-
-
 
 
 # API Route to fetch an exercise
@@ -232,6 +228,7 @@ def get_exercise(exerciseid):
     return jsonify({"error": "Exercise not found"}), 404
 
 
+# API Route to fetch the solution for an exercise
 @app.route('/api/get_exercises', methods=['GET'])
 def get_exercises():
     # Fetch exercises from the database
@@ -243,7 +240,7 @@ def get_exercises():
             'exerciseid': exercise.exerciseid,
             'moduleid': exercise.moduleid,
             'title': exercise.title,
-            'exercise_number': exercise.exerciseid  # Using exerciseid for odd/even logic
+            'exercise_number': exercise.exerciseid  
         }
         exercises_list.append(exercise_data)
     
@@ -263,59 +260,46 @@ def run_code():
     # Restricted execution environment
     allowed_builtins = {"print": print, "range": range, "len": len, "input": lambda prompt="": input_values.pop(0) if input_values else ""}
     
-    # Extract input values from user request
     input_values = data.get("inputs", [])
 
-
-    # Redirect stdout to capture print() output
     output_capture = io.StringIO()
     sys.stdout = output_capture
 
     try:
-        exec(user_code, {"__builtins__": allowed_builtins}, {})  # Safe exec()
+        exec(user_code, {"__builtins__": allowed_builtins}, {})  
         output = output_capture.getvalue()
     except Exception as e:
         output = f"Error: {str(e)}"
     
-    # Restore stdout
     sys.stdout = sys.__stdout__
 
     return jsonify({"output": output})
 
 
-
-
-
-
-
-
-
-#check user solution function
-# Updated check_solution function to also make the next exercise available
+# Function to check the user's code against the expected solution
 def check_solution(user_code, exercise_id):
-    # Get the solution for the given exercise
+    
     solutions = Solution.query.filter_by(exerciseid=exercise_id).all()
 
-    # Check if any solution matches the user code
     for solution in solutions:
         if solution.solution_type == 'text' and solution.solution_text.strip().lower() == user_code.strip().lower():
-            return "Correct!"# User's code matches the exact text solution
+            return "Correct!"
 
         if solution.solution_type == 'regex':
-            # Check if the user's code matches the regex pattern
             pattern = re.compile(solution.solution_regex)
             if pattern.fullmatch(user_code.strip()):
-                return "Correct!"# User's code matches the regex solution
+                return "Correct!"
 
-    return "Incorrect. Please try again."  # If no solutions match
+    return "Incorrect. Please try again."  
 
-# Flask route to check the user's code (API)
+
+# API Route to check the user's code against the expected solution
 @app.route('/check_code', methods=['POST'])
 def check_code():
     data = request.get_json()
 
     if not data or 'code' not in data or 'exercise_id' not in data:
-        return jsonify({'result': 'Error: Missing code or exercise ID'}), 400  # Bad Request
+        return jsonify({'result': 'Error: Missing code or exercise ID'}), 400  
 
     user_code = data['code']
     exercise_id = data['exercise_id']
@@ -323,7 +307,6 @@ def check_code():
     result = check_solution(user_code, exercise_id)
 
     if result == "Correct!":
-        # Update the progress for the exercise
         progress = UserExerciseProgress.query.filter_by(userid=current_user.userid, exerciseid=exercise_id).first()
         if not progress:
             progress = UserExerciseProgress(userid=current_user.userid, exerciseid=exercise_id, status='completed')
@@ -333,7 +316,6 @@ def check_code():
 
         db.session.commit()
 
-        # Mark the next exercise as available
         next_exercise = Exercise.query.filter(Exercise.exerciseid > exercise_id, Exercise.moduleid == Exercise.query.filter_by(exerciseid=exercise_id).first().moduleid).order_by(Exercise.exerciseid).first()
         
         if next_exercise:
@@ -345,7 +327,6 @@ def check_code():
                 db.session.add(next_progress)
             db.session.commit()
 
-        # Check if the user has completed all exercises in the current module
         module_id = Exercise.query.filter_by(exerciseid=exercise_id).first().moduleid
         completed_exercises = UserExerciseProgress.query.filter_by(userid=current_user.userid, status='completed').join(Exercise).filter(Exercise.moduleid == module_id).count()
 
@@ -362,31 +343,26 @@ def check_code():
 
             db.session.commit()
 
-        # Get the expected outcome from the database (first available solution for the exercise)
     solution_entry = Solution.query.filter_by(exerciseid=exercise_id).first()
 
-    # Ensure an expected output exists, otherwise return a default message
     expected_output_text = solution_entry.expected_output if solution_entry and solution_entry.expected_output else "No expected output available."
     
-
-
     return jsonify({'result': result, 'expected_output': expected_output_text})
 
 
-
+# API Route to fetch career suggestions for a given exercise
 @app.route('/api/career_suggestions/stories/<int:CSid>', methods=['GET'])
 @login_required
 def get_career_stories(CSid):
-    # Fetch career stories related to the given career suggestion (CSid)
+    
     career_stories = CareerStory.query.filter_by(CSid=CSid).all()
 
     if not career_stories:
         return jsonify({"error": "No career stories found for this suggestion."})
 
-    # Convert stories to JSON format
     stories_data = [
         {
-            "CStoryid": story.CStoryid,  # Primary Key
+            "CStoryid": story.CStoryid,  
             "title": story.title,
             "description": story.description
         } 
@@ -394,11 +370,6 @@ def get_career_stories(CSid):
     ]
 
     return jsonify({"career_stories": stories_data})
-
-
-
-
-
 
 
 #----------------------------------------------------------Routes-------------------------------------------------#
@@ -410,19 +381,17 @@ def home():
     return render_template("index.html", year = current_year)
 
 
-# Register route - allows users to create an account
+# Register route - allows users to register
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()  
     
     if form.validate_on_submit():
-        # Check if the user already exists based on email
         existing_user = User.query.filter_by(email=form.email.data).first()
         if existing_user:
             flash("Email already registered. Please log in.", "danger")
             return redirect(url_for("login"))
         
-        # Hash the password 
         hashed_password = generate_password_hash(form.password.data)
 
         # Create a new user instance with the form data
@@ -445,7 +414,6 @@ def register():
     return render_template("register.html", form=form)  
 
 
-
 # Login route - allows users to log in
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -455,7 +423,6 @@ def login():
         if user and user.check_password(form.password.data):  
             login_user(user, remember=form.remember.data)  
 
-            # Initialize module progress for new users
             modules = Module.query.all()
             for module in modules:
                 user_module_progress = UserModuleProgress.query.filter_by(userid=user.userid, moduleid=module.moduleid).first()
@@ -479,7 +446,7 @@ def login():
     return render_template("login.html", form=form)
 
 
-
+# Dashboard route - displays the user's progress and modules
 @app.route("/dashboard")
 @login_required
 def dashboard():
@@ -506,7 +473,7 @@ def dashboard():
 
         # Determine module status
         if module.moduleid == 1:
-            module_status = 'available'  # The first module is always available
+            module_status = 'available' 
         else:
             previous_module_progress = UserModuleProgress.query.filter_by(
                 userid=current_user.userid, moduleid=module.moduleid - 1, status='completed'
@@ -517,11 +484,9 @@ def dashboard():
             else:
                 module_status = 'locked'
 
-        # Ensure module status updates correctly
         if completed_exercises == len(exercises):
             module_status = 'completed'
 
-        # Update module progress in the database if needed
         if user_module_progress:
             user_module_progress.status = module_status
         else:
@@ -539,13 +504,13 @@ def dashboard():
     return render_template("dashboard.html", user_modules=user_modules, first_exercise_completed=first_exercise_completed)
 
 
+# Module intro route - displays the module introduction
 @app.route('/module_intro/<int:module_id>', methods=['GET', 'POST'])
 @login_required
 def module_intro(module_id):
-    # Get the module details from the database
+    
     module = Module.query.get_or_404(module_id)
     
-    # Get the user's progress in the module (to ensure they haven't already started)
     user_progress = UserModuleProgress.query.filter_by(userid=current_user.userid, moduleid=module_id).first()
 
     if request.method == 'POST':
@@ -555,8 +520,7 @@ def module_intro(module_id):
     return render_template('module_intro.html', module=module)
 
 
-
-
+# Module exercises route - displays the module exercises
 @app.route("/module/<int:module_id>/exercises", methods=["GET", "POST"])
 @login_required
 def exercises(module_id):
@@ -573,17 +537,14 @@ def exercises(module_id):
         db.session.add(user_progress)
         db.session.commit()
 
-    # Ensure exercise progress entries exist for each exercise
     for i, exercise in enumerate(exercises):
         user_exercise_progress = UserExerciseProgress.query.filter_by(userid=current_user.userid, exerciseid=exercise.exerciseid).first()
         if not user_exercise_progress:
-            # Mark the first exercise as available, others as locked
             status = 'available' if i == 0 else 'locked'
             user_exercise_progress = UserExerciseProgress(userid=current_user.userid, exerciseid=exercise.exerciseid, status=status)
             db.session.add(user_exercise_progress)
             db.session.commit()
 
-    # Fetch exercise progress for each exercise
     exercise_progress = [
         UserExerciseProgress.query.filter_by(userid=current_user.userid, exerciseid=exercise.exerciseid).first()
         for exercise in exercises
@@ -607,16 +568,14 @@ def exercises(module_id):
                         next_exercise_progress.status = 'available'
                         db.session.commit()
 
-                # Redirect to Future You page
                 return redirect(url_for('future_you'))
 
     return render_template("exercise.html", module=module, exercises=exercises, exercise_progress=exercise_progress)
 
 
-# Your other imports and code here...
-
+# function to check if the second exercise is completed (for Exercise or dashboard button)
 def check_if_second_exercise_completed(userid, module_id):
-    # Fetch the second exercise dynamically from the module
+    
     second_exercise = Exercise.query.filter_by(moduleid=module_id).order_by(Exercise.exerciseid).offset(1).first()  # This grabs the second exercise based on the module
     if second_exercise:
         user_progress = UserExerciseProgress.query.filter_by(userid=userid, exerciseid=second_exercise.exerciseid).first()
@@ -624,45 +583,40 @@ def check_if_second_exercise_completed(userid, module_id):
     return False
 
 
-
-
+# Future you route - displays career suggestions; Industry challenges and coding projects
 @app.route('/future_you', methods=['GET', 'POST'])
 @login_required
 def future_you():
-    # Get the current user
-    userid = current_user.userid  # Assuming `userid` is the primary key for the User model
+    
+    userid = current_user.userid  
 
     # Fetch the current module for the user (from UserModuleProgress)
     user_module_progress = UserModuleProgress.query.filter_by(userid=userid).first()
     if user_module_progress:
         current_module_id = user_module_progress.moduleid
     else:
-        current_module_id = None  # Or handle if the user has no progress
+        current_module_id = None  
 
-    # Check if the second exercise is completed dynamically
     second_exercise_completed = check_if_second_exercise_completed(userid, current_module_id)
 
-    # Fetch **all exercises from all modules**
     exercises = Exercise.query.all()
 
     # Fetch completed exercises for the current user (from UserExerciseProgress)
     completed_exercises = UserExerciseProgress.query.filter_by(userid=userid, status='completed').all()
 
-    # Collect career suggestions linked to completed exercises
     career_suggestions = []
-    seen_exercise_ids = set()  # To avoid duplicate suggestions
+    seen_exercise_ids = set()  
 
     # Loop through the completed exercises
     for completed_exercise in completed_exercises:
-        # Get the specific exercise
         exercise = Exercise.query.get(completed_exercise.exerciseid)
         if exercise and completed_exercise.status == 'completed' and completed_exercise.exerciseid not in seen_exercise_ids:
             # Fetch career suggestions for this specific exercise
             suggestions = CareerSuggestions.query.filter_by(exerciseid=exercise.exerciseid).all()
-            career_suggestions.extend(suggestions)  # Add the career suggestions for this exercise
-            seen_exercise_ids.add(completed_exercise.exerciseid)  # Track this exercise as processed
+            career_suggestions.extend(suggestions)  
+            seen_exercise_ids.add(completed_exercise.exerciseid)  
 
-    # Fetch completed exercises for the current module
+    
     completed_exercise_ids = {ex.exerciseid for ex in completed_exercises}
 
     # Add **all exercises** to be displayed, with status for enabling/disabling buttons
@@ -671,19 +625,15 @@ def future_you():
         exercises_with_status.append({
             'exerciseid': exercise.exerciseid,
             'title': exercise.title,
-            'is_completed': exercise.exerciseid in completed_exercise_ids  # Enable if completed
+            'is_completed': exercise.exerciseid in completed_exercise_ids  
         })
 
     if request.method == 'POST':
         if second_exercise_completed:
-            # Redirect to the Dashboard if the second exercise is completed
             return redirect(url_for('dashboard'))
         else:
-            # Redirect to the exercises page with the current module id
             return redirect(url_for('exercises', module_id=current_module_id))
 
-
-# Check if all exercises for the current module are completed
     all_exercises_completed = len(completed_exercise_ids) == len(exercises)
 
     # Coding projects to display
@@ -761,7 +711,6 @@ def future_you():
             }
         ]
 
-
     return render_template('future_you.html', 
                            second_exercise_completed=second_exercise_completed,
                            career_suggestions=career_suggestions,
@@ -771,7 +720,7 @@ def future_you():
 
 
 
-
+# Industry Challenges route - displays the industry challenges exercise details and code editor
 @app.route('/industry_challenges/<int:exercise_id>', methods=['GET'])
 @login_required
 def industry_challenges(exercise_id):
@@ -781,21 +730,19 @@ def industry_challenges(exercise_id):
     if challenge:
         return render_template('industry_challenges.html', industry_challenges=[challenge])
     else:
-        # If no challenge is available for that exercise, you can render a blank page or a message
         return render_template('industry_challenges.html', industry_challenges=[])
-
 
 
 # Logout route
 @app.route("/logout")
-@login_required  # Ensure the user is logged in before logging out
+@login_required  
 def logout():
-    logout_user()  # Logs out the current user
-    flash("You have been logged out.", "success")  # Optionally, flash a message
-    return redirect(url_for("home"))  # Redirect to the home page or login page
+    logout_user()  
+    flash("You have been logged out.", "success")  
+    return redirect(url_for("home"))  
 
 
-
+# start the Flask development server with debugging enabled
 if __name__ == "__main__":
     app.run(debug=True)
 

@@ -1,3 +1,15 @@
+<!--
+    Created by: Orlando Caetano
+    Date: [Insert Date]  
+    Description: Industry challenges page template featuring an interactive code editor (Code Mirror) for solving real-world problems. 
+                 The page displays various challenges related to different industries, along with career suggestions 
+                 based on the task. A CodeMirror editor is included for users to write and test their solutions directly 
+                 on the platform. Users can modify the code to complete the challenge and view the output in a solution box.
+    Resources: Please refer to References.txt for the resources used to build this application.
+-->
+
+
+
 <!-- industry_challenges.html -->
 <html lang="en">
 <head>
@@ -30,6 +42,7 @@
     <textarea id="codeEditor"></textarea>
 
     <p>📝 Try modifying the code to complete the task!</p>
+    
     <!-- Run Code Button -->
     <button id="run-code" class="btn btn-primary mt-3">Run Code</button>
 
@@ -44,23 +57,21 @@
         document.addEventListener("DOMContentLoaded", function() {
 
             var editor = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
-                mode: "python",  // Change based on language
+                mode: "python",  
                 lineNumbers: true,
-                theme: "dracula", // Change theme if needed
+                theme: "dracula", 
                 indentUnit: 4,
                 tabSize: 4,
                 matchBrackets: true
             });
 
-            // Set editor height
-            editor.setSize("100%", "200px"); // Adjust width and height
+            editor.setSize("100%", "200px"); 
 
-            /// Pass the default code from Flask
             var defaultCode = {{ industry_challenges[0].default_code | tojson }};
         editor.setValue(`# Write your solution here\n${defaultCode}`);
 
         document.getElementById("run-code").addEventListener("click", function() {
-            var userCode = editor.getValue(); // Get the code from CodeMirror
+            var userCode = editor.getValue(); 
 
             fetch('/run_code', {
                 method: 'POST',
@@ -79,6 +90,6 @@
         });
     });
 
-      </script>
+    </script>
 </body>
 </html>
