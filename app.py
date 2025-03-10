@@ -682,10 +682,92 @@ def future_you():
             # Redirect to the exercises page with the current module id
             return redirect(url_for('exercises', module_id=current_module_id))
 
+
+# Check if all exercises for the current module are completed
+    all_exercises_completed = len(completed_exercise_ids) == len(exercises)
+
+    # Coding projects to display
+    coding_projects = []
+    if all_exercises_completed:
+        coding_projects = [
+            {
+                "id": 1,
+                "title": "Todo List App",
+                "description": "A simple task management application.",
+                "concepts": ["print", "if-statements", "loops"],
+                "demoCode": '''
+    # Simple Todo List
+    tasks = []
+
+    def add_task(task):
+        tasks.append(task)
+        print(f"Added task: {task}")
+
+    def list_tasks():
+        if len(tasks) == 0:
+            print("No tasks!")
+            return
+        print("Your tasks:")
+        for i, task in enumerate(tasks):
+            print(f"{i + 1}. {task}")
+
+    add_task("Learn Python")
+    add_task("Build projects")
+    list_tasks()
+                '''
+            },
+            {
+                "id": 2,
+                "title": "Number Guessing Game",
+                "description": "Interactive game using conditions.",
+                "concepts": ["print", "if-statements", "loops"],
+                "demoCode": '''
+    # Number Guessing Game
+    secret = 7
+    guess = None
+
+    while guess != secret:
+        guess = int(input("Guess the number: "))
+        if guess < secret:
+            print("Too low!")
+        elif guess > secret:
+            print("Too high!")
+        else:
+            print("You got it!")
+                '''
+            },
+            {
+                "id": 3,
+                "title": "Calculator",
+                "description": "Basic arithmetic operations using functions.",
+                "concepts": ["print", "if-statements"],
+                "demoCode": '''
+    # Simple Calculator
+    def calculate(a, b, op):
+        if op == '+':
+            print(f"{a} + {b} = {a + b}")
+        elif op == '-':
+            print(f"{a} - {b} = {a - b}")
+        elif op == '*':
+            print(f"{a} * {b} = {a * b}")
+        elif op == '/':
+            print(f"{a} / {b} = {a / b}")
+        else:
+            print("Unsupported operation")
+
+    calculate(5, 3, '+')
+    calculate(10, 4, '*')
+                '''
+            }
+        ]
+
+
     return render_template('future_you.html', 
                            second_exercise_completed=second_exercise_completed,
                            career_suggestions=career_suggestions,
-                           exercises_with_status=exercises_with_status)
+                           exercises_with_status=exercises_with_status,
+                           coding_projects=coding_projects,
+                           all_exercises_completed=all_exercises_completed)
 
 
 

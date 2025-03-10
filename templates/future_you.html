@@ -86,35 +86,36 @@
 
         
 
-        <h2>Step-by-Step Coding Project: Master Your Skills</h2>
-        <p>Complete the following coding project as you progress through the modules:</p>
-        <!-- Step-by-Step Project Box -->
-        <div class="col-md-12 mb-4">
-            <div class="learning-box">
-                <div class="coding-project-box">
-                    <div class="coding-project-steps">
-                        {% for step in coding_project_steps %}
-                            <div class="project-step {% if step.status == 'completed' %}completed{% elif step.status == 'in-progress' %}in-progress{% else %}locked{% endif %}">
-                                <h3>Step {{ step.step_number }}: {{ step.title }}</h3>
-                                <p>{{ step.description }}</p>
-                                {% if step.status == 'locked' %}
-                                    <p><strong>Locked</strong></p>
-                                {% elif step.status == 'in-progress' %}
-                                    <p><strong>In Progress</strong></p>
-                                {% else %}
-                                    <p><strong>Completed</strong></p>
-                                {% endif %}
-                                {% if step.status == 'in-progress' %}
-                                    <a href="{{ url_for('project_step', step_id=step.id) }}" class="btn btn-primary">Continue</a>
-                                {% elif step.status == 'locked' %}
-                                    <button class="btn btn-secondary" disabled>Locked</button>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
+        <h1 style="margin-left: -50px; margin-top: 50px;">Coding Projects</h1>
+        <p style="margin-left: -50px; margin-top: 10px;">Explore coding projects that you can work on to enhance your skills.</p>
+
+
+        {% if all_exercises_completed %}
+            <div class="row">
+                {% for project in coding_projects %}
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title"><strong>{{ project.title }}</strong></h4>
+                            <p class="card-text">{{ project.description }}</p>
+                            <h5 style="color: #1a237e">Concepts:</h5>
+                            <ul>
+                                {% for concept in project.concepts %}
+                                    <li>{{ concept }}</li>
+                                {% endfor %}
+                            </ul>
+
+                            <!-- View Code Button -->
+                            <button class="btn vcode toggle-code-btn" data-id="project-{{ project.id }}">View Code</button>
+                            <pre id="code-{{ project.id }}" style="display:none; color: #1a237e;"><code>{{ project.demoCode }}</code></pre>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-        </div>
+        {% else %}
+            <p>📌You need to complete all exercises to access coding projects.</p>
+        {% endif %}
 
     </div>
 
@@ -225,7 +226,19 @@ document.addEventListener('click', function(event) {
     }
 });
 
+// Toggle code visibility
+document.addEventListener('click', function(event) {
+    if (event.target && event.target.classList.contains('toggle-code-btn')) {
+        const projectId = event.target.getAttribute('data-id');
+        const codeBlock = document.getElementById(`code-${projectId.split('-')[1]}`);
 
+        if (codeBlock.style.display === 'block') {
+            codeBlock.style.display = 'none';
+        } else {
+            codeBlock.style.display = 'block';
+        }
+    }
+});
     
 </script>
 
