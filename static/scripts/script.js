@@ -1,7 +1,7 @@
 // Created by: Orlando Caetano
 // Last updated: 18/02/2025
 // Description: This is a file to store JS code that is used in the Code Mentor app, 
-// Resources: Please refer to References.txt for the resources used to build this application.
+// Resources: Please refer to Reference list for CodeMentor App for the resources used to build this application.
 
 
 // managing the visibility of the scroll indicator

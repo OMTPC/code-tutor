@@ -6,7 +6,7 @@ Description:
 This script is used to populate the Code Tutor database.  
 It defines functions to add content to the database and runs them within the Flask app context.  
 
-Resources: Please refer to References.txt for the resources used to build this application. 
+Resources: Please refer to Reference list for CodeMentor App for the resources used to build this application. 
 """
 
 from app import app, db, Module

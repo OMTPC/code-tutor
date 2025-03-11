@@ -6,7 +6,7 @@ This module contains Flask-WTF forms used for user authentication in the Code Me
 It includes a login form for user authentication and a registration form for new user sign-ups.  
 The forms enforce data validation using WTForms validators to ensure data integrity.  
 
-Resources: Please refer to References.txt for the resources used to build this application. 
+Resources: Please refer to Reference list for CodeMentor App for the resources used to build this application. 
 """
 
 from flask_wtf import FlaskForm

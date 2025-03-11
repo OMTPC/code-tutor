@@ -6,7 +6,7 @@ the database with initial data, specifically for Module 1: Variables & Data Type
 
 Usage: Run the script as a standalone file to populate the database.
 
-Resources: Please refer to References.txt for the resources used to build this application.
+Resources: Please refer to Reference list for CodeMentor App for the resources used to build this application.
 """
 
 from app import db, Exercise, app, Solution

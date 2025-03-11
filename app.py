@@ -7,7 +7,7 @@ Description:
     career suggestions and coding projects based on the user's progress. The application also
     includes an API to check user code for industry challenges and career suggestions.
     
-Resources: Please refer to References.txt for the resources used to build this application.
+Resources: Please refer to Reference list for CodeMentor App for the resources used to build this application.
 """
 
 #-------------------------------------------Imports-------------------------------------------------#
