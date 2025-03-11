@@ -1,3 +1,14 @@
+<!--
+    Created by: Orlando Caetano
+    Last updated: 10/03/2025
+    Description: This "Future You" page is designed to help users connect their learning journey to real-world career opportunities. 
+    It provides career path suggestions based on the user’s progress, showcases coding projects, and includes industry challenges to 
+    deepen practical knowledge. 
+
+    Resources: Please refer to References.txt for the resources used to build this application.
+-->
+
+
 {% extends 'base.html' %}
 
 {% block title %}Future You{% endblock %}
@@ -26,8 +37,6 @@
                                 <h3 class="career-title">{{ career.title }}</h3>
                                 <p class="career-description" >{{ career.description | safe }}</p>
                                 
-                                
-                                <!-- Button Container (Flexbox to keep buttons aligned) -->
                                 <div class="d-flex gap-2">
                                     <!-- Learn More Button -->
                                     <button class="btn btn-info learn-more-btn" data-csid="{{ career.CSid }}">Key Responsibilities</button>
@@ -36,26 +45,19 @@
                                     <button class="btn btn-success career-stories-btn" data-csid="{{ career.CSid }}">Career Stories</button>
                                 </div>
 
-                                <!-- Key Responsibilities Section (hidden initially) -->
                                 <div id="key-responsibilities-container-{{ career.CSid }}" class="key-responsibilities-container" style="text-align:left">
                                     <p><span id="key-responsibilities-text-{{ career.CSid }}"></span></p>
                                 </div>
 
-                                <!-- Career Stories Section (Hidden Initially) -->
                                 <div id="career-stories-container-{{ career.CSid }}" class="career-stories-container" style="display:none; text-align:left; padding: 10px;">
                                     <ul id="career-stories-list-{{ career.CSid }}"></ul>
                                 </div>
-
-
                             </div>
                         {% endfor %}
                     </div>
                     {% else %}
                         <p>No career suggestions available for this module yet.</p> 
                     {% endif %}
-
-                    
-
                 </div>
             </div>
 
@@ -65,8 +67,7 @@
                     <h1>Industry Challenges</h1>
                     <p>Explore real-world industry challenges related to the concepts you've learned.</p>
                     
-                    
-                    <div class="d-grid gap-2">  <!-- Bootstrap utility for stacking buttons -->
+                    <div class="d-grid gap-2">  
                         {% for exercise in exercises_with_status %}
                             <button class="industry btn-primary" 
                             
@@ -84,11 +85,9 @@
             </div>
         </div>
 
-        
-
+        <!-- Coding Projects Section -->
         <h1 style="margin-left: -50px; margin-top: 50px;">Coding Projects</h1>
         <p style="margin-left: -50px; margin-top: 10px;">Explore coding projects that you can work on to enhance your skills.</p>
-
 
         {% if all_exercises_completed %}
             <div class="row">
@@ -116,7 +115,6 @@
         {% else %}
             <p>📌You need to complete all exercises to access coding projects.</p>
         {% endif %}
-
     </div>
 
     <!-- Future You button -->
@@ -134,35 +132,32 @@
     </div>
 </section>
 
-
-
 <script>
     // Event listener to handle the "Learn More" button click
 document.addEventListener('click', function(event) {
     if (event.target && event.target.classList.contains('learn-more-btn')) {
-        const CSid = event.target.getAttribute('data-csid');  // Get the CSid from the button's data attribute
+        const CSid = event.target.getAttribute('data-csid'); 
         const keyResponsibilitiesContainer = document.getElementById(`key-responsibilities-container-${CSid}`);
         const keyResponsibilitiesText = document.getElementById(`key-responsibilities-text-${CSid}`);
 
-        // Check if the container is already visible
         if (keyResponsibilitiesContainer.style.display === 'block') {
-            // If visible, hide it
             keyResponsibilitiesContainer.style.display = 'none';
         } else {
-            // Fetch the key responsibilities dynamically using the CSid
+
+            // Fetch the key responsibilities API 
             fetch(`/api/career_suggestions/responsibilities/${CSid}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
                         keyResponsibilitiesText.innerHTML = `<span class="text-danger">${data.error}</span>`;
                     } else {
-                        // Replace line breaks (\n) with <br> to preserve the formatting
+                        // formating the text
                         const responsibilitiesText = data.keyresponsibilities.replace(/\n/g, '<br>');
-                        keyResponsibilitiesText.innerHTML = responsibilitiesText;  // Display the responsibilities
-                        keyResponsibilitiesText.style.fontSize = '1rem';  // Apply font size
+                        keyResponsibilitiesText.innerHTML = responsibilitiesText;  
+                        keyResponsibilitiesText.style.fontSize = '1rem';  
                         keyResponsibilitiesContainer.style.padding = '10px 0'; 
-                        keyResponsibilitiesContainer.style.color = '#1a237e';  // Apply text color
-                        keyResponsibilitiesContainer.style.display = 'block';  // Show the responsibilities
+                        keyResponsibilitiesContainer.style.color = '#1a237e'; 
+                        keyResponsibilitiesContainer.style.display = 'block';  
                     }
                 })
                 .catch(error => {
@@ -172,6 +167,7 @@ document.addEventListener('click', function(event) {
     }
 });
 
+// Event listener to handle the "Industry Challenges" button click
 document.querySelectorAll(".industry.btn-primary").forEach(button => {
     button.addEventListener("click", function() {
         let iframe = document.getElementById("challengeFrame");
@@ -183,7 +179,7 @@ document.querySelectorAll(".industry.btn-primary").forEach(button => {
         if (url) {
             iframe.src = url;
         } else {
-            iframe.src = "";  // Empty the iframe if no challenge exists
+            iframe.src = ""; 
         }
 
         // Toggle visibility of the iframe container
@@ -196,6 +192,7 @@ document.querySelectorAll(".industry.btn-primary").forEach(button => {
     });
 });
 
+// Event listener to handle the "Career Stories" button click
 document.addEventListener('click', function(event) {
     if (event.target && event.target.classList.contains('career-stories-btn')) {
         const CSid = event.target.getAttribute('data-csid');  
@@ -203,20 +200,19 @@ document.addEventListener('click', function(event) {
         const careerStoriesList = document.getElementById(`career-stories-list-${CSid}`);
 
         if (careerStoriesContainer.style.display === 'block') {
-            careerStoriesContainer.style.display = 'none'; // Hide if already visible
+            careerStoriesContainer.style.display = 'none'; 
         } else {
-            // Fetch the career stories using CSid
+            // Fetch the career stories API 
             fetch(`/api/career_suggestions/stories/${CSid}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
                         careerStoriesList.innerHTML = `<li class="text-danger">${data.error}</li>`;
                     } else {
-                        // Populate the list
                         careerStoriesList.innerHTML = data.career_stories.map(story =>
                             `<strong style="color: #1a237e">${story.title}</strong>: <span style="color: #1a237e">${story.description}</span>`
                         ).join('');
-                        careerStoriesContainer.style.display = 'block';  // Show the container
+                        careerStoriesContainer.style.display = 'block';  
                     }
                 })
                 .catch(error => {
@@ -226,7 +222,7 @@ document.addEventListener('click', function(event) {
     }
 });
 
-// Toggle code visibility
+// Event listener to handle the "View Code" button click
 document.addEventListener('click', function(event) {
     if (event.target && event.target.classList.contains('toggle-code-btn')) {
         const projectId = event.target.getAttribute('data-id');

@@ -1,14 +1,13 @@
 <!--
     Created by: Orlando Caetano
-    Date: [Insert Date]  
+    Last Updated: 10/03/2025  
     Description: Industry challenges page template featuring an interactive code editor (Code Mirror) for solving real-world problems. 
                  The page displays various challenges related to different industries, along with career suggestions 
                  based on the task. A CodeMirror editor is included for users to write and test their solutions directly 
                  on the platform. Users can modify the code to complete the challenge and view the output in a solution box.
+
     Resources: Please refer to References.txt for the resources used to build this application.
 -->
-
-
 
 <!-- industry_challenges.html -->
 <html lang="en">
@@ -24,8 +23,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
 
-
-
 </head>
 <body>
     <h1>Industry Challenges</h1>
@@ -33,12 +30,11 @@
         {% for challenge in industry_challenges %}
             <div class="challenge">
                 <h3 style="color: #1a237e">{{ challenge.challenge_text }}</h3>
-                <p> {{ challenge.career_suggestion }}</p>
-                
-                
+                <p> {{ challenge.career_suggestion }}</p>               
             </div>
         {% endfor %}
     </div>
+
     <textarea id="codeEditor"></textarea>
 
     <p>📝 Try modifying the code to complete the task!</p>
@@ -51,45 +47,45 @@
         <pre id="solution-output">Your code output will appear here.</pre>
     </div>
 
+<script>
+    // CodeMirror Initialization
+    document.addEventListener("DOMContentLoaded", function() {
 
+        var editor = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
+            mode: "python",  
+            lineNumbers: true,
+            theme: "dracula", 
+            indentUnit: 4,
+            tabSize: 4,
+            matchBrackets: true
+        });
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        editor.setSize("100%", "200px"); 
 
-            var editor = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
-                mode: "python",  
-                lineNumbers: true,
-                theme: "dracula", 
-                indentUnit: 4,
-                tabSize: 4,
-                matchBrackets: true
-            });
+        var defaultCode = {{ industry_challenges[0].default_code | tojson }};
+    editor.setValue(`# Write your solution here\n${defaultCode}`);
 
-            editor.setSize("100%", "200px"); 
+    document.getElementById("run-code").addEventListener("click", function() {
+        var userCode = editor.getValue(); 
 
-            var defaultCode = {{ industry_challenges[0].default_code | tojson }};
-        editor.setValue(`# Write your solution here\n${defaultCode}`);
-
-        document.getElementById("run-code").addEventListener("click", function() {
-            var userCode = editor.getValue(); 
-
-            fetch('/run_code', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ code: userCode })
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("solution-output").textContent = data.output;
-            })
-            .catch(error => {
-                document.getElementById("solution-output").textContent = "Error: " + error.message;
-            });
+        // Send the code to the server for execution
+        fetch('/run_code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ code: userCode })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("solution-output").textContent = data.output;
+        })
+        .catch(error => {
+            document.getElementById("solution-output").textContent = "Error: " + error.message;
         });
     });
+});
 
-    </script>
+</script>
 </body>
 </html>

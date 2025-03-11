@@ -1,12 +1,12 @@
 """
 Created by: Orlando Caetano  
-Date: [Insert Date]  
+Last Updated: 14/02/2025
 Description:  
-This module contains Flask-WTF forms used for user authentication in the Code Tutor application.  
+This module contains Flask-WTF forms used for user authentication in the Code Mentor application.  
 It includes a login form for user authentication and a registration form for new user sign-ups.  
 The forms enforce data validation using WTForms validators to ensure data integrity.  
 
-Resources:  
+Resources: Please refer to References.txt for the resources used to build this application. 
 """
 
 from flask_wtf import FlaskForm

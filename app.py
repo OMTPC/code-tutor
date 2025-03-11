@@ -6,6 +6,7 @@ Description:
     learn Python through structured exercises and modules. with a future you page that displays
     career suggestions and coding projects based on the user's progress. The application also
     includes an API to check user code for industry challenges and career suggestions.
+    
 Resources: Please refer to References.txt for the resources used to build this application.
 """
 
@@ -642,7 +643,7 @@ def future_you():
         coding_projects = [
             {
                 "id": 1,
-                "title": "Todo List App",
+                "title": "To-do List App",
                 "description": "A simple task management application.",
                 "concepts": ["print", "if-statements", "loops"],
                 "demoCode": '''

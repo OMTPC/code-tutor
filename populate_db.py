@@ -1,15 +1,15 @@
 
 """
 Created by: Orlando Caetano  
-Date: [Insert Date]  
+Last Updated: 18/02/2025
 Description:  
 This script is used to populate the Code Tutor database.  
 It defines functions to add content to the database and runs them within the Flask app context.  
 
-Resources:  
+Resources: Please refer to References.txt for the resources used to build this application. 
 """
-from app import app, db, Module
 
+from app import app, db, Module
 
 # Function to add modules
 def add_modules():
@@ -26,10 +26,9 @@ def add_modules():
 
 # Main function to populate the database
 def populate_db():
-    with app.app_context():  # Ensure Flask app context is active
+    with app.app_context():  
        add_modules()
 
-
-# Run the script 
+# Run the script to populate the database
 if __name__ == "__main__":
     populate_db()

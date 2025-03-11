@@ -1,3 +1,16 @@
+<!--
+    Created by: Orlando Caetano
+    Last updated: 06/03/2025
+    Description: This dashboard page serves as the central hub for users to track their learning progress through various modules. 
+    It dynamically displays available, locked, in-progress, and completed modules based on the user's progress. Each module is visually 
+    represented with an icon and progress bar, making it easy to understand the current learning status. 
+    The dashboard also includes a "Future You" button that becomes enabled when the first exercise is completed, allowing users to access 
+    career guidance and next steps in their programming journey. 
+
+    Resources: Please refer to References.txt for the resources used to build this application.
+-->
+
+
 {% extends 'base.html' %}
 
 {% block title %}Dashboard{% endblock %}
@@ -23,7 +36,7 @@
                         {% if user_module.status == 'locked' %}locked-module{% endif %} 
                         {% if user_module.status == 'available' %}available-module{% endif %} 
                         {% if user_module.status == 'in progress' %}in-progress-module{% endif %}
-                        {% if user_module.status == 'completed' %}completed-module{% endif %}"> <!-- Add completed status class -->
+                        {% if user_module.status == 'completed' %}completed-module{% endif %}"> 
 
                         <!-- Check if module is locked, available, in progress, or completed -->
                         {% if user_module.status == 'locked' %}
