@@ -22,16 +22,28 @@ from flask_migrate import Migrate
 import re
 import sys
 import io
+import os
+from config import ProductionConfig, TestingConfig
 
 # Initialize Flask app
 app = Flask(__name__)
 
+# Determine the environment and load the correct configuration
+if os.getenv("FLASK_ENV") == "testing":
+    app.config.from_object(TestingConfig)
+else:
+    app.config.from_object(ProductionConfig)
+
+
+# Print the current configuration for debugging purposes
+print(f"Running with config: {app.config['SQLALCHEMY_DATABASE_URI']}")
+
 # Secret key for security
-app.config["SECRET_KEY"] = "MasterKey"
+#app.config["SECRET_KEY"] = "MasterKey"
 
 # Database configuration (SQLite)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///codetutorDB.db"  
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  
+#app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///codetutorDB.db"  
+#app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  
 
 # Initialize database
 db = SQLAlchemy(app)
