@@ -1,6 +1,6 @@
 """
 Created by: Orlando Caetano
-last update: 10/03/2025
+last update: 14/03/2025
 Description: 
     This is a Flask-based web application for Code Mentor, designed to help novice programmers 
     learn Python through structured exercises and modules. with a future you page that displays
@@ -424,11 +424,13 @@ def register():
             db.session.rollback() 
             flash(f"Error registering user: {e}", "danger")
     
+    """ For testing only
     else:
             # Flash form errors if validation fails
             for field, errors in form.errors.items():
                 for error in errors:
                     flash(f"{field.capitalize()}: {error}", "danger")
+    """
 
     return render_template("register.html", form=form)  
 

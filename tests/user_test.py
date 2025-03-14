@@ -1,8 +1,18 @@
+"""
+Created by: Orlando Caetano
+Last update: 14/03/2025
+Description: 
+    This test verifies the user creation functionality and the interaction between the Flask-based 
+    Code Mentor web application and the database. It simulates a user registration with all required 
+    fields, and checks for a successful redirection after the registration. 
+
+Resources: Please refer to the Reference list for Code Mentor App for the resources used to build this application.
+"""
+
 import pytest
 from app import app, db, User
 
 def test_user_creation(client):
-    """Test user creation and database interaction."""
     response = client.post('/register', data={
         'username': 'testuser',
         'email': 'testuser@example.com',
