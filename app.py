@@ -424,6 +424,12 @@ def register():
             db.session.rollback() 
             flash(f"Error registering user: {e}", "danger")
     
+    else:
+            # Flash form errors if validation fails
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"{field.capitalize()}: {error}", "danger")
+
     return render_template("register.html", form=form)  
 
 
